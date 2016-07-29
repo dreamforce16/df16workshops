@@ -1,0 +1,18 @@
+baseurl = "http://replace-this-with-your-hugo-site.com/"
+languageCode = "en-us"
+title = "DreamForce 2016 Workshops"
+
+[[menu.main]]
+    name = "Home"
+    pre = "<i class='fa fa-home fa-fw'></i>"
+    weight = 0
+    identifier = "home"
+    url = "/"
+
+[[menu.main]]
+
+    name = "Suggestion Box"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 1
+    identifier = "Suggestion Box"
+    url = "/workshop/suggestion-box/"
