@@ -157,267 +157,326 @@ This field will have unique security around it in that only Admins can change th
 1. Click the Elements tab in the left-hand side Palette. This displays all of the new things you can add to your database schema: objects and fields.
 2. Drag the Picklist field type and drop it on the Suggestions object.
 3. Fill in the custom field details:
-* Field Label: Status
-* Field Name: Status
-* Enter the following Values for the picklist (one per line)
+ * Field Label: Status
+ * Field Name: Status
+ * Enter the following Values for the picklist (one per line)
         - New
         - Under Consideration
         - In Progress
         - Implemented
-Leave the Sort Values Alphabetically - Unchecked.
-Check the Use first value as default value.
-Click Save to save the Status field. You should see the Status field at the top of the list of fields in the Suggestion object’s box in the schema diagram.
-Now, we'll update the Status field's security. While still in the Schema Builder, right-click on the Status field that you just added to the Suggestion object. Click Manage Field Permissions.
-Click the Read-Only checkbox at the top of the column to make this field read only for all users.
-Uncheck the box in the Read-Only column next to System Administrator, then click Save.
-Step 6: Add a Date field
+4. Leave the Sort Values Alphabetically - Unchecked.
+5. Check the Use first value as default value.
+6. Click Save to save the Status field. You should see the Status field at the top of the list of fields in the Suggestion object’s box in the schema diagram.
+7. Now, we'll update the Status field's security. While still in the Schema Builder, right-click on the Status field that you just added to the Suggestion object. Click Manage Field Permissions.
+8. Click the Read-Only checkbox at the top of the column to make this field read only for all users.
+9. Uncheck the box in the Read-Only column next to System Administrator, then click Save.
+
+#### Step 6: Add a Date field
+
 This field will help us track when the Suggestion was Implemented. It’s also important for us because we reference this field in the formula field created in a later exercise.
+
 This field will have unique security around it in that only Admins can change the date.
-Drag the Date field type and drop it on the Suggestions object.
-Fill in the custom field details:
-Field Label: Implemented Date
-Field Name: Implemented_Date
-Leave the defaults for the remaining fields
-Click Save to save the Implemented Date field. You should see the Implemented Date field at the top of the list of fields in the Suggestion object’s box in the schema diagram.
-Now, we'll update the Implemented Date field's security. While still in the Schema Builder, right-click on the Implemented Date field that you just added to the Suggestion object. Click Manage Field Permissions.
-Click the Read-Only checkbox at the top of the column to make this field read only for all users.
-Uncheck the box in the Read-Only column next to System Administrator, then click Save.
-Step 7: Try Out the App
+
+1. Drag the Date field type and drop it on the Suggestions object.
+2. Fill in the custom field details:
+ * Field Label: Implemented Date
+ * Field Name: Implemented_Date
+ * Leave the defaults for the remaining fields
+ * Click Save to save the Implemented Date field. You should see the Implemented Date field at the top of the list of fields in the Suggestion object’s box in the schema diagram.
+3. Now, we'll update the Implemented Date field's security. While still in the Schema Builder, right-click on the Implemented Date field that you just added to the Suggestion object. Click Manage Field Permissions.
+4. Click the Read-Only checkbox at the top of the column to make this field read only for all users.
+5. Uncheck the box in the Read-Only column next to System Administrator, then click Save.
+
+#### Step 7: Try Out the App
+
 Go back to the Suggestions tab in the browser, or to the Suggestions object in the Salesforce1 Mobile app, and create a new Suggestion record.
+
 Notice anything? Where are our two new fields we just created, Status and Implemented Date?
+
 Don’t worry, they are there, just not on the page layout. When you use the Field Wizard, you have the option to add the field to the page layout automatically. When you use the Schema Builder, you need to add the field using the Page Layout Editor. In the next exercise, we’ll do that, and make some other modifications to the user experience, to make the app easier to use.
-Resources
-Data Modeling > Creating Custom Objects and Fields
-Data Modeling > Working with Schema Builder
 
+#### Resources
+* [ Data Modeling > Creating Custom Objects and Fields ]
+(https://developer.salesforce.com/trailhead/data_modeling/creating_custom_objects_fields)
+* [Data Modeling > Working with Schema Builder]
+(https://developer.salesforce.com/trailhead/data_modeling/schema_builder)
 
+# Modifying the User Experience
 
-Modifying the User Experience
-What You’ll Do
-Modify the page layout.
-Modify the mobile user interface with a compact layout.
-Add a global action to add suggestions directly from the Feed.
-Try the app in the browser or in the Salesforce1 Mobile app.
+### What You’ll Do 
+
+* Modify the page layout.
+* Modify the mobile user interface with a compact layout.
+* Add a global action to add suggestions directly from the Feed.
+* Try the app in the browser or in the Salesforce1 Mobile app.
+
 In the previous exercise you created fields to manage the data. Now, let’s make sure that employees have a great experience logging their Suggestions by arranging the fields in a usable manner, bringing the most important fields to their attention and making common tasks easy to do.
+
 Changing the UI for the browser and mobile pages involves modifying the Suggestion object's page layout. You’ll also modify the Suggestion object's compact layout, which changes only the mobile app UI. Finally, you’ll add a Global Action to make it easy for employees to add suggestions wherever they are in the Salesforce app in both the browser and the mobile app.
-Step 1: Modify the Page Layout
-Click on the Gear icon | Setup Home | Platform Tools | Objects and Fields | Object Manager
-Click the name of your object (in this example, click Suggestion)
-Scroll down to the Page Layouts section, and click the Suggestion Layout name. The Page Layout Editor opens.
-Scroll down to the Suggestion Detail section.
 
-In the Page Layout Editor, you have can have one or two columns in each section. Let’s add the missing fields and group fields together.
-Click the Status field and drag it to the right column in the Information section, under Owner.
-Click the Implemented Date field and drag it to the right column in the Information section, under Status.
-Click Quick Save.
+#### Step 1: Modify the Page Layout
+
+1. Click on the Gear icon | Setup Home | Platform Tools | Objects and Fields | Object Manager
+2. Click the name of your object (in this example, click Suggestion)
+3. Scroll down to the Page Layouts section, and click the Suggestion Layout name. The Page Layout Editor opens.
+4. Scroll down to the Suggestion Detail section.
+5.
+6. In the Page Layout Editor, you have can have one or two columns in each section. Let’s add the missing fields and group fields together.
+ * Click the Status field and drag it to the right column in the Information section, under Owner.
+ * Click the Implemented Date field and drag it to the right column in the Information section, under Status.
+ * Click Quick Save.
+ 
 Now add a new section and rearrange the remaining fields.
-Add a section for Description. In the palette, click Section and drag it down until a green bar appears above the System Information section. Drop it there to create the section.
-In the Section Properties box, enter Description for the section name.
-Choose 1-column for the layout.
-Click OK.
-Drag the Suggestion Description field into your new section. Your page should look like this when finished.
 
-Click Save.
-Step 2: Add a Compact Layout
+1. Add a section for Description. In the palette, click Section and drag it down until a green bar appears above the System Information section. Drop it there to create the section.
+2. In the Section Properties box, enter Description for the section name.
+3. Choose 1-column for the layout.
+4. Click OK.
+5. Drag the Suggestion Description field into your new section. Your page should look like this when finished.
+6. 
+7. Click Save.
+
+#### Step 2: Add a Compact Layout
+
 Mobile app users can now see the Status and Implemented Date fields, but with a small screen size, it’s useful to display important fields at the top of the screen. For custom objects, the Name field displays at the top by default. To add the other fields, you modify the compact layout.
-Click Gear icon | Setup Home | Platform Tools | Objects and Fields | Object Manager
-Click the name of your object (in this example, click Suggestion)
-Scroll down to the Compact Layouts section and click New.
-Enter the layout details.
-Label: Suggestion
-Name: Suggestion
-Selected Fields: Suggestion Name, Suggestion Category, Status
 
-Click Save.
-Click Compact Layout Assignment.
-Click Edit Assignment.
-Select Suggestion as the primary compact layout.
-Click Save.
-Step 3: Add a Global Action
+1. Click Gear icon | Setup Home | Platform Tools | Objects and Fields | Object Manager
+2. Click the name of your object (in this example, click Suggestion)
+3. Scroll down to the Compact Layouts section and click New.
+4. Enter the layout details.
+ * Label: Suggestion
+ * Name: Suggestion
+ * Selected Fields: Suggestion Name, Suggestion Category, Status
+5. Click Save.
+6. Click Compact Layout Assignment.
+7. Click Edit Assignment.
+8. Select Suggestion as the primary compact layout.
+9. Click Save.
+
+#### Step 3: Add a Global Action
+
 Things are looking pretty good, but from talking to employees about how they work, we’ve found that they think of suggestions while they’re doing other tasks and don’t want to leave what they are doing to submit a suggestion. For example, if an employee is entering a contact name and thought of a customer service suggestion, the employee would have to do the following to enter a suggestion:
-Navigate to the Suggestion object
-Click New
-Fill in the Suggestion information
-Save
-Navigate back to the Contact record
-Try to remember what they were doing!
+* Navigate to the Suggestion object
+* Click New
+* Fill in the Suggestion information
+* Save
+* Navigate back to the Contact record
+* Try to remember what they were doing!
+
 You want to make it easier for employees by reducing the number of clicks and keeping them in context. You can do this with a Global Action.
-Click the gear icon | Setup Home
-Search for Global Actions in the Quick Find on the left, choose Global Actions from the result
-Click New Action.
-Enter the action details.
-Action Type: Create a Record
-Target Object: Suggestion
-Standard Label Type: New [Record]
-Name: New_Suggestion
 
-Click Save. This takes you to the Global Action layout so that you can select the fields to display when the action is selected.
-Drag Suggestion Category and Suggestion Description onto the New Suggestion layout so that employees can enter those values when creating a suggestion.
-Click Save.
+1. Click the gear icon | Setup Home
+2. Search for Global Actions in the Quick Find on the left, choose Global Actions from the result
+3. Click New Action.
+4. Enter the action details.
+ * Action Type: Create a Record
+ * Target Object: Suggestion
+ * Standard Label Type: New [Record]
+ * Name: New_Suggestion
+5. Click Save. This takes you to the Global Action layout so that you can select the fields to display when the action is selected.
+6. Drag Suggestion Category and Suggestion Description onto the New Suggestion layout so that employees can enter those values when creating a suggestion.
+7. Click Save.
+8. 
+9. In the Predefined Field Values section, click New.
+10. Enter the predefined field value details.
+  * Field Name: Status
+  * A specific value: New
+11. Click Save. You have created a new action, but users cannot see it yet! Let's fix that next.
+12. Click the gear icon | Setup Home | Platform Tools | User Interface | Global Actions | Publisher Layouts
+13. Next to Global Layout, click Edit.
+14. Drag the New Suggestion action into the Quick Actions in the Publisher section and drop it in the second position, after Post.
+15. 
+16. Click Save.
 
-In the Predefined Field Values section, click New.
-Enter the predefined field value details.
-Field Name: Status
-A specific value: New
-Click Save. You have created a new action, but users cannot see it yet! Let's fix that next.
-Click the gear icon | Setup Home | Platform Tools | User Interface | Global Actions | Publisher Layouts
-Next to Global Layout, click Edit.
-Drag the New Suggestion action into the Quick Actions in the Publisher section and drop it in the second position, after Post.
+#### Step 4: Try Out the App
 
-Click Save.
-Step 4: Try Out the App
 In the Suggestions tab, click New and fill out a suggestion. Notice how the experience has changed in the page layout. Switch to the mobile experience and add a suggestion from the mobile navigation menu. You should see the page layout changes and the new fields at the top of the screen from the compact layout change. Finally, add a suggestion from the Feed in the mobile app. Does the global action make it easier? If so, consider updating the page layouts for specific objects (like Contact) to add the New Suggestion action to the action bars that display when viewing those records.
-Resources
-UI Customization > Modifying Page Layouts
-Salesforce1 Mobile Basics > Customizing Compact Layouts
-Salesforce1 Mobile Basics > Creating Global Quick Actions
-Salesforce1 Mobile Basics > Creating Object-Specific Quick Actions
 
+#### Resources
+* [UI Customization > Modifying Page Layouts]
+(https://developer.salesforce.com/trailhead/customizing_user_interface/ui_page_layouts)
+* [Salesforce1 Mobile Basics > Customizing Compact Layouts]
+(https://developer.salesforce.com/trailhead/salesforce1_mobile_app/salesforce1_mobile_app_compact_layouts)
+* [Salesforce1 Mobile Basics > Creating Global Quick Actions]
+(https://developer.salesforce.com/trailhead/salesforce1_mobile_app/salesforce1_mobile_app_actions_global)
+* [Salesforce1 Mobile Basics > Creating Object-Specific Quick Actions]
+(https://developer.salesforce.com/trailhead/salesforce1_mobile_app/salesforce1_mobile_app_actions_objectspecific)
 
-Adding Business Logic
-What You’ll Do
-Create a custom formula field to calculate the length of time between two dates.
-Add a validation rule to enforce that the implemented date is not in the future.
-Create a process to update a field when the value of another field changes.
-Try the app in the browser or Salesforce1 Mobile app.
+# Adding Business Logic
+
+### What You’ll Do
+
+* Create a custom formula field to calculate the length of time between two dates.
+* Add a validation rule to enforce that the implemented date is not in the future.
+* Create a process to update a field when the value of another field changes.
+* Try the app in the browser or Salesforce1 Mobile app.
+
 So far, your app lets employees securely enter and view data about suggestions on a browser or a mobile device. That’s pretty cool, but let’s make the platform work a little harder for us so that our users don’t have to.
-Step 1: Add a Formula Field
+
+#### Step 1: Add a Formula Field
+
 A formula field derives its value from other fields, expressions, or values, saving your users a lot of time. Let’s add a formula field to calculate the number of days from suggestion creation to implementation.
-Click Gear icon | Setup Home | Platform Tools | Objects and Fields | Object Manager | Suggestion
-In the Custom Fields & Relationships section, click New.
-For the data type, select Formula and click Next.
-Enter the field details, and then click Next.
-Field Label: Number of Days Open
-Formula Return Type: Number
-Decimal Places: 0
-Click the Advanced Formula tab.
-In the Formula Editor, type the following formula: IF(ISBLANK(Implemented_Date__c), TODAY() - DATEVALUE(CreatedDate), Implemented_Date__c - DATEVALUE(CreatedDate)) 
-Click Next and Next again to accept the default field visibility and security settings.
-Click Save to save the Number of Days Open field and add it to the Suggestion layout.
-Step 2: Add a Validation Rule
+
+1. Click Gear icon | Setup Home | Platform Tools | Objects and Fields | Object Manager | Suggestion
+2. In the Custom Fields & Relationships section, click New.
+3. For the data type, select Formula and click Next.
+4. Enter the field details, and then click Next.
+ * Field Label: Number of Days Open
+ * Formula Return Type: Number
+ * Decimal Places: 0
+5. Click the Advanced Formula tab.
+6. In the Formula Editor, type the following formula: IF(ISBLANK(Implemented_Date__c), TODAY() - DATEVALUE(CreatedDate), Implemented_Date__c - DATEVALUE(CreatedDate)) 
+7. Click Next and Next again to accept the default field visibility and security settings.
+8. Click Save to save the Number of Days Open field and add it to the Suggestion layout.
+
+#### Step 2: Add a Validation Rule
+
 Formulas are also used to ensure data quality and enforce business rules. Our employees cannot predict the future, so let’s create a validation rule to make sure that they don’t enter implementation dates that haven’t happened yet. With validation rules, you define the condition for "bad" data. When the system evaluates the rule, it blocks the user from saving the data if the condition is true.
-Click Gear icon | Setup Home | Platform Tools | Objects and Fields | Object Manager | Suggestion
-Scroll down to the Validation Rules section and click New.
-Enter the rule details.
-Rule Name: Date_in_Range
-Formula editor:
-1
 
-Implemented_Date__c > TODAY()
-Error Message: The implementation date must be today or in the past, not in the future.
-Error Location: Field, Implemented Date
+1. Click Gear icon | Setup Home | Platform Tools | Objects and Fields | Object Manager | Suggestion
+2. Scroll down to the Validation Rules section and click New.
+3. Enter the rule details.
+ * Rule Name: Date_in_Range
+ * Formula editor:
+        - Implemented_Date__c > TODAY()
+ * Error Message: The implementation date must be today or in the past, not in the future.
+ * Error Location: Field, Implemented Date
+4. Click Save.
 
-Click Save.
-Step 3: Add a Field Update Using Process Builder
+#### Step 3: Add a Field Update Using Process Builder
+
 Formulas are also useful when automating business processes. Let’s make it easy on the person who has to act on all the suggestions by saving them some time. When a user adds an implemented date, let’s update the status automatically to Implemented.
-From Setup Home, Go to Platform Tools | Process Automation | Process Builder
-On the Welcome page, click New.
-Enter the process details, and then click Save.
-Process Name: Update Status
-API Name: Update_Status
-Description: Updates status to Implemented when Implemented Date field is populated.
-Click Add Object and associate the process with the Suggestion object and specify when to start the process. For this process, select when the record is created or edited.
 
-Click Save.
-Click Add Criteria.
-Name the criteria Implemented?.
-Select Formula evaluates to true.
-Check whether the Implemented Date field is populated by typing the following in the Formula Editor:NOT(ISBLANK( [Suggestion__c].Implemented_Date__c ))
+1. From Setup Home, Go to Platform Tools | Process Automation | Process Builder
+2. On the Welcome page, click New.
+3. Enter the process details, and then click Save.
+ * Process Name: Update Status
+ * API Name: Update_Status
+ * Description: Updates status to Implemented when Implemented Date field is populated.
+4. Click Add Object and associate the process with the Suggestion object and specify when to start the process. For this process, select when the record is created or edited.
+5. 
+6. Click Save.
+7. Click Add Criteria.
+8. Name the criteria Implemented?.
+9. Select Formula evaluates to true.
+10. Check whether the Implemented Date field is populated by typing the following in the Formula Editor:NOT(ISBLANK( [Suggestion__c].Implemented_Date__c ))
+11. 
+12. Click Save.
+13. Click Add Action.
+14. Enter the action details, and then click Choose.
+  * Action Type: Update Records
+  * Action Name: Update Status to Implemented
+  * Record Type: click the magnifying glass to open the modal, then click the radio button next to Select the Suggestion__c record that started your process.
+15. Leave No criteria—just update the records! selected.
+16. Set the new field value.
+  * Field: Status
+  * Type: Picklist
+  * Value: Implemented
+17. Click Save
+18. In the upper right corner, click Activate and then click Confirm.
 
-Click Save.
-Click Add Action.
-Enter the action details, and then click Choose.
-Action Type: Update Records
-Action Name: Update Status to Implemented
+#### Step 4: Try Out the App
 
-Record Type: click the magnifying glass to open the modal, then click the radio button next to Select the Suggestion__c record that started your process.
-Leave No criteria—just update the records! selected.
-Set the new field value.
-Field: Status
-Type: Picklist
-Value: Implemented
-
-Click Save
-In the upper right corner, click Activate and then click Confirm.
-Step 4: Try Out the App
 Your business logic fires whenever a record is created or updated from the browser or the mobile app. Go back to a Suggestion record and enter a date in the Implemented Date field. Try a date in the future. Did the system block you from saving? Now try today’s date. The Status field should change to Implemented.
 
-Resources
-Formulas and Validations > Using Formula Fields
-Formulas & Validations > Creating Validation Rules
-Process Automation > Automating Processes with the Lightning Process Builder
-Creating Reports and Dashboards
-What You’ll Do
-Create a simple tabular report to list open suggestions.
-Create a summary report with a report chart.
-Create a simple dashboard based on the summary report.
-Try the reports and dashboards in the Salesforce1 Mobile app.
+#### Resources
+* [Formulas and Validations > Using Formula Fields]
+(https://developer.salesforce.com/trailhead/point_click_business_logic/formula_fields)
+* [Formulas & Validations > Creating Validation Rules]
+(https://developer.salesforce.com/trailhead/point_click_business_logic/validation_rules)
+* [Process Automation > Automating Processes with the Lightning Process Builder]
+(https://developer.salesforce.com/trailhead/business_process_automation/process_builder)
+
+# Creating Reports and Dashboards
+
+### What You’ll Do
+
+* Create a simple tabular report to list open suggestions.
+* Create a summary report with a report chart.
+* Create a simple dashboard based on the summary report.
+* Try the reports and dashboards in the Salesforce1 Mobile app.
+
 The Suggestion Box app you created with the App Quick Start wizard includes a Reports tab and a Dashboards tab, where you can create, edit, and run reports and dashboards. These features make an app more useful by providing the business with valuable insights.
-Step 1: Create a Tabular Report
+
+#### Step 1: Create a Tabular Report
+
 Let’s start with a simple tabular report to show the number of suggestions received and the status of each one. A tabular report presents data in simple rows and columns, much like a spreadsheet. You can use it to show column summaries, like sum, average, maximum, and minimum.
-On the Reports tab, click New Report.
-In the Quick Find box, enter Suggestions. In the Other Reports folder, choose Suggestions.
-Click Create.
-In the Report Builder, notice that the Suggestion Name field is already on the report. In the preview screen, you can see the sample Suggestion records you created in previous steps.
-From the Fields pane, in the Suggestion: Info folder, drag Status and Number of Days Open onto the preview and drop them to the right of the Suggestion Name field.
-Set a row limit for this report so that it doesn’t get out of hand. From the Add drop-down menu next to Filters, chooseRow Limit.
 
-Click OK to accept the default 10-row limit.
-To make sure that you’re viewing only suggestions that still need to be implemented, click Add next to Filters and set the filter to Status Not Equal To Implemented. Click OK.
-Click the Dashboard Settings button at the top.
-For the Name field, choose Status.
-For the Value field, choose Number of Days Open and then click OK. (Steps 9, 10, and 11 are needed only if the tabular report is used in a dashboard.)
-Click Save, and name your report Suggestions: Status of Open Suggestions.
-In the Report Folder drop-down list, select Unfiled Public Reports so that everyone can access it. (If you don’t want this report to be accessible to everyone, create a folder and give different people different levels of access to it.)
-Click Save and Run Report.
+1. On the Reports tab, click New Report.
+2. In the Quick Find box, enter Suggestions. In the Other Reports folder, choose Suggestions.
+3. Click Create.
+4. In the Report Builder, notice that the Suggestion Name field is already on the report. In the preview screen, you can see the sample Suggestion records you created in previous steps.
+5. From the Fields pane, in the Suggestion: Info folder, drag Status and Number of Days Open onto the preview and drop them to the right of the Suggestion Name field.
+6. Set a row limit for this report so that it doesn’t get out of hand. From the Add drop-down menu next to Filters, chooseRow Limit.
+7. 
+8. Click OK to accept the default 10-row limit.
+9. To make sure that you’re viewing only suggestions that still need to be implemented, click Add next to Filters and set the filter to Status Not Equal To Implemented. Click OK.
+10. Click the Dashboard Settings button at the top.
+11. For the Name field, choose Status.
+12. For the Value field, choose Number of Days Open and then click OK. (Steps 9, 10, and 11 are needed only if the tabular report is used in a dashboard.)
+13. Click Save, and name your report Suggestions: Status of Open Suggestions.
+14. In the Report Folder drop-down list, select Unfiled Public Reports so that everyone can access it. (If you don’t want this report to be accessible to everyone, create a folder and give different people different levels of access to it.)
+15. Click Save and Run Report.
+16. 
 
-Step 2: Create a Summary Report and a Report Chart
+#### Step 2: Create a Summary Report and a Report Chart
+
 It’s often a good idea to give users a visual way to understand the data in your report. Tabular reports don’t include charts, so let’s copy the report and make a Summary report. Then, you can add a chart.
-From the Report Results view of the Suggestions: Status of Open Suggestions report, click on the drop down on the right and choose Clone
-Type Suggestions: By Status as the report name
-Choose the Make Public radio button
-Click Save
-Click Edit
-Click Tabular Format and choose Summary. If presented with a warning message, click Yes to proceed.
-Drag the Status field column to the shaded area labeled Drop a field here to create a grouping.
 
-From the Report Results view, click on the Pie button to Add chart to this report
-Click on the gear icon and choose Doughnut chart
-In the Chart Title type Suggestions Status and in Value drop down, choose Record Count. 
-Click OK, and then Save.
-Click Run Report.
+1. From the Report Results view of the Suggestions: Status of Open Suggestions report, click on the drop down on the right and choose Clone
+2. Type Suggestions: By Status as the report name
+3. Choose the Make Public radio button
+4. Click Save
+5. Click Edit
+6. Click Tabular Format and choose Summary. If presented with a warning message, click Yes to proceed.
+7. Drag the Status field column to the shaded area labeled Drop a field here to create a grouping.
+8. 
+9. From the Report Results view, click on the Pie button to Add chart to this report
+10. Click on the gear icon and choose Doughnut chart
+11. In the Chart Title type Suggestions Status and in Value drop down, choose Record Count. 
+12. Click OK, and then Save.
+13. Click Run Report.
+
 The doughnut chart displays above the report results and shows the total number of open suggestions by status.
 
-Step 3: Create a Dashboard
+#### Step 3: Create a Dashboard
+
 Dashboards in Salesforce are like a dashboard in your car, showing you important information at a glance. Dashboards can show data in charts, gauges, tables, metrics, or other formats (using a Visualforce page). Dashboards are powered by reports.
-Go to the Dashboard tab and click on  New Dashboard
-Type the Dashboard Name as Suggestions Dashboard and save it on the default Private folder
-Click on the + Add button at the top right to add a component
 
-In the Report Search, look for Suggestions: By Status
-Choose the doughnut chart and edit the Title as Suggestions By Status
-Click Add
-Click Done. 
-The Dashboard appears as 
+1. Go to the Dashboard tab and click on  New Dashboard
+2. Type the Dashboard Name as Suggestions Dashboard and save it on the default Private folder
+3. Click on the + Add button at the top right to add a component
+4. In the Report Search, look for Suggestions: By Status
+5. Choose the doughnut chart and edit the Title as Suggestions By Status
+6. Click Add
+7. Click Done. 
+8. The Dashboard appears as 
 
+#### Step 4: Try Out the Mobile App
 
-Step 4: Try Out the Mobile App
 You are now a mobile app developer! This is a simple but complete app, and from here you can continue to add functionality or build another app with these skills. Let's see how these reports and dashboards look in the Salesforce1 Mobile app.
-Click the  icon to open the left navigation bar.
-Scroll down and click Reports in the Apps section to display the reports that you recently viewed.
-Click either of the reports that you created.
-Sort the columns, and click a row in the report to test its functionality.
-Now let’s try the dashboard. Click the  icon to open the left navigation bar.
-Click Dashboards to display the dashboards that you recently viewed.
-Click the Suggestions Dashboard. You should see something like this:
 
-Summary
+1. Click the  icon to open the left navigation bar.
+2. Scroll down and click Reports in the Apps section to display the reports that you recently viewed.
+3. Click either of the reports that you created.
+4. Sort the columns, and click a row in the report to test its functionality.
+5. Now let’s try the dashboard. Click the  icon to open the left navigation bar.
+6. Click Dashboards to display the dashboards that you recently viewed.
+7. Click the Suggestions Dashboard. You should see something like this:
+
+# Summary
+
 You did it! You built a simple suggestions management app, all without a single line of code! You started by creating the simple data model and the default user interface for managing suggestions. You then customized the user experience on the browser and mobile app by using drag-and-drop editors. Next, you added business logic with the formula language and process builder. Finally, you created some reports and dashboards so that you could monitor and analyze your business data. You can continue your journey and dive deeper by following the links in the Resources sections of this project.
-Resources
-Reports & Dashboards > Getting Started with Reports and Dashboards
-Reports & Dashboards > Using the Report Builder
-Reports & Dashboards > Using Report Formats
-Reports & Dashboards > Visualizing Your Data
+
+#### Resources
+* [Reports & Dashboards > Getting Started with Reports and Dashboards]
+(https://developer.salesforce.com/trailhead/reports_dashboards/reports_dashboards_overview)
+* [Reports & Dashboards > Using the Report Builder]
+(https://developer.salesforce.com/trailhead/reports_dashboards/reports_dashboards_getting_started)
+* [Reports & Dashboards > Using Report Formats]
+(https://developer.salesforce.com/trailhead/reports_dashboards/reports_dashboards_report_types)
+* [Reports & Dashboards > Visualizing Your Data]
+(https://developer.salesforce.com/trailhead/reports_dashboards/reports_dashboards_visualizing_data)
 
 
 
