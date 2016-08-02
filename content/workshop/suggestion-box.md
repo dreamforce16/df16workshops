@@ -37,6 +37,9 @@ Note: Instead of creating a Suggestions custom object, you could use Cases, a Sa
          * Plural Label: Suggestions
 
 5. Click Create. Right away you see some of the functionality that’s automatically added.
+
+![alt text]( "App Quick Start")
+
 6. You’re all set! Close the popup and you can access the App you just created by clicking on the grid icon on the top right
 
 #### Step 2: Tour the App
