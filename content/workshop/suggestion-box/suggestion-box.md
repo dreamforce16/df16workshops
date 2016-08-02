@@ -32,17 +32,18 @@ Note: Instead of creating a Suggestions custom object, you could use Cases, a Sa
 2. From the Force.com Home page, click on the gear icon | Setup Home | Platform Tools | Apps | Apps
 3. On the Apps page, click on the Quick Start button
 4. Fill in the form as follows:
-         * App: Suggestion Box
-         *  Label: Suggestion
-         * Plural Label: Suggestions
-
+ * App: Suggestion Box
+ * Label: Suggestion
+ * Plural Label: Suggestions
+ 
+        ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/ScreenShot20160727at64217PM.png?raw=true "App Quick Start")
 5. Click Create. Right away you see some of the functionality that’s automatically added.
-
-![alt text](/images/ScreenShot20160727at64217PM.png "App Quick Start")
-
 6. You’re all set! Close the popup and you can access the App you just created by clicking on the grid icon on the top right
+        
+![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step1.1.2.png?raw=true "App Launcher")
 
 #### Step 2: Tour the App
+![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step1.2.1.png?raw=true "App Tour")
 
 1. App Launcher — Displays all a user's available Salesforce apps, and any connected apps an administrator installs for the organization
 2. App Name — Displays the App Name you have navigated from the App Launcher
@@ -70,8 +71,8 @@ For this step, we'll use the last option.
 6. Click the  icon to open the left navigation bar.
 7. Find the Suggestions object under Recent. You may need to click Show More to see it. Click Suggestions to display your recently viewed suggestions, if you have any.
 8. Click New to create a suggestion.
-
-9. Enter a sample suggestion (maybe something like "Locker Rooms"), and click Save.
+9. ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step1.3.1.png?raw=true "Create Suggestion")
+10. Enter a sample suggestion (maybe something like "Locker Rooms"), and click Save.
 
 With just one button click, you're on your way to building a mobile app!
 
@@ -85,6 +86,9 @@ With just one button click, you're on your way to building a mobile app!
 * Create custom fields with the Custom Field Wizard and the Schema Builder.
 * Try the app in the browser and in the Salesforce1 Mobile app.
 
+![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step2a.png?raw=true "Create Suggestion field")
+
+![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step2b.png?raw=true "Create Suggestion field")
 
 By default, your custom object has some standard fields on it. You need to add more fields to store relevant information about each suggestion. Fields can store many types of data. Feel free to explore these later as you extend your app. For now, let’s add a few that we know we need.
 
@@ -94,6 +98,9 @@ You can add a new field this way from the Force.com Home Page:
 2. Click the name of your object (in this example, click Suggestion)
 3. Scroll down to the Custom Fields & Relationships section.
 4. Click New.
+![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step2c.png?raw=true "Display Suggestion field")
+
+![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step2e.png?raw=true "New Custom field")
 
 #### Step 1: Add a Description field
 
@@ -223,7 +230,7 @@ Changing the UI for the browser and mobile pages involves modifying the Suggesti
 2. Click the name of your object (in this example, click Suggestion)
 3. Scroll down to the Page Layouts section, and click the Suggestion Layout name. The Page Layout Editor opens.
 4. Scroll down to the Suggestion Detail section.
-5.
+5. ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step3.1.2.png?raw=true "Suggestion Layout1")
 6. In the Page Layout Editor, you have can have one or two columns in each section. Let’s add the missing fields and group fields together.
  * Click the Status field and drag it to the right column in the Information section, under Owner.
  * Click the Implemented Date field and drag it to the right column in the Information section, under Status.
@@ -236,7 +243,7 @@ Now add a new section and rearrange the remaining fields.
 3. Choose 1-column for the layout.
 4. Click OK.
 5. Drag the Suggestion Description field into your new section. Your page should look like this when finished.
-6. 
+6. ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step3.1.2.png?raw=true "Suggestion Layout2")
 7. Click Save.
 
 #### Step 2: Add a Compact Layout
@@ -250,6 +257,7 @@ Mobile app users can now see the Status and Implemented Date fields, but with a 
  * Label: Suggestion
  * Name: Suggestion
  * Selected Fields: Suggestion Name, Suggestion Category, Status
+        ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step3.2.1.png?raw=true "Compact Layout")
 5. Click Save.
 6. Click Compact Layout Assignment.
 7. Click Edit Assignment.
@@ -279,7 +287,7 @@ You want to make it easier for employees by reducing the number of clicks and ke
 5. Click Save. This takes you to the Global Action layout so that you can select the fields to display when the action is selected.
 6. Drag Suggestion Category and Suggestion Description onto the New Suggestion layout so that employees can enter those values when creating a suggestion.
 7. Click Save.
-8. 
+8. ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step3.3.2.png?raw=true "Global Action")
 9. In the Predefined Field Values section, click New.
 10. Enter the predefined field value details.
   * Field Name: Status
@@ -357,7 +365,7 @@ Formulas are also useful when automating business processes. Let’s make it eas
  * API Name: Update_Status
  * Description: Updates status to Implemented when Implemented Date field is populated.
 4. Click Add Object and associate the process with the Suggestion object and specify when to start the process. For this process, select when the record is created or edited.
-5. 
+5. ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step4.3.1.png?raw=true "Process Builder")
 6. Click Save.
 7. Click Add Criteria.
 8. Name the criteria Implemented?.
@@ -381,6 +389,8 @@ Formulas are also useful when automating business processes. Let’s make it eas
 #### Step 4: Try Out the App
 
 Your business logic fires whenever a record is created or updated from the browser or the mobile app. Go back to a Suggestion record and enter a date in the Implemented Date field. Try a date in the future. Did the system block you from saving? Now try today’s date. The Status field should change to Implemented.
+
+![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step4.4.1.png?raw=true "Suggestion Locker Rooms")
 
 #### Resources
 * [Formulas and Validations > Using Formula Fields]
@@ -411,7 +421,7 @@ Let’s start with a simple tabular report to show the number of suggestions rec
 4. In the Report Builder, notice that the Suggestion Name field is already on the report. In the preview screen, you can see the sample Suggestion records you created in previous steps.
 5. From the Fields pane, in the Suggestion: Info folder, drag Status and Number of Days Open onto the preview and drop them to the right of the Suggestion Name field.
 6. Set a row limit for this report so that it doesn’t get out of hand. From the Add drop-down menu next to Filters, chooseRow Limit.
-7. 
+7. ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step5.1.1.png?raw=true "Unsaved Report1")
 8. Click OK to accept the default 10-row limit.
 9. To make sure that you’re viewing only suggestions that still need to be implemented, click Add next to Filters and set the filter to Status Not Equal To Implemented. Click OK.
 10. Click the Dashboard Settings button at the top.
@@ -420,7 +430,7 @@ Let’s start with a simple tabular report to show the number of suggestions rec
 13. Click Save, and name your report Suggestions: Status of Open Suggestions.
 14. In the Report Folder drop-down list, select Unfiled Public Reports so that everyone can access it. (If you don’t want this report to be accessible to everyone, create a folder and give different people different levels of access to it.)
 15. Click Save and Run Report.
-16. 
+16. ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step5.1.2.png?raw=true "Unsaved Report2")
 
 #### Step 2: Create a Summary Report and a Report Chart
 
@@ -433,7 +443,7 @@ It’s often a good idea to give users a visual way to understand the data in yo
 5. Click Edit
 6. Click Tabular Format and choose Summary. If presented with a warning message, click Yes to proceed.
 7. Drag the Status field column to the shaded area labeled Drop a field here to create a grouping.
-8. 
+8. ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step5.2.1.png?raw=true "Unsaved Report3")
 9. From the Report Results view, click on the Pie button to Add chart to this report
 10. Click on the gear icon and choose Doughnut chart
 11. In the Chart Title type Suggestions Status and in Value drop down, choose Record Count. 
@@ -442,6 +452,8 @@ It’s often a good idea to give users a visual way to understand the data in yo
 
 The doughnut chart displays above the report results and shows the total number of open suggestions by status.
 
+![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step5.2.2.png?raw=true "Unsaved Report4")
+
 #### Step 3: Create a Dashboard
 
 Dashboards in Salesforce are like a dashboard in your car, showing you important information at a glance. Dashboards can show data in charts, gauges, tables, metrics, or other formats (using a Visualforce page). Dashboards are powered by reports.
@@ -449,11 +461,13 @@ Dashboards in Salesforce are like a dashboard in your car, showing you important
 1. Go to the Dashboard tab and click on  New Dashboard
 2. Type the Dashboard Name as Suggestions Dashboard and save it on the default Private folder
 3. Click on the + Add button at the top right to add a component
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step5.3.1.png?raw=true "Dashboard1")
 4. In the Report Search, look for Suggestions: By Status
 5. Choose the doughnut chart and edit the Title as Suggestions By Status
 6. Click Add
 7. Click Done. 
 8. The Dashboard appears as 
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step5.3.2.png?raw=true "Dashboard2")
 
 #### Step 4: Try Out the Mobile App
 
@@ -466,6 +480,8 @@ You are now a mobile app developer! This is a simple but complete app, and from 
 5. Now let’s try the dashboard. Click the  icon to open the left navigation bar.
 6. Click Dashboards to display the dashboards that you recently viewed.
 7. Click the Suggestions Dashboard. You should see something like this:
+  
+![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step5.4.1.png?raw=true "Suggestion Dashboard")
 
 # Summary
 
