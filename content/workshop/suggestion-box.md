@@ -182,10 +182,10 @@ This field will have unique security around it in that only Admins can change th
  * Field Label: Implemented Date
  * Field Name: Implemented_Date
  * Leave the defaults for the remaining fields
- * Click Save to save the Implemented Date field. You should see the Implemented Date field at the top of the list of fields in the Suggestion object’s box in the schema diagram.
-3. Now, we'll update the Implemented Date field's security. While still in the Schema Builder, right-click on the Implemented Date field that you just added to the Suggestion object. Click Manage Field Permissions.
-4. Click the Read-Only checkbox at the top of the column to make this field read only for all users.
-5. Uncheck the box in the Read-Only column next to System Administrator, then click Save.
+3. Click Save to save the Implemented Date field. You should see the Implemented Date field at the top of the list of fields in the Suggestion object’s box in the schema diagram.
+4. Now, we'll update the Implemented Date field's security. While still in the Schema Builder, right-click on the Implemented Date field that you just added to the Suggestion object. Click Manage Field Permissions.
+5. Click the Read-Only checkbox at the top of the column to make this field read only for all users.
+6. Uncheck the box in the Read-Only column next to System Administrator, then click Save.
 
 #### Step 7: Try Out the App
 
