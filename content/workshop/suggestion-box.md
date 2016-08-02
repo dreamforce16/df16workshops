@@ -25,7 +25,6 @@ Note: Instead of creating a Suggestions custom object, you could use Cases, a Sa
 
 * Create a Force.com app that includes standard collaboration and analytics features.
 * Familiarize yourself with the app’s user interface in the browser and in the Salesforce1 Mobile app.
-* 
 
 #### Step 1: Create an App and a Custom Object
 
@@ -40,112 +39,131 @@ Note: Instead of creating a Suggestions custom object, you could use Cases, a Sa
 5. Click Create. Right away you see some of the functionality that’s automatically added.
 6. You’re all set! Close the popup and you can access the App you just created by clicking on the grid icon on the top right
 
+#### Step 2: Tour the App
 
-Step 2: Tour the App
-
-App Launcher — Displays all a user's available Salesforce apps, and any connected apps an administrator installs for the organization
-App Name — Displays the App Name you have navigated from the App Launcher
-Items — Displays the list of Tabs available inside the App
-Navigation menu — provides a streamlined and compact interface to navigate through your organization's various apps and tabs
+1. App Launcher — Displays all a user's available Salesforce apps, and any connected apps an administrator installs for the organization
+2. App Name — Displays the App Name you have navigated from the App Launcher
+3. Items — Displays the list of Tabs available inside the App
+4. Navigation menu — provides a streamlined and compact interface to navigate through your organization's various apps and tabs
 
 
-Step 3: Try Out the Mobile App
+#### Step 3: Try Out the Mobile App
 When you create an app with App Cloud, you automatically create a mobile version of the app. You can access the Salesforce1 mobile app in a number of ways:
-As a downloadable mobile app (Salesforce1) that you install on your phone from the Apple AppStore or Google Play
-By navigating to login.salesforce.com using a mobile browser
-By using the Chrome Developer Tools
+* As a downloadable mobile app (Salesforce1) that you install on your phone from the Apple AppStore or Google Play
+* By navigating to login.salesforce.com using a mobile browser
+* By using the Chrome Developer Tools
+
 For this step, we'll use the last option.
-Open a new tab in your Chrome browser and open the Developer Tools by clicking View | Developer | Developer Tools
-Click the Toggle Device Mode button to simulate your browser as a mobile device.
 
-To simulate the Salesforce1 app in your browser, copy and paste in the URL from the previous tab. Remove the part of the URL immediately after salesforce.com/. For example:
+1. Open a new tab in your Chrome browser and open the Developer Tools by clicking View | Developer | Developer Tools
+2. Click the Toggle Device Mode button to simulate your browser as a mobile device.
 
-Append /one/one.app to the end of the URL after salesforce.com to start the Salesforce1 Application simulator. For example:
+3. To simulate the Salesforce1 app in your browser, copy and paste in the URL from the previous tab. Remove the part of the URL immediately after salesforce.com/. For example:
 
-If the display is too small, change the size to 100%.
+4. Append /one/one.app to the end of the URL after salesforce.com to start the Salesforce1 Application simulator. For example:
 
-Click the  icon to open the left navigation bar.
-Find the Suggestions object under Recent. You may need to click Show More to see it. Click Suggestions to display your recently viewed suggestions, if you have any.
-Click New to create a suggestion.
+5. If the display is too small, change the size to 100%.
 
-Enter a sample suggestion (maybe something like "Locker Rooms"), and click Save.
+6. Click the  icon to open the left navigation bar.
+7. Find the Suggestions object under Recent. You may need to click Show More to see it. Click Suggestions to display your recently viewed suggestions, if you have any.
+8. Click New to create a suggestion.
+
+9. Enter a sample suggestion (maybe something like "Locker Rooms"), and click Save.
+
 With just one button click, you're on your way to building a mobile app!
-Resources
-Salesforce Platform Basics > Getting Started with the Platform
-Salesforce1 Mobile Basics > Getting Started with the Salesforce1 Mobile App
 
-Adding Custom Fields
-What You’ll Do
-Create custom fields with the Custom Field Wizard and the Schema Builder.
-Try the app in the browser and in the Salesforce1 Mobile app.
+#### Resources
+* [ Salesforce Platform Basics > Getting Started with the Platform ] (https://developer.salesforce.com/trailhead/starting_force_com/starting_intro)
+* [ Salesforce1 Mobile Basics > Getting Started with the Salesforce1 Mobile App ] (https://developer.salesforce.com/trailhead/salesforce1_mobile_app/salesforce1_mobile_app_intro)
+
+# Adding Custom Fields
+
+### What You’ll Do
+* Create custom fields with the Custom Field Wizard and the Schema Builder.
+* Try the app in the browser and in the Salesforce1 Mobile app.
 
 
 By default, your custom object has some standard fields on it. You need to add more fields to store relevant information about each suggestion. Fields can store many types of data. Feel free to explore these later as you extend your app. For now, let’s add a few that we know we need.
+
 You can add a new field this way from the Force.com Home Page:
-Click on the Gear icon | Setup Home | Platform Tools | Objects and Fields | Object Manager
-Click the name of your object (in this example, click Suggestion)
-Scroll down to the Custom Fields & Relationships section.
-Click New.
 
- 
+1. Click on the Gear icon | Setup Home | Platform Tools | Objects and Fields | Object Manager
+2. Click the name of your object (in this example, click Suggestion)
+3. Scroll down to the Custom Fields & Relationships section.
+4. Click New.
 
+#### Step 1: Add a Description field
 
-
-Step 1: Add a Description field
 This field will be used by employees when they explain their suggestion. You’ll create the field as a rich text area so that they can change font styles, add pictures, etc.
-Create the Suggestion Description field as follows:
-For Data Type, select Text Area (Rich), and click Next.
-Fill in the custom field details:
-Field Label: Suggestion Description
-Length: 32,768
-Visible Lines: 10
-Field Name: Suggestion_Description
-Help Text: Please enter as much detail - including pictures - around this suggestion so we clearly understand your idea.
-Click Next.
-Click Next again to accept the default field visibility and security settings.
-Click Save & New to add the Suggestion Description to the page layout, save the Suggestion Description field, and return to the first step of the wizard.
-Step 2: Add a Category Field
-This field will help us categorize each suggestion. It will also make it easier for us to report on what types of suggestions we get the most.
-Create the Suggestion Category field as follows:
-For Data Type, select Picklist, and click Next.
-Fill in the custom field details:
-Field Label: Suggestion Category
-Check the radio button next to Enter values for the picklist, with each value separated by a new line.
-Enter the following values for the picklist (one per line)
-Customer Service
-Employee Services
-Facilities/ IT
-Kitchen Snacks
-Other
-Leave the Sort Values Alphabetically - Unchecked.
-Leave the Use first value as default value - Unchecked.
-Leave the defaults for the remaining fields, and click Next.
-Click Next again to accept the default field visibility and security settings.
-Click Save to add the Suggestion Category to the page layout and save the Suggestion Category field.
 
-Step 3: Try Out the App
+Create the Suggestion Description field as follows:
+
+1. For Data Type, select Text Area (Rich), and click Next.
+2. Fill in the custom field details:
+ * Field Label: Suggestion Description
+ * Length: 32,768
+ * Visible Lines: 10
+ * Field Name: Suggestion_Description
+   Help Text: Please enter as much detail - including pictures - around this suggestion so we clearly understand your idea.
+3. Click Next.
+4. Click Next again to accept the default field visibility and security settings.
+5. Click Save & New to add the Suggestion Description to the page layout, save the Suggestion Description field, and return to the first step of the wizard.
+
+#### Step 2: Add a Category Field
+
+This field will help us categorize each suggestion. It will also make it easier for us to report on what types of suggestions we get the most.
+
+Create the Suggestion Category field as follows:
+
+1. For Data Type, select Picklist, and click Next.
+2. Fill in the custom field details:
+ * Field Label: Suggestion Category
+ * Check the radio button next to Enter values for the picklist, with each value separated by a new line.
+ * Enter the following values for the picklist (one per line)
+       - Customer Service
+       - Employee Services
+       - Facilities/ IT
+       - Kitchen Snacks
+       - Other
+ * Leave the Sort Values Alphabetically - Unchecked.
+ * Leave the Use first value as default value - Unchecked.
+ * Leave the defaults for the remaining fields, and click Next.
+3. Click Next again to accept the default field visibility and security settings.
+4. Click Save to add the Suggestion Category to the page layout and save the Suggestion Category field.
+
+#### Step 3: Try Out the App
+
 Check your work by returning to the Suggestions tab and clicking the New button. You should see that your two custom fields were added to the Suggestion page. Fill in a sample suggestion and click Save.
+
 Try adding a record in the Salesforce1 Mobile App, too. Note that the Suggestion page layout is the same on the browser as it is in the mobile app. That's the power of "build once, deploy anywhere" metadata.
-Step 4: Viewing Objects in Schema Builder
+
+#### Step 4: Viewing Objects in Schema Builder
+
 Schema Builder provides a dynamic environment to add new custom objects, custom fields, and relationships to your Salesforce database. It also eliminates the need to click from page to page to add a new custom field to an object or to find the details of a relationship.
+
 Let’s take a look at the Suggestion custom object in the Schema Builder.
-Click the gear icon | Setup Home | Search for Schema Builder in the Quick Find on the left.
-From the Objects Palette (left-hand side) select the Suggestion object and the User object.
-If you don’t see your objects in the Canvas area, click Auto-Layout and drag them around until you like how they are arranged.
+
+1. Click the gear icon | Setup Home | Search for Schema Builder in the Quick Find on the left.
+2. From the Objects Palette (left-hand side) select the Suggestion object and the User object.
+3. If you don’t see your objects in the Canvas area, click Auto-Layout and drag them around until you like how they are arranged.
+
 Let’s add more fields so that you can track the progress of a Suggestion.
-Step 5: Add a Status field
+
+#### Step 5: Add a Status field
+
 This field will help us track the status of the suggestion. It is also a way for the suggestor to know what is going on with their suggestion.
 This field will have unique security around it in that only Admins can change the status.
-Click the Elements tab in the left-hand side Palette. This displays all of the new things you can add to your database schema: objects and fields.
-Drag the Picklist field type and drop it on the Suggestions object.
-Fill in the custom field details:
-Field Label: Status
-Field Name: Status
-Enter the following Values for the picklist (one per line)
-New
-Under Consideration
-In Progress
-Implemented
+
+1. Click the Elements tab in the left-hand side Palette. This displays all of the new things you can add to your database schema: objects and fields.
+2. Drag the Picklist field type and drop it on the Suggestions object.
+3. Fill in the custom field details:
+* Field Label: Status
+* Field Name: Status
+* Enter the following Values for the picklist (one per line)
+        - New
+        - Under Consideration
+        - In Progress
+        - Implemented
 Leave the Sort Values Alphabetically - Unchecked.
 Check the Use first value as default value.
 Click Save to save the Status field. You should see the Status field at the top of the list of fields in the Suggestion object’s box in the schema diagram.
