@@ -38,9 +38,10 @@ Note: Instead of creating a Suggestions custom object, you could use Cases, a Sa
  
         ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/ScreenShot20160727at64217PM.png?raw=true "App Quick Start")
 5. Click Create. Right away you see some of the functionality that’s automatically added.
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/ScreenShot20160727at64217PM.png?raw=true "App Quick Start")
 6. You’re all set! Close the popup and you can access the App you just created by clicking on the grid icon on the top right
         
-![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step1.1.2.png?raw=true "App Launcher")
+![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Suggestion.png?raw=true "App Launcher2")
 
 #### Step 2: Tour the App
 ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step1.2.1.png?raw=true "App Tour")
@@ -61,14 +62,15 @@ For this step, we'll use the last option.
 
 1. Open a new tab in your Chrome browser and open the Developer Tools by clicking View | Developer | Developer Tools
 2. Click the Toggle Device Mode button to simulate your browser as a mobile device.
-
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.1.png?raw=true "Google page1")
 3. To simulate the Salesforce1 app in your browser, copy and paste in the URL from the previous tab. Remove the part of the URL immediately after salesforce.com/. For example:
-
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.2.png?raw=true "Google page2")
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.3.png?raw=true "Google page3")
 4. Append /one/one.app to the end of the URL after salesforce.com to start the Salesforce1 Application simulator. For example:
-
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.4.png?raw=true "Google page4")
 5. If the display is too small, change the size to 100%.
-
-6. Click the  icon to open the left navigation bar.
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.5.png?raw=true "Google page4")
+6. Click the ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.6.png?raw=true "Dropdown") icon to open the left navigation bar.
 7. Find the Suggestions object under Recent. You may need to click Show More to see it. Click Suggestions to display your recently viewed suggestions, if you have any.
 8. Click New to create a suggestion.
 9. ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step1.3.1.png?raw=true "Create Suggestion")
