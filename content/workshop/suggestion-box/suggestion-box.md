@@ -35,7 +35,6 @@ Note: Instead of creating a Suggestions custom object, you could use Cases, a Sa
          * App: Suggestion Box
          *  Label: Suggestion
          * Plural Label: Suggestions
-
 5. Click Create. Right away you see some of the functionality that’s automatically added.
 
 ![alt text](/images/ScreenShot20160727at64217PM.png "App Quick Start")
