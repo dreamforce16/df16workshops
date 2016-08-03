@@ -68,7 +68,7 @@ For this step, we'll use the last option.
  ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.3.png?raw=true "Google page3")
 4. Append /one/one.app to the end of the URL after salesforce.com to start the Salesforce1 Application simulator. For example:
  
-            ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.4.png?raw=true "Google page4")
+          ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.4.png?raw=true "Google page4")
 5. If the display is too small, change the size to 100%.
  ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.5.png?raw=true "Google page4")
 6. Click the ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.6.png?raw=true "Dropdown") icon to open the left navigation bar.
