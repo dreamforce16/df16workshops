@@ -38,10 +38,10 @@ Note: Instead of creating a Suggestions custom object, you could use Cases, a Sa
  
         ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/ScreenShot20160727at64217PM.png?raw=true "App Quick Start")
 5. Click Create. Right away you see some of the functionality that’s automatically added.
- ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/ScreenShot20160727at64217PM.png?raw=true "App Quick Start")
+ 
 6. You’re all set! Close the popup and you can access the App you just created by clicking on the grid icon on the top right
         
-![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Suggestion.png?raw=true "App Launcher2")
+
 
 #### Step 2: Tour the App
 ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step1.2.1.png?raw=true "App Tour")
@@ -68,9 +68,9 @@ For this step, we'll use the last option.
  ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.3.png?raw=true "Google page3")
 4. Append /one/one.app to the end of the URL after salesforce.com to start the Salesforce1 Application simulator. For example:
  
-          ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.4.png?raw=true "Google page4")
+         
 5. If the display is too small, change the size to 100%.
- ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.5.png?raw=true "Google page4")
+ 
 6. Click the ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.6.png?raw=true "Dropdown") icon to open the left navigation bar.
 7. Find the Suggestions object under Recent. You may need to click Show More to see it. Click Suggestions to display your recently viewed suggestions, if you have any.
 8. Click New to create a suggestion.
