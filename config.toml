@@ -7,7 +7,7 @@ title = "DreamForce 2016 Workshops"
     pre = "<i class='fa fa-home fa-fw'></i>"
     weight = 0
     identifier = "home"
-    url = "/"
+    url = "/workshop/"
 
 [[menu.main]]
 
@@ -15,4 +15,12 @@ title = "DreamForce 2016 Workshops"
     pre = "<i class='fa fa-list fa-fw'></i>"
     weight = 1
     identifier = "Suggestion Box"
-    url = "/workshop/suggestion-box/"
+    url = "/workshop/suggestion-box"
+
+[[menu.main]]
+
+    name = "Conference Management"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 1
+    identifier = "conference management"
+    url = "/workshop/conference-mgmt"
