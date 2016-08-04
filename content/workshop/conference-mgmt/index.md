@@ -32,7 +32,7 @@ You will create custom sObjects for Sessions, Speakers and Session Speaker assoc
 You will create a new Lightning component which will let you add new speakers and assign them to existing sessions.
 ##### TODO
 
-### Step 3: Create the Sessoin List component
+### Step 3: Create the Session List component
 
 #### What you'll do
 You will create another Lightning component which shows a list of current sessions including speaker name.
