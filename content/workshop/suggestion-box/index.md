@@ -5,8 +5,6 @@ title = "Build a Suggestion Box App with Lightning Experience"
 
 +++
 
-# Build a Suggestion Box App with Lightning Experience
-
 ## Introduction
 In this project, you learn how to build an application on App Cloud from start to finish, without writing any code. If you're new to App Cloud, the goal is to introduce you to the basics of app building. These point-and-click skills apply whether or not you plan to write code on the platform. If you're familiar with the App Cloud Admin features—managing users and security, customizing standard objects, and so on—the goal is to apply those skills to developing new applications. You need a Developer Edition org to complete this project. If you don't have one, you can sign up [here](https://developer.salesforce.com/signup).
 
@@ -38,9 +36,10 @@ Note: Instead of creating a Suggestions custom object, you could use Cases, a Sa
  
         ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/ScreenShot20160727at64217PM.png?raw=true "App Quick Start")
 5. Click Create. Right away you see some of the functionality that’s automatically added.
-6. You’re all set! Close the popup and you can access the App you just created by clicking on the grid icon on the top right
-        
-![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step1.1.2.png?raw=true "App Launcher")
+        ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Suggestion.png?raw=true "Suggestion app")
+6. You’re all set! Close the popup and you can access the App you by clicking on the grid icon on the top right
+        ![alt text](https://github.com/sonamraju14/df16workshops/blob/master/content/workshop/suggestion-box/images/App_launcher.png?raw=true "Suggestion applauncher")
+
 
 #### Step 2: Tour the App
 ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step1.2.1.png?raw=true "App Tour")
@@ -61,14 +60,17 @@ For this step, we'll use the last option.
 
 1. Open a new tab in your Chrome browser and open the Developer Tools by clicking View | Developer | Developer Tools
 2. Click the Toggle Device Mode button to simulate your browser as a mobile device.
-
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.1.png?raw=true "Google page1")
 3. To simulate the Salesforce1 app in your browser, copy and paste in the URL from the previous tab. Remove the part of the URL immediately after salesforce.com/. For example:
-
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.2.png?raw=true "Google page2")
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.3.png?raw=true "Google page3")
 4. Append /one/one.app to the end of the URL after salesforce.com to start the Salesforce1 Application simulator. For example:
-
+ 
+       ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.4.png?raw=true "Google page4")
 5. If the display is too small, change the size to 100%.
-
-6. Click the  icon to open the left navigation bar.
+ 
+       ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.5.png?raw=true "Google page5")
+6. Click the ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.6.png?raw=true "Dropdown") icon to open the left navigation bar.
 7. Find the Suggestions object under Recent. You may need to click Show More to see it. Click Suggestions to display your recently viewed suggestions, if you have any.
 8. Click New to create a suggestion.
 9. ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step1.3.1.png?raw=true "Create Suggestion")
@@ -284,6 +286,7 @@ You want to make it easier for employees by reducing the number of clicks and ke
  * Target Object: Suggestion
  * Standard Label Type: New [Record]
  * Name: New_Suggestion
+ * ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn2.3.1.png?raw=true "Create a record")
 5. Click Save. This takes you to the Global Action layout so that you can select the fields to display when the action is selected.
 6. Drag Suggestion Category and Suggestion Description onto the New Suggestion layout so that employees can enter those values when creating a suggestion.
 7. Click Save.
@@ -296,7 +299,7 @@ You want to make it easier for employees by reducing the number of clicks and ke
 12. Click the gear icon | Setup Home | Platform Tools | User Interface | Global Actions | Publisher Layouts
 13. Next to Global Layout, click Edit.
 14. Drag the New Suggestion action into the Quick Actions in the Publisher section and drop it in the second position, after Post.
-15. 
+15. ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn2.3.3.png?raw=true "Global Layout")
 16. Click Save.
 
 #### Step 4: Try Out the App
@@ -337,6 +340,7 @@ A formula field derives its value from other fields, expressions, or values, sav
  * Decimal Places: 0
 5. Click the Advanced Formula tab.
 6. In the Formula Editor, type the following formula: IF(ISBLANK(Implemented_Date__c), TODAY() - DATEVALUE(CreatedDate), Implemented_Date__c - DATEVALUE(CreatedDate)) 
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/SuggestionFormula.png?raw=true "Formula field")
 7. Click Next and Next again to accept the default field visibility and security settings.
 8. Click Save to save the Number of Days Open field and add it to the Suggestion layout.
 
@@ -352,6 +356,7 @@ Formulas are also used to ensure data quality and enforce business rules. Our em
         - Implemented_Date__c > TODAY()
  * Error Message: The implementation date must be today or in the past, not in the future.
  * Error Location: Field, Implemented Date
+ * ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/SuggestionVR.png?raw=true "Validation rule")
 4. Click Save.
 
 #### Step 3: Add a Field Update Using Process Builder
@@ -371,7 +376,7 @@ Formulas are also useful when automating business processes. Let’s make it eas
 8. Name the criteria Implemented?.
 9. Select Formula evaluates to true.
 10. Check whether the Implemented Date field is populated by typing the following in the Formula Editor:NOT(ISBLANK( [Suggestion__c].Implemented_Date__c ))
-11. 
+11. ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/PB2.png?raw=true "Process Builder1")
 12. Click Save.
 13. Click Add Action.
 14. Enter the action details, and then click Choose.
@@ -383,6 +388,7 @@ Formulas are also useful when automating business processes. Let’s make it eas
   * Field: Status
   * Type: Picklist
   * Value: Implemented
+  * ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/PB1.png?raw=true "Process Builder2")
 17. Click Save
 18. In the upper right corner, click Activate and then click Confirm.
 
@@ -473,11 +479,11 @@ Dashboards in Salesforce are like a dashboard in your car, showing you important
 
 You are now a mobile app developer! This is a simple but complete app, and from here you can continue to add functionality or build another app with these skills. Let's see how these reports and dashboards look in the Salesforce1 Mobile app.
 
-1. Click the  icon to open the left navigation bar.
+1. Click the ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.6.png?raw=true "Icon") icon to open the left navigation bar.
 2. Scroll down and click Reports in the Apps section to display the reports that you recently viewed.
 3. Click either of the reports that you created.
 4. Sort the columns, and click a row in the report to test its functionality.
-5. Now let’s try the dashboard. Click the  icon to open the left navigation bar.
+5. Now let’s try the dashboard. Click the ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Stepn1.3.6.png?raw=true "Icon") icon to open the left navigation bar.
 6. Click Dashboards to display the dashboards that you recently viewed.
 7. Click the Suggestions Dashboard. You should see something like this:
   
@@ -496,7 +502,6 @@ You did it! You built a simple suggestions management app, all without a single 
 (https://developer.salesforce.com/trailhead/reports_dashboards/reports_dashboards_report_types)
 * [Reports & Dashboards > Visualizing Your Data]
 (https://developer.salesforce.com/trailhead/reports_dashboards/reports_dashboards_visualizing_data)
-
 
 
 
