@@ -6,7 +6,7 @@
 
 
         $ cd themes
-        $ git clone https://github.com/yoshiharuyamashita/blackburn.git
+        $ git clone https://github.com/dreamforce16/blackburn
 
 3. Go to parent directory and Run the server
 
