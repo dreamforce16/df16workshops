@@ -4,6 +4,39 @@ draft = true
 title = "Build a Suggestion Box App with Lightning Experience"
 
 +++
+## Table of Contents
+
+### Build a Suggestion Box App with Lightning Experience
+
+1. [Introduction](#introduction)
+2. [Creating a Suggestion Box App](#creating-a-suggestion-box-app)
+  * [Step 1: Create an App and a Custom Object](#step-1-create-an-app-and-a-custom-object)
+  * [Step 2: Tour the App](#step-2-tour-the-app)
+  * [Step 3: Try Out the Mobile App](#step-3-try-out-the-mobile-app)
+3. [Adding Custom Fields](#adding-custom-fields)
+  * [Step 1: Add a Description field](#step-1-add-a-description-field)
+  * [Step 2: Add a Category Field](#step-2-add-a-category-field)
+  * [Step 3: Try Out the App](#step-3-try-out-the-app)
+  * [Step 4: Viewing Objects in Schema Builder](#step-4-viewing-objects-in-schema-builder)
+  * [Step 5: Add a Status field](#step-5-add-a-status-field)
+  * [Step 6: Add a Date field](#step-6-add-a-date-field)
+  * [Step 7: Try Out the App](#step-7-try-out-the-app)
+4. [Modifying the User Experience](#modifying-the-user-experience)
+  * [Step 1: Modify the Page Layout](#step-1-modify-the-page-layout)
+  * [Step 2: Add a Compact Layout](#step-2-add-a-compact-layout)
+  * [Step 3: Add a Global Action](#step-3-add-a-global-action)
+  * [Step 4: Try Out the App](#step-4-try-out-the-app)
+5. [Adding Business Logic](#adding-business-logic)
+  * [Step 1: Add a Formula Field](#step-1-add-a-formula-field)
+  * [Step 2: Add a Validation Rule](#step-2-add-a-validation-rule)
+  * [Step 3: Add a Field Update Using Process Builder](#step-3-add-a-field-update-using-process-builder)
+  * [Step 4: Try Out the App](#step-4-try-out-the-app)
+6. [Creating Reports and Dashboards](#creating-reports-and-dashboards)
+  * [Step 1: Create a Tabular Report](#step-1-create-a-tabular-report)
+  * [Step 2: Create a Summary Report and a Report Chart](#step-2-create-a-summary-report-and-a-report-chart)
+  * [Step 3: Create a Dashboard](#step-3-create-a-dashboard)
+  * [Step 4: Try Out the Mobile App](#step-4-try-out-the-mobile-app)
+7. [Summary](#summary)
 
 ## Introduction
 In this project, you learn how to build an application on App Cloud from start to finish, without writing any code. If you're new to App Cloud, the goal is to introduce you to the basics of app building. These point-and-click skills apply whether or not you plan to write code on the platform. If you're familiar with the App Cloud Admin features—managing users and security, customizing standard objects, and so on—the goal is to apply those skills to developing new applications. You need a Developer Edition org to complete this project. If you don't have one, you can sign up [here](https://developer.salesforce.com/signup).
