@@ -2,6 +2,7 @@
 
 This article shows how to **Create** and **Run** a Python app with psycopg2 which uses PostgreSQL based Heroku Connect
 
+   ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/heroku-connect-flow-flask-psycopg2.png?raw=true "Heroku connect")
 Figure 1 show the  how HerokuConnect Add-On interacts with Heroku Postgres and force.com behind the scenes
 Make sure you have Python installed.  Also, install the [Heroku Toolbelt](https://toolbelt.heroku.com/)
 
@@ -26,15 +27,15 @@ Install Dependencies
   
   ```python
   from flask import Flask
-	app = Flask(__name__)
+  app = Flask(__name__)
 
-	@app.route('/')
-	def hello_world():
-	    return 'Hello World!'
+  @app.route('/')
+  def hello_world():
+      return 'Hello World!'
 
-	if __name__ == '__main__':
-	    app.run()
-	```
+  if __name__ == '__main__':
+      app.run()
+  ```
 2. Run the app using the following command
  
   ` $ python app.py`
@@ -82,12 +83,19 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
 ## Configure Herok Connect Add-On
 
 1. Setup Connection
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/setup-connection.png?raw=true "Setup connection")
 2. Enter Schema Name : This is the schema name underwhich database will be created.
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/enter-schemaname.png?raw=true "DB connection")
 3. Trigger OAuth 
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/trigger-oauth.png?raw=true "Authorise connection")
 4. Enter Salesforce.com developer account credentials
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/sfaccountdetails.png?raw=true "Account")
 5. Create Mappings
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/create-mappings.png?raw=true "Create mappings")
 6. Create Mappings Contacts : Choose the fields in Salesforce Schema which need to be mapped to Postgres Database in the application.
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/create-mapping-contacts.png?raw=true "Mapping")
 7. Explore Contacts in the Dashboard
+ ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/contacts-explorer.png?raw=true "Dashboard")
 
 ## Add Code for contacts endpoint 
 
@@ -107,16 +115,16 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
     @app.route('/contacts')
     def contacts():
         try:
-      		cur.execute("""SELECT name from salesforce.contact""")
-      		rows = cur.fetchall()
-      		response = ''
-      		my_list = []
-      		for row in rows:
-      		    my_list.append(row[0])
-      		return render_template('template.html',  results=my_list)
-      	except Exception as e:
-      	  print e
-      	  return []
+          cur.execute("""SELECT name from salesforce.contact""")
+          rows = cur.fetchall()
+          response = ''
+          my_list = []
+          for row in rows:
+              my_list.append(row[0])
+          return render_template('template.html',  results=my_list)
+        except Exception as e:
+          print e
+          return []
 ```
 Complete Code listing
 
@@ -203,7 +211,7 @@ Complete Code listing
 
   Create a Procfile which will be used to identify the web dyno and type of runtime
   
-	` web: gunicorn app:app --log-file=-`
+  ` web: gunicorn app:app --log-file=-`
 
 ## Update Changes in Heroku
 
@@ -220,7 +228,7 @@ Complete Code listing
 ## Show Contacts
 
   Browse to URL `http://{your-app-name}.herokuapp.com/contacts` to see the list of contact names.
-  
+  ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/show-contacts.png?raw=true "Final Accounts")
 ## Summary
 
   In this tutorial we learnt how to configure a Python Flask Application to work with Heroku Connect. We used Psycopg2 driver for talking to the PostgreSQL database deployed on Heroku.
