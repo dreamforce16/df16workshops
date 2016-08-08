@@ -1,9 +1,30 @@
-# Heroku Connct : Sync Heroku app with Salesforce
+# Heroku Connect : Sync Heroku app with Salesforce
+
+1. [Introduction](#introduction)
+2. [Install Virtual Environment](#install-virtual-environment)
+3. [Creating a Simple Flask App](#creating-a-simple-flask-app)
+4. [Initialize Git](#initialize-git)
+5. [Create a Requirements File](#create-a-requirements-file)
+6. [Create a Procfile](#create-a-procfile)
+7. [Deploying to Heroku](#deploying-to-heroku)
+8. [Add PostgreSQL Add-On](#add-postgresql-add-on)
+9. [Add Heroku Connect Add-On](#add-heroku-connect-add-on)
+10. [Configure Heroku Connect Add-On](#configure-heroku-connect-add-on)
+11. [Add Code for contacts endpoint](#add-code-for-contacts-endpoint) 
+12. [Add Jinja Template](#add-jinja-template)
+13. [Update python packages](#update-python-packages)
+14. [Add Requirements file](#add-requirements-file)
+15. [Create a Procfile](#create-again-a-procfile)
+16. [Update Changes in Heroku](#update-changes-in-heroku)
+17. [Show Contacts](#show-contacts)
+18. [Summary](#summary)
+  
+# Introduction
 
 This article shows how to **Create** and **Run** a Python app with psycopg2 which uses PostgreSQL based Heroku Connect
 
 <img src="images/heroku-connect-flow-flask-psycopg2.png" width="70%" height="70%">
-   
+
 Figure 1 show the  how HerokuConnect Add-On interacts with Heroku Postgres and force.com behind the scenes
 Make sure you have Python installed.  Also, install the [Heroku Toolbelt](https://toolbelt.heroku.com/)
 
@@ -28,7 +49,7 @@ Install Dependencies
 
 1. First Create a base Flask app with simple REST endpoint/ in a file `app.py` in the folder created above.
   
-    ``` python
+  ``` python
     
     from flask import Flask
     app = Flask(__name__)
@@ -43,14 +64,14 @@ Install Dependencies
 
 
 2. Run the app using the following command
- 
+
     ``` bash
     $ python app.py
     ```
 
-  Your app should now be running on [localhost:5000](http://localhost:5000)
+ Your app should now be running on [localhost:5000](http://localhost:5000)
 
-## Initialize git
+## Initialize Git
 
 Initialize the git repository as shown by commands below.
 
@@ -65,7 +86,7 @@ Initialize the git repository as shown by commands below.
   ``` bash
   $ pip freeze > requirements.txt
   ```
-  
+   
 ## Create a Procfile
 
 Create a file name `Procfile` in the root of the app and add following content. This specifies that the app uses a `web` dyno with `gunicorn` as http server.
@@ -73,7 +94,7 @@ Create a file name `Procfile` in the root of the app and add following content. 
   ``` bash
   web: gunicorn app:app --log-file -
   ```
-  
+    
 ## Deploying to Heroku
 
   ``` bash
@@ -88,7 +109,6 @@ Add Postgress Add-On as shown below
   ``` bash
   $ heroku addons:create heroku-postgresql:hobby-dev
   ```
-
 ## Add Heroku Connect Add-On
 
 Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On to the application.
@@ -100,28 +120,26 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
 ## Configure Heroku Connect Add-On
 
 1. Setup Connection
-   
-<img src="images/setup-connection.png" width="700" height=250> 
 
+   <img src="images/setup-connection.png" width="80%" height="80%"> 
 2. Enter Schema Name : This is the schema name underwhich database will be created.
 
-<img src="https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/enter-schemaname.png" width="700" height=250> 
-
+   <img src="images/enter-schemaname.png" width="80%" height="80%"> 
 3. Trigger OAuth 
 
-   <img src="https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/trigger-oauth.png" width="700" height=200>  
+   <img src="images/trigger-oauth.png" width="80%" height="80%">  
 4. Enter Salesforce.com developer account credentials
 
-   <img src="https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/sfaccountdetails.png" width="300" height=400> 
+   <img src="images/sfaccountdetails.png" width="40%" height="50%"> 
 5. Create Mappings
 
-   <img src="https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/create-mappings.png" width="700" height=400>   
+   <img src="images/create-mappings.png" width="80%" height="80%">   
 6. Create Mappings Contacts : Choose the fields in Salesforce Schema which need to be mapped to Postgres Database in the application.
 
-   <img src="https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/create-mapping-contacts.png" width="700" height=500>  
+   <img src="images/create-mapping-contacts.png" width="80%" height="80%">  
 7. Explore Contacts in the Dashboard
 
-   <img src="https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/contacts-explorer.png" width="700" height=500> 
+   <img src="images/contacts-explorer.png" width="80%" height="80%"> 
 
 ## Add Code for contacts endpoint 
 
@@ -233,7 +251,7 @@ Complete Code listing
 
   `$ pip freeze > requirements.txt`
   
-## Create a Procfile
+## Create again a Procfile
 
   Create a Procfile which will be used to identify the web dyno and type of runtime
   
@@ -254,7 +272,8 @@ Complete Code listing
 ## Show Contacts
 
   Browse to URL `http://{your-app-name}.herokuapp.com/contacts` to see the list of contact names.
-  <img src="https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/show-contacts.png" width="700" height=500> 
+  <img src="images/show-contacts.png" width="80%" height="80%"> 
+  
 ## Summary
 
   In this tutorial we learnt how to configure a Python Flask Application to work with Heroku Connect. We used Psycopg2 driver for talking to the PostgreSQL database deployed on Heroku.
