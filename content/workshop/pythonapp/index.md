@@ -26,28 +26,29 @@ Install Dependencies
   
 ## Creating a Simple Flask App
 
-<ol><li>First Create a base Flask app with simple REST endpoint/ in a file `app.py` in the folder created above.
+1. First Create a base Flask app with simple REST endpoint/ in a file `app.py` in the folder created above.
   
-  ``` python
-  
-  from flask import Flask
-  app = Flask(__name__)
+    ``` python
+    
+    from flask import Flask
+    app = Flask(__name__)
 
-  @app.route('/')
-  def hello_world():
-      return 'Hello World!'
+    @app.route('/')
+    def hello_world():
+        return 'Hello World!'
 
-  if __name__ == '__main__':
-      app.run()
-  ```
+    if __name__ == '__main__':
+        app.run()
+    ```
 
-</li>
-</ol>
-Run the app using the following command
+
+2. Run the app using the following command
  
-  ` $ python app.py`
+    ``` bash
+    $ python app.py
+    ```
 
-    Your app should now be running on [localhost:5000](http://localhost:5000)
+  Your app should now be running on [localhost:5000](http://localhost:5000)
 
 ## Initialize git
 
@@ -61,17 +62,21 @@ Initialize the git repository as shown by commands below.
   ```
 ## Create a Requirements File
 
-  `$ pip freeze > requirements.txt`
+  ``` bash
+  $ pip freeze > requirements.txt
+  ```
   
 ## Create a Procfile
 
 Create a file name `Procfile` in the root of the app and add following content. This specifies that the app uses a `web` dyno with `gunicorn` as http server.
 
-  `web: gunicorn app:app --log-file -`
+  ``` bash
+  web: gunicorn app:app --log-file -
+  ```
   
 ## Deploying to Heroku
 
-  ```
+  ``` bash
     $ heroku create
     $ git push heroku master
     $ heroku open
@@ -80,13 +85,17 @@ Create a file name `Procfile` in the root of the app and add following content. 
 
 Add Postgress Add-On as shown below
 
-  `$ heroku addons:create heroku-postgresql:hobby-dev`
+  ``` bash
+  $ heroku addons:create heroku-postgresql:hobby-dev
+  ```
 
 ## Add Heroku Connect Add-On
 
 Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On to the application.
 
-  `$ heroku addons:create herokuconnect`
+  ``` bash
+  $ heroku addons:create herokuconnect
+  ```
 
 ## Configure Heroku Connect Add-On
 

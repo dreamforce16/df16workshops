@@ -26,3 +26,11 @@ pygmentsStyle="friendly"
     weight = 1
     identifier = "conference management"
     url = "/workshop/conference-mgmt"
+
+[[menu.main]]
+
+    name = "Heroku Connect"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 1
+    identifier = "Heroku Connect"
+    url = "/workshop/pythonapp"
