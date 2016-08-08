@@ -8,5 +8,561 @@
     <language>en-us</language>
     <atom:link href="http://replace-this-with-your-hugo-site.com/index.xml" rel="self" type="application/rss+xml" />
     
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/workshop/heroku-connect/flask/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/workshop/heroku-connect/flask/</guid>
+      <description>
+
+&lt;p&gt;==============================================&lt;/p&gt;
+
+&lt;h1 id=&#34;flask-and-psycopg2-pre-existing-app-get-data&#34;&gt;Flask and psycopg2 : Pre-existing App Get Data&lt;/h1&gt;
+
+&lt;p&gt;.. contents::
+   :depth: 3
+..&lt;/p&gt;
+
+&lt;p&gt;This article shows how to run a Python app with psycopg2 which uses
+PostgreSQL based Heroku Connect&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;|image|
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Figure 1 : Heroku-Connect Data flow&lt;/p&gt;
+
+&lt;p&gt;Figure 1 show the how HerokuConnect Add-On interacts with Heroku
+Postgres and force.com behind the scenes Make sure you have Python
+installed. Also, install the &lt;code&gt;Heroku Toolbelt &amp;lt;HerokuToolBelt_&amp;gt;&lt;/code&gt;__&lt;/p&gt;
+
+&lt;p&gt;We will be using a basic Flask app available at
+&lt;code&gt;flask\_psycopg2\_v1 &amp;lt;flask_psycopg2_v1_&amp;gt;&lt;/code&gt;__&lt;/p&gt;
+
+&lt;p&gt;This app has two rest endpoints&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;@app.route(&amp;lsquo;/&amp;rsquo;) which displays Hello world&lt;/li&gt;
+&lt;li&gt;@app.route(&amp;lsquo;/contacts&amp;rsquo;) which fetches list of contacts from Postgres
+table salesforce.contact&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;clone-the-source-code&#34;&gt;Clone the Source Code&lt;/h1&gt;
+
+&lt;p&gt;::&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git clone https://github.com/rajdeepd/flask-psycopg2-v1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;install-virtual-environment&#34;&gt;Install Virtual Environment&lt;/h1&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;create a virtual environment env.&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;create a virtual environment env.&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;create a virtual environment env.&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;::&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd flask-psycopg2-v1
+$ virtualenv venv
+$ source venv/bin/activate
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;install-dependencies&#34;&gt;Install Dependencies&lt;/h1&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Install the dependencies using pip install command&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;::&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;   $ pip install flask gunicorn psycopg2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Run the app using the following command&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;::&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;   $ python app.py
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Your app should now be running on localhost:5000_&lt;/p&gt;
+
+&lt;p&gt;You will see the default HelloWorld output as shown below.&lt;/p&gt;
+
+&lt;p&gt;|image|&lt;/p&gt;
+
+&lt;p&gt;If you try to access /contacts endpoint you will get a blank list.&lt;/p&gt;
+
+&lt;p&gt;|image|&lt;/p&gt;
+
+&lt;h1 id=&#34;requirements-file&#34;&gt;Requirements File&lt;/h1&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;Heroku to setup the dynos :&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;Heroku to setup the dynos :&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;Heroku to setup the dynos :&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;the dynos :&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;::&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cat requirements.txt
+Flask==0.10.1
+gunicorn==19.3.0
+itsdangerous==0.24
+Jinja2==2.8
+MarkupSafe==0.23
+psycopg2==2.6.1
+Werkzeug==0.11
+wheel==0.24.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;procfile&#34;&gt;Procfile&lt;/h1&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;required and the source for the application.&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;required and the source for the application.&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;rce for the application.&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;::&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;web: gunicorn app:app --log-file -
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;Deploying to Heroku ^^^^^^^^^^^^^^^^^^&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;::&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ heroku create
+$ git push heroku master
+$ heroku open
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add PostgreSQL Add-On ^^^^^^^^^^^^^^^^^^^&lt;/p&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;Add Postgress Add-On as shown below&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;::&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ heroku addons:create heroku-postgresql:hobby-dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;add-heroku-connect-add-on&#34;&gt;Add Heroku Connect Add-On&lt;/h1&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;Add-On to the application.&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;Add-On to the application.&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;Add-On to the application.&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;e application.&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;::&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ heroku addons:create herokuconnect
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;Open the addon in Heroku Dashboard&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;::&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$  heroku addons:open herokuconnect
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Configure Herok Connect Add-On ^^^^^^^^^^^^^^^^^^^^^^^^^^^^&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Setup Connection&lt;/p&gt;
+
+&lt;p&gt;|image|&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Enter Schema Name : This is the schema name underwhich database will
+be created.&lt;/p&gt;
+
+&lt;p&gt;|image|&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Trigger OAuth&lt;/p&gt;
+
+&lt;p&gt;|image|&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Enter Salesforce.com developer account credentials&lt;/p&gt;
+
+&lt;p&gt;|image|&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Create Mappings&lt;/p&gt;
+
+&lt;p&gt;|image|&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Create Mappings Contacts : Choose the fields in Salesforce Schema
+which need to be mapped to Postgres Database in the application.&lt;/p&gt;
+
+&lt;p&gt;|image|&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Explore Contacts in the Dashboard&lt;/p&gt;
+
+&lt;p&gt;|image|&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;Open the App again in Heroku&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;::&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ heroku open
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;show-contacts&#34;&gt;Show Contacts&lt;/h1&gt;
+
+&lt;p&gt;Browse to URL http://{your-app-name}.herokuapp.com/contacts to see the
+list of contact names.&lt;/p&gt;
+
+&lt;p&gt;|image|&lt;/p&gt;
+
+&lt;h1 id=&#34;show-contacts-locally&#34;&gt;Show Contacts locally&lt;/h1&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;Configure the DATABASE_URL in the local environment&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;::&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ heroku config
+
+=== rocky-hamlet-29356 Config Vars
+DATABASE_URL:      postgres://&amp;lt;user_name&amp;gt;:&amp;lt;password&amp;gt;@&amp;lt;ipaddress&amp;gt;.compute-1.amazonaws.com:5432/&amp;lt;database_name&amp;gt;
+HEROKUCONNECT_URL: DATABASE_URL:salesforce
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;Export DATABASE_URL&lt;/dt&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;::&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ export DATABASE_URL=postgres://&amp;lt;user_name&amp;gt;:&amp;lt;password&amp;gt;@&amp;lt;ipaddress&amp;gt;.compute-1.amazonaws.com:5432/&amp;lt;database_name&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Open the following URL &lt;a href=&#34;http://localhost:5000/contacts&#34;&gt;http://localhost:5000/contacts&lt;/a&gt; you should be able
+see the contacts.&lt;/p&gt;
+
+&lt;h1 id=&#34;summary&#34;&gt;Summary&lt;/h1&gt;
+
+&lt;p&gt;In this tutorial we learnt how to configure a &lt;strong&gt;Pre-existing&lt;/strong&gt; Python
+Flask Application to work with Heroku Connect. We used Psycopg2 driver
+for talking to the PostgreSQL database deployed on Heroku.&lt;/p&gt;
+
+&lt;p&gt;.. |image| image:: ../images/heroku-connect-flow-flask-psycopg2.png
+.. |image| image:: ../images_flask_psycopg2/hello-world.png%0A%20:scale:%2030%20%
+.. |image| image:: ../images_flask_psycopg2/empty-contacts.png%0A%20:scale:%2030%20%
+.. |image| image:: ../images_spark_java/setup-connection.png
+.. |image| image:: ../images_spark_java/enter-schemaname.png
+.. |image| image:: ../images_spark_java/trigger-oauth.png
+.. |image| image:: ../images_spark_java/oauth.png
+.. |image| image:: ../images_spark_java/create-mappings.png
+.. |image| image:: ../images_spark_java/create-mapping-contacts.png
+.. |image| image:: ../images_spark_java/contacts-explorer.png
+.. |image| image:: ../images_flask_psycopg2/show-contacts.png%0A%20:scale:%2030%20%&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://replace-this-with-your-hugo-site.com/workshop/pythonapp/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://replace-this-with-your-hugo-site.com/workshop/pythonapp/</guid>
+      <description>
+
+&lt;h1 id=&#34;create-an-app-by-syncing-heroku-and-force-com&#34;&gt;Create an app by Syncing Heroku and Force.com&lt;/h1&gt;
+
+&lt;p&gt;This article shows how to &lt;strong&gt;Create&lt;/strong&gt; and &lt;strong&gt;Run&lt;/strong&gt; a Python app with psycopg2 which uses PostgreSQL based Heroku Connect&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/heroku-connect-flow-flask-psycopg2.png&#34; width=&#34;500&#34; height=&#34;300&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;Figure 1 show the  how HerokuConnect Add-On interacts with Heroku Postgres and force.com behind the scenes
+Make sure you have Python installed.  Also, install the &lt;a href=&#34;https://toolbelt.heroku.com/&#34;&gt;Heroku Toolbelt&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;install-virtual-environment&#34;&gt;Install Virtual Environment&lt;/h2&gt;
+
+&lt;p&gt;Create a folder &lt;code&gt;flask-psycopg2-sample&lt;/code&gt; and install a virtualenvironment in it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    $ mkdir flask-psycopg2-sample
+    $ cd flask-psycopg2-sample
+    $ virtualenv venv
+    $ source venv/bin/activate
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Install Dependencies&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ pip install flask gunicorn&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;creating-a-simple-flask-app&#34;&gt;Creating a Simple Flask App&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;First Create a base Flask app with simple REST endpoint/ in a file &lt;code&gt;app.py&lt;/code&gt; in the folder created above.
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;  from flask import Flask
+  app = Flask(__name__)
+
+  @app.route(&#39;/&#39;)
+  def hello_world():
+      return &#39;Hello World!&#39;
+
+  if __name__ == &#39;__main__&#39;:
+      app.run()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Run the app using the following command&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;code&gt;$ python app.py&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Your app should now be running on [localhost:5000](http://localhost:5000)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;initialize-git&#34;&gt;Initialize git&lt;/h2&gt;
+
+&lt;p&gt;Initialize the git repository as shown by commands below.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    $ git init
+    $ git add .
+    $ git commit -m &amp;quot;initial commit&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;create-a-requirements-file&#34;&gt;Create a Requirements File&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ pip freeze &amp;gt; requirements.txt&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;create-a-procfile&#34;&gt;Create a Procfile&lt;/h2&gt;
+
+&lt;p&gt;Create a file name &lt;code&gt;Procfile&lt;/code&gt; in the root of the app and add following content. This specifies that the app uses a &lt;code&gt;web&lt;/code&gt; dyno with &lt;code&gt;gunicorn&lt;/code&gt; as http server.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;web: gunicorn app:app --log-file -&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;deploying-to-heroku&#34;&gt;Deploying to Heroku&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;    $ heroku create
+    $ git push heroku master
+    $ heroku open
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;add-postgresql-add-on&#34;&gt;Add PostgreSQL Add-On&lt;/h2&gt;
+
+&lt;p&gt;Add Postgress Add-On as shown below&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ heroku addons:create heroku-postgresql:hobby-dev&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;add-heroku-connect-add-on&#34;&gt;Add Heroku Connect Add-On&lt;/h2&gt;
+
+&lt;p&gt;Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On to the application.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ heroku addons:create herokuconnect&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;configure-heroku-connect-add-on&#34;&gt;Configure Heroku Connect Add-On&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Setup Connection
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/setup-connection.png&#34; width=&#34;700&#34; height=250&gt;
+2. Enter Schema Name : This is the schema name underwhich database will be created.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/enter-schemaname.png&#34; width=&#34;700&#34; height=250&gt;
+3. Trigger OAuth&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/trigger-oauth.png&#34; width=&#34;700&#34; height=200&gt;&lt;br /&gt;
+4. Enter Salesforce.com developer account credentials&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/sfaccountdetails.png&#34; width=&#34;300&#34; height=400&gt;
+5. Create Mappings&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/create-mappings.png&#34; width=&#34;700&#34; height=400&gt;&lt;br /&gt;
+6. Create Mappings Contacts : Choose the fields in Salesforce Schema which need to be mapped to Postgres Database in the application.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/create-mapping-contacts.png&#34; width=&#34;700&#34; height=500&gt;&lt;br /&gt;
+7. Explore Contacts in the Dashboard&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/contacts-explorer.png&#34; width=&#34;700&#34; height=500&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;add-code-for-contacts-endpoint&#34;&gt;Add Code for contacts endpoint&lt;/h2&gt;
+
+&lt;p&gt;First Add following lines which configure Connection object conn to PostgreSQL Database.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;    url = urlparse.urlparse(os.environ.get(&#39;DATABASE_URL&#39;))
+    db = &amp;quot;dbname=%s user=%s password=%s host=%s &amp;quot; % (url.path[1:], url.username, url.password, url.hostname)
+    schema = &amp;quot;schema.sql&amp;quot;
+    conn = psycopg2.connect(db)
+    cur = conn.cursor()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add code for the Getting the Contacts.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;    @app.route(&#39;/contacts&#39;)
+    def contacts():
+        try:
+          cur.execute(&amp;quot;&amp;quot;&amp;quot;SELECT name from salesforce.contact&amp;quot;&amp;quot;&amp;quot;)
+          rows = cur.fetchall()
+          response = &#39;&#39;
+          my_list = []
+          for row in rows:
+              my_list.append(row[0])
+          return render_template(&#39;template.html&#39;,  results=my_list)
+        except Exception as e:
+          print e
+          return []
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Complete Code listing&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;    import os
+    import psycopg2
+    from flask import Flask, render_template
+    import urlparse
+    from os.path import exists
+    from os import makedirs
+    
+    url = urlparse.urlparse(os.environ.get(&#39;DATABASE_URL&#39;))
+    db = &amp;quot;dbname=%s user=%s password=%s host=%s &amp;quot; % (url.path[1:], url.username, url.password, url.hostname)
+    schema = &amp;quot;schema.sql&amp;quot;
+    conn = psycopg2.connect(db)
+    
+    cur = conn.cursor()
+    
+    app = Flask(__name__)
+    
+    @app.route(&#39;/&#39;)
+    def hello():
+        return &#39;Hello World!&#39;
+    
+    @app.route(&#39;/contacts&#39;)
+    def contacts():
+      try:
+        cur.execute(&amp;quot;&amp;quot;&amp;quot;SELECT name from salesforce.contact&amp;quot;&amp;quot;&amp;quot;)
+        rows = cur.fetchall()
+        response = &#39;&#39;
+        my_list = []
+        for row in rows:
+          my_list.append(row[0])
+        return render_template(&#39;template.html&#39;,  results=my_list)
+      except Exception as e:
+        print e
+        return []
+    if __name__ == &#39;__main__&#39;:
+      app.run()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;add-jinja-template&#34;&gt;Add Jinja Template&lt;/h2&gt;
+
+&lt;p&gt;The code shown in previous section uses template.html file which is a Jinja template. Add this file under folder templates&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;    &amp;lt;html&amp;gt;
+      &amp;lt;head&amp;gt;
+        &amp;lt;title&amp;gt;Flask Template Example&amp;lt;/title&amp;gt;
+        &amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width, initial-scale=1.0&amp;quot;&amp;gt;
+        &amp;lt;link href=&amp;quot;http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css&amp;quot; rel=&amp;quot;stylesheet&amp;quot; media=&amp;quot;screen&amp;quot;&amp;gt;
+        &amp;lt;style type=&amp;quot;text/css&amp;quot;&amp;gt;
+          .container {
+            max-width: 500px;
+            padding-top: 100px;
+            }
+        &amp;lt;/style&amp;gt;
+      &amp;lt;/head&amp;gt;
+      &amp;lt;body&amp;gt;
+        &amp;lt;div class=&amp;quot;container&amp;quot;&amp;gt;
+          &amp;lt;p&amp;gt;Contacts:&amp;lt;/p&amp;gt;
+          &amp;lt;ul&amp;gt;
+            {% for r in results %}
+            &amp;lt;li&amp;gt;{{r}}&amp;lt;/li&amp;gt;
+            {% endfor %}
+          &amp;lt;/ul&amp;gt;
+        &amp;lt;/div&amp;gt;
+        &amp;lt;script src=&amp;quot;http://code.jquery.com/jquery-1.10.2.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+        &amp;lt;script src=&amp;quot;http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js&amp;quot;&amp;gt;
+        &amp;lt;/script&amp;gt;
+      &amp;lt;/body&amp;gt;
+    &amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;update-python-packages&#34;&gt;Update python packages&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ pip install psycopg2&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;add-requirements-file&#34;&gt;Add Requirements file&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;$ pip freeze &amp;gt; requirements.txt&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;create-a-procfile-1&#34;&gt;Create a Procfile&lt;/h2&gt;
+
+&lt;p&gt;Create a Procfile which will be used to identify the web dyno and type of runtime&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;web: gunicorn app:app --log-file=-&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;update-changes-in-heroku&#34;&gt;Update Changes in Heroku&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;    $ git add .
+    $ git commit -m &amp;quot;Added code for contacts&amp;quot;
+    $ git push heroku master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Open the App again in Heroku&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ heroku open&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;show-contacts&#34;&gt;Show Contacts&lt;/h2&gt;
+
+&lt;p&gt;Browse to URL &lt;code&gt;http://{your-app-name}.herokuapp.com/contacts&lt;/code&gt; to see the list of contact names.
+  &lt;img src=&#34;https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/show-contacts.png&#34; width=&#34;700&#34; height=500&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;In this tutorial we learnt how to configure a Python Flask Application to work with Heroku Connect. We used Psycopg2 driver for talking to the PostgreSQL database deployed on Heroku.&lt;/p&gt;
+</description>
+    </item>
+    
   </channel>
 </rss>

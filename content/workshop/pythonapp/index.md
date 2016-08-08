@@ -1,8 +1,8 @@
-# Create an app by Syncing Heroku and Force.com
+# Heroku Connct : Sync Heroku app with Salesforce
 
 This article shows how to **Create** and **Run** a Python app with psycopg2 which uses PostgreSQL based Heroku Connect
 
-   <img src="https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/heroku-connect-flow-flask-psycopg2.png" width="500" height="300">
+<img src="images/heroku-connect-flow-flask-psycopg2.png" width="70%" height="70%">
    
 Figure 1 show the  how HerokuConnect Add-On interacts with Heroku Postgres and force.com behind the scenes
 Make sure you have Python installed.  Also, install the [Heroku Toolbelt](https://toolbelt.heroku.com/)
@@ -12,10 +12,12 @@ Make sure you have Python installed.  Also, install the [Heroku Toolbelt](https:
 Create a folder `flask-psycopg2-sample` and install a virtualenvironment in it.
 
   ```
+
     $ mkdir flask-psycopg2-sample
     $ cd flask-psycopg2-sample
     $ virtualenv venv
     $ source venv/bin/activate
+
   ```
 
 Install Dependencies
@@ -24,9 +26,10 @@ Install Dependencies
   
 ## Creating a Simple Flask App
 
-1. First Create a base Flask app with simple REST endpoint/ in a file `app.py` in the folder created above.
+<ol><li>First Create a base Flask app with simple REST endpoint/ in a file `app.py` in the folder created above.
   
-  ```python
+  ``` python
+  
   from flask import Flask
   app = Flask(__name__)
 
@@ -37,7 +40,10 @@ Install Dependencies
   if __name__ == '__main__':
       app.run()
   ```
-2. Run the app using the following command
+
+</li>
+</ol>
+Run the app using the following command
  
   ` $ python app.py`
 
@@ -47,10 +53,11 @@ Install Dependencies
 
 Initialize the git repository as shown by commands below.
 
-  ```
-    $ git init
-    $ git add .
-    $ git commit -m "initial commit"
+  ``` bash
+  $ git init
+  $ git add .
+  $ git commit -m "initial commit"
+
   ```
 ## Create a Requirements File
 
@@ -85,10 +92,12 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
 
 1. Setup Connection
    
-   <img src="https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/setup-connection.png" width="700" height=250> 
+<img src="images/setup-connection.png" width="700" height=250> 
+
 2. Enter Schema Name : This is the schema name underwhich database will be created.
 
-   <img src="https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/enter-schemaname.png" width="700" height=250> 
+<img src="https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/enter-schemaname.png" width="700" height=250> 
+
 3. Trigger OAuth 
 
    <img src="https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/pythonapp/images/trigger-oauth.png" width="700" height=200>  

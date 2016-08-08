@@ -1,6 +1,8 @@
 baseurl = "http://replace-this-with-your-hugo-site.com/"
 languageCode = "en-us"
 title = "DreamForce 2016 Workshops"
+PygmentsCodeFences=true
+pygmentsStyle="friendly"            
 
 [[menu.main]]
     name = "Home"

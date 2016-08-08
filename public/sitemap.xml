@@ -5,4 +5,12 @@
     <loc>http://replace-this-with-your-hugo-site.com/</loc>
   </url>
   
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/workshop/heroku-connect/flask/</loc>
+  </url>
+  
+  <url>
+    <loc>http://replace-this-with-your-hugo-site.com/workshop/pythonapp/</loc>
+  </url>
+  
 </urlset>
