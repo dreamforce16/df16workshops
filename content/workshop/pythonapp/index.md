@@ -1,4 +1,9 @@
-# Heroku Connect : Sync Heroku app with Salesforce
++++
+date = "2016-07-29T16:18:23+05:30"
+draft = true
+title = "Heroku Connct : Sync Heroku app with Salesforce"
+
++++
 
 1. [Introduction](#introduction)
 2. [Install Virtual Environment](#install-virtual-environment)
@@ -21,7 +26,7 @@
   
 # Introduction
 
-This article shows how to **Create** and **Run** a Python app with psycopg2 which uses PostgreSQL based Heroku Connect
+This workshop shows how to **Create** and **Run** a Python app with psycopg2 which uses PostgreSQL based Heroku Connect
 
 <img src="images/heroku-connect-flow-flask-psycopg2.png" width="70%" height="70%">
 
@@ -32,7 +37,7 @@ Make sure you have Python installed.  Also, install the [Heroku Toolbelt](https:
 
 Create a folder `flask-psycopg2-sample` and install a virtualenvironment in it.
 
-  ```
+  ``` bash
 
     $ mkdir flask-psycopg2-sample
     $ cd flask-psycopg2-sample
@@ -43,7 +48,11 @@ Create a folder `flask-psycopg2-sample` and install a virtualenvironment in it.
 
 Install Dependencies
 
-  `$ pip install flask gunicorn`
+  ``` bash
+
+  $ pip install flask gunicorn
+
+  ```
   
 ## Creating a Simple Flask App
 
@@ -120,15 +129,15 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
 
 * Setup Connection
 
-   <img src="images/setup-connection.png" width="80%" height="80%"> 
+   <img src="images/setup-connection.png" width="90%" height="80%"> 
 
 * Enter Schema Name : This is the schema name underwhich database will be created.
 
-   <img src="images/enter-schemaname.png" width="80%" height="80%"> 
+   <img src="images/enter-schemaname.png" width="90%" height="80%"> 
 
 * Trigger OAuth 
 
-   <img src="images/trigger-oauth.png" width="80%" height="80%">  
+   <img src="images/trigger-oauth.png" width="90%" height="80%">  
 
 * Enter Salesforce.com developer account credentials
 
@@ -136,15 +145,15 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
 
 * Create Mappings
 
-   <img src="images/create-mappings.png" width="80%" height="80%">   
+   <img src="images/create-mappings.png" width="90%" height="80%">   
 
 * Create Mappings Contacts : Choose the fields in Salesforce Schema which need to be mapped to Postgres Database in the application.
 
-   <img src="images/create-mapping-contacts.png" width="80%" height="80%">  
+   <img src="images/create-mapping-contacts.png" width="90%" height="80%">  
 
 * Explore Contacts in the Dashboard
 
-   <img src="images/contacts-explorer.png" width="80%" height="80%"> 
+   <img src="images/contacts-explorer.png" width="90%" height="80%"> 
 
 ## Add Code for contacts endpoint 
 
@@ -152,7 +161,8 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
   
   ```python
     url = urlparse.urlparse(os.environ.get('DATABASE_URL'))
-    db = "dbname=%s user=%s password=%s host=%s " % (url.path[1:], url.username, url.password, url.hostname)
+    db = "dbname=%s user=%s password=%s host=%s " % (url.path[1:], 
+          url.username, url.password, url.hostname)
     schema = "schema.sql"
     conn = psycopg2.connect(db)
     cur = conn.cursor()
@@ -189,7 +199,8 @@ Complete Code listing
     from os import makedirs
     
     url = urlparse.urlparse(os.environ.get('DATABASE_URL'))
-    db = "dbname=%s user=%s password=%s host=%s " % (url.path[1:], url.username, url.password, url.hostname)
+    db = "dbname=%s user=%s password=%s host=%s " % (url.path[1:], 
+                       url.username, url.password, url.hostname)
     schema = "schema.sql"
     conn = psycopg2.connect(db)
     
@@ -229,7 +240,8 @@ Complete Code listing
       <head>
         <title>Flask Template Example</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" 
+                    rel="stylesheet" media="screen">
         <style type="text/css">
           .container {
             max-width: 500px;
@@ -292,7 +304,7 @@ Complete Code listing
   
 ## Summary
 
-  In this tutorial we learnt how to configure a Python Flask Application to work with Heroku Connect. We used Psycopg2 driver for talking to the PostgreSQL database deployed on Heroku.
+  In this workshop we learnt how to configure a Python Flask Application to work with Heroku Connect. We used Psycopg2 driver for talking to the PostgreSQL database deployed on Heroku.
 
   
 
