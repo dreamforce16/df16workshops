@@ -60,8 +60,7 @@ Install Dependencies
 
     if __name__ == '__main__':
         app.run()
-    ```
-
+  ```
 
 2. Run the app using the following command
 
@@ -122,21 +121,27 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
 1. Setup Connection
 
    <img src="images/setup-connection.png" width="80%" height="80%"> 
+
 2. Enter Schema Name : This is the schema name underwhich database will be created.
 
    <img src="images/enter-schemaname.png" width="80%" height="80%"> 
+
 3. Trigger OAuth 
 
    <img src="images/trigger-oauth.png" width="80%" height="80%">  
+
 4. Enter Salesforce.com developer account credentials
 
    <img src="images/sfaccountdetails.png" width="40%" height="50%"> 
+
 5. Create Mappings
 
    <img src="images/create-mappings.png" width="80%" height="80%">   
+
 6. Create Mappings Contacts : Choose the fields in Salesforce Schema which need to be mapped to Postgres Database in the application.
 
    <img src="images/create-mapping-contacts.png" width="80%" height="80%">  
+
 7. Explore Contacts in the Dashboard
 
    <img src="images/contacts-explorer.png" width="80%" height="80%"> 
@@ -155,7 +160,8 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
   
   Add code for the Getting the Contacts.
   
-  ```python
+  ``` python
+
     @app.route('/contacts')
     def contacts():
         try:
@@ -169,10 +175,12 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
         except Exception as e:
           print e
           return []
-```
+
+  ```
 Complete Code listing
 
-  ```python
+  ``` python
+
     import os
     import psycopg2
     from flask import Flask, render_template
@@ -208,13 +216,15 @@ Complete Code listing
         return []
     if __name__ == '__main__':
       app.run()
+
   ```
   
 ## Add Jinja Template 
 
   The code shown in previous section uses template.html file which is a Jinja template. Add this file under folder templates
   
-  ```html
+  ``` html
+
     <html>
       <head>
         <title>Flask Template Example</title>
@@ -241,15 +251,19 @@ Complete Code listing
         </script>
       </body>
     </html>
-```
+  ```
 
 ## Update python packages
-
-  `$ pip install psycopg2`
+  
+  ``` bash
+     $ pip install psycopg2
+  ```
   
 ## Add Requirements file
 
-  `$ pip freeze > requirements.txt`
+  ``` bash
+     $ pip freeze > requirements.txt
+  ```
   
 ## Create again a Procfile
 
@@ -259,7 +273,7 @@ Complete Code listing
 
 ## Update Changes in Heroku
 
-  ```
+  ``` bash
     $ git add .
     $ git commit -m "Added code for contacts"
     $ git push heroku master
@@ -267,7 +281,9 @@ Complete Code listing
   
   Open the App again in Heroku
   
-  `$ heroku open`
+  ``` bash
+    $ heroku open
+  ```
   
 ## Show Contacts
 
