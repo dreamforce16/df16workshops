@@ -1,6 +1,11 @@
-# Heroku Connct : Sync Heroku app with Salesforce
++++
+date = "2016-07-29T16:18:23+05:30"
+draft = true
+title = "Heroku Connct : Sync Heroku app with Salesforce"
 
-This article shows how to **Create** and **Run** a Python app with psycopg2 which uses PostgreSQL based Heroku Connect
++++
+
+This workshop shows how to **Create** and **Run** a Python app with psycopg2 which uses PostgreSQL based Heroku Connect
 
 <img src="images/heroku-connect-flow-flask-psycopg2.png" width="70%" height="70%">
    
