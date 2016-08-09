@@ -11,7 +11,7 @@ Make sure you have Python installed.  Also, install the [Heroku Toolbelt](https:
 
 Create a folder `flask-psycopg2-sample` and install a virtualenvironment in it.
 
-  ```
+  ``` bash
 
     $ mkdir flask-psycopg2-sample
     $ cd flask-psycopg2-sample
@@ -22,7 +22,11 @@ Create a folder `flask-psycopg2-sample` and install a virtualenvironment in it.
 
 Install Dependencies
 
-  `$ pip install flask gunicorn`
+  ``` bash
+
+  $ pip install flask gunicorn
+
+  ```
   
 ## Creating a Simple Flask App
 
