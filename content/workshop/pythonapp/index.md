@@ -121,13 +121,11 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
 1. Setup Connection
 
    <img src="images/setup-connection.png" width="80%" height="80%"> 
-
 2. Enter Schema Name : This is the schema name underwhich database will be created.
 
    <img src="images/enter-schemaname.png" width="80%" height="80%"> 
 
 3. Trigger OAuth 
-
    <img src="images/trigger-oauth.png" width="80%" height="80%">  
 
 4. Enter Salesforce.com developer account credentials
@@ -141,7 +139,6 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
 6. Create Mappings Contacts : Choose the fields in Salesforce Schema which need to be mapped to Postgres Database in the application.
 
    <img src="images/create-mapping-contacts.png" width="80%" height="80%">  
-
 7. Explore Contacts in the Dashboard
 
    <img src="images/contacts-explorer.png" width="80%" height="80%"> 
