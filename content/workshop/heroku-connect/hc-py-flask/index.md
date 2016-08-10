@@ -1,7 +1,7 @@
 +++
 date = "2016-07-29T16:18:23+05:30"
 draft = true
-title = "Heroku Connct : Sync Heroku app with Salesforce"
+title = "Heroku Connect : Sync Heroku app with Salesforce using Python Flask"
 
 +++
 
