@@ -67,7 +67,11 @@ Structure of the source code can be seen below
 
 ```
 ## Use Case
+<<<<<<< HEAD
 We will take a Simple DataSet with three columns : Username, Organization and Badges and upload to Wave. You can browse the dataset at `force-rest-python/data/test_file_v1.csv`. 
+=======
+We will take a Simple DataSet with three colums : Username, Organization and Badges and upload to Wave. You can browse the dataset at `force-rest-python/data/test_file_v1.csv`. 
+>>>>>>> 838332bcf21f4e14709cfa87863e364273fcbb64
 
 ## MetaData File
 Wave External data API needs a meta data file which defines the structure of the data. This file has to be written in a JSON format. In our case it is a simple file with a format similar to listing below. You can fine the complete listing at [link to test_metadata_v1.json](https://github.com/rajdeepd/force-rest-python/blob/master/data/test_metadata_v1.json).
@@ -130,7 +134,11 @@ Update the `TODO` with appropriate values for `client_id`, `client_secret`, `use
 ``` bash
 
 credentials:
+<<<<<<< HEAD
     client_id: TODO
+=======
+	client_id: TODO
+>>>>>>> 838332bcf21f4e14709cfa87863e364273fcbb64
     client_secret: TODO
     username: TODO
     password: TODO
@@ -144,7 +152,12 @@ credentials:
 ```
 ## Common Methods
 
+<<<<<<< HEAD
 File `util.py` provides common methods for getting access token. Getting access token consists of following steps. We have create a class Util and added common static functions.
+=======
+File `util.py` provides common methods for getting access token. Getting access token consists of following steps. We define a class Util in this file and add common methods as static in this file
+
+>>>>>>> 838332bcf21f4e14709cfa87863e364273fcbb64
 ### Get Access Token
 
 * Load Credentials from `config.yml` into appropriate variables
@@ -246,7 +259,11 @@ class InsightsExternalData:
 ```
 ## Upload Metadata File
 
+<<<<<<< HEAD
 First we will convert the Metadata file into a base64 encoded string and then do a Http POST. Following Steps are implemented in the file [insights_upload_metadata.py](https://github.com/rajdeepd/force-rest-python/blob/master/org/salesforce/wave/insights_upload_metadata.py).
+=======
+First we will convert the Metadata file into a base64 encoded string and then do a Http POST. Following Steps are implemented in (insights_upload_metadata)[https://github.com/rajdeepd/force-rest-python/blob/master/org/salesforce/wave/insights_upload_metadata.py].
+>>>>>>> 838332bcf21f4e14709cfa87863e364273fcbb64
 
 1. Create a InsightsExternalData class
 2. Read Metadata file and create a JSON
@@ -281,7 +298,11 @@ First we will convert the Metadata file into a base64 encoded string and then do
 
    ```
 
+<<<<<<< HEAD
    Where `upload_metadata(metadata) source can be found in the file [insights_upload_metadata.py](https://github.com/rajdeepd/force-rest-python/blob/master/org/salesforce/wave/insights_upload_metadata.py).
+=======
+   Where `upload_metadata(metadata) source can be found at https://github.com/rajdeepd/force-rest-python/blob/master/org/salesforce/wave/insights_upload_metadata.py
+>>>>>>> 838332bcf21f4e14709cfa87863e364273fcbb64
 
    ``` python
 
@@ -464,8 +485,11 @@ Execute using the following command
 
 ``` bash
 
+<<<<<<< HEAD
 $ python3 org/salesforce/wave/insights_complete_upload_and_process.py
 
+=======
+>>>>>>> 838332bcf21f4e14709cfa87863e364273fcbb64
 ``` 
 
 Output
@@ -481,6 +505,10 @@ Completed Processing
 ```
 
 ## Summary
+<<<<<<< HEAD
 In this workshop we learnt how to Use Wave External Data APIs with Python 3 and uploaded a DataSet along with its metadata.
+=======
+
+>>>>>>> 838332bcf21f4e14709cfa87863e364273fcbb64
 
 
