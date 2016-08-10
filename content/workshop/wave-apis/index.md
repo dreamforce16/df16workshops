@@ -122,17 +122,17 @@ Create a `util/config.yml` file from `util/config_sample.yml` file and fill in t
 
 ``` bash
 
-$ cp util
+$ cd org/salesforce/util
 $ cp config_sample.yml config.yml
 $ cat config_sample.yml 
 
 ```
-Update the `TODO` with appropriate values for `client_id`, `client_secret`, `username` and :code:`password`.
+Update the `TODO` with appropriate values for `client_id`, `client_secret`, `username` and `password`.
 
 ``` bash
 
 credentials:
-	client_id: TODO
+    client_id: TODO
     client_secret: TODO
     username: TODO
     password: TODO
@@ -147,7 +147,7 @@ credentials:
 ## Common Methods
 
 
-File `util.py` provides common methods for getting access token. Getting access token consists of following steps. We define a class Util in this file and add common methods as static in this file
+File `org/salesforce/util.py` provides common methods for getting access token. Getting access token consists of following steps. We define a class Util in this file and add common methods as static in this file
 
 ### Get Access Token
 
@@ -225,7 +225,7 @@ access_token: 00D280000013APV!ARkAQMDEtho5ExW...2qI_rm0HM.HFIHwp9Z_cShzb
 
 ```
 ## Class InsightsExternalData
-We have create a class `InsightsExternalData` where all the lifecycle functions are listed. You can browse the source code [here](https://github.com/rajdeepd/force-rest-python/blob/master/org/salesforce/wave/insights_external_data.py)
+We have created a class `InsightsExternalData` where all the lifecycle functions are listed. You can browse the source code [here](https://github.com/rajdeepd/force-rest-python/blob/master/org/salesforce/wave/insights_external_data.py)
 
 ``` python
 
@@ -251,7 +251,7 @@ class InsightsExternalData:
 ## Upload Metadata File
 
 
-First we will convert the Metadata file into a base64 encoded string and then do a Http POST. Following Steps are implemented in (insights_upload_metadata)[https://github.com/rajdeepd/force-rest-python/blob/master/org/salesforce/wave/insights_upload_metadata.py].
+First we will convert the Metadata file into a base64 encoded string and then do a Http POST. Following Steps are implemented in [insights_upload_metadata](https://github.com/rajdeepd/force-rest-python/blob/master/org/salesforce/wave/insights_upload_metadata.py).
 
 
 1. Create a InsightsExternalData class
@@ -287,7 +287,7 @@ First we will convert the Metadata file into a base64 encoded string and then do
 
    ```
 
-   Where `upload_metadata(metadata) source can be found in the file [insights_upload_metadata.py](https://github.com/rajdeepd/force-rest-python/blob/master/org/salesforce/wave/insights_upload_metadata.py).
+   Where source for function`upload_metadata(metadata)` can be found in the file [insights_upload_metadata.py](https://github.com/rajdeepd/force-rest-python/blob/master/org/salesforce/wave/insights_upload_metadata.py).
 
    ``` python
 
