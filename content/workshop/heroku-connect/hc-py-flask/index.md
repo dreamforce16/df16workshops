@@ -20,10 +20,9 @@ title = "Heroku Connect : Sync Heroku app with Salesforce using Python Flask"
 12. [Add Jinja Template](#add-jinja-template)
 13. [Update python packages](#update-python-packages)
 14. [Add Requirements file](#add-requirements-file)
-15. [Create a Procfile](#create-again-a-procfile)
-16. [Update Changes in Heroku](#update-changes-in-heroku)
-17. [Show Contacts](#show-contacts)
-18. [Summary](#summary)
+15. [Update Changes in Heroku](#update-changes-in-heroku)
+16. [Show Contacts](#show-contacts)
+17. [Summary](#summary)
   
 # Introduction
 
@@ -278,12 +277,6 @@ Complete Code listing
   ``` bash
      $ pip freeze > requirements.txt
   ```
-  
-## Create again a Procfile
-
-  Create a Procfile which will be used to identify the web dyno and type of runtime
-  
-  ` web: gunicorn app:app --log-file=-`
 
 ## Update Changes in Heroku
 
