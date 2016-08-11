@@ -1,11 +1,8 @@
 +++
 date = "2016-07-29T16:18:23+05:30"
 draft = true
-<<<<<<< HEAD:content/workshop/pythonapp/index.md
-title = "Heroku Connect : Sync Heroku app with Salesforce"
-=======
+
 title = "Heroku Connect : Sync Heroku app with Salesforce using Python Flask"
->>>>>>> upstream/master:content/workshop/heroku-connect/hc-py-flask/index.md
 
 +++
 
