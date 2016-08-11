@@ -1,7 +1,11 @@
 +++
 date = "2016-07-29T16:18:23+05:30"
 draft = true
+<<<<<<< HEAD:content/workshop/pythonapp/index.md
 title = "Heroku Connect : Sync Heroku app with Salesforce"
+=======
+title = "Heroku Connect : Sync Heroku app with Salesforce using Python Flask"
+>>>>>>> upstream/master:content/workshop/heroku-connect/hc-py-flask/index.md
 
 +++
 
@@ -58,18 +62,19 @@ Install Dependencies
 
 1. First Create a base Flask app with simple REST endpoint/ in a file `app.py` in the folder created above.
   
-  ``` python
-    
+    ``` python
+      
     from flask import Flask
     app = Flask(__name__)
 
     @app.route('/')
     def hello_world():
-        return 'Hello World!'
+      return 'Hello World!'
 
     if __name__ == '__main__':
-        app.run()
-  ```
+      app.run()
+      
+    ```
 
 2. Run the app using the following command
 

@@ -33,4 +33,13 @@ pygmentsStyle="friendly"
     pre = "<i class='fa fa-list fa-fw'></i>"
     weight = 1
     identifier = "Heroku Connect"
-    url = "/workshop/pythonapp"
+    url = "/workshop/heroku-connect"
+
+
+[[menu.main]]
+
+    name = "Wave APIs"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 1
+    identifier = "Wave APIs"
+    url = "/workshop/wave-apis"
