@@ -22,6 +22,8 @@ title = "Heroku Connect : Sync Heroku app with Salesforce using Python Flask"
 14. [Add Requirements file](#add-requirements-file)
 15. [Update Changes in Heroku](#update-changes-in-heroku)
 16. [Show Contacts](#show-contacts)
+17. [Show Contacts Locally](#show-contacts-locally)
+18. [Executing using PYCHARM](#executing-using-pycharm)
 17. [Summary](#summary)
   
 # Introduction
@@ -326,7 +328,7 @@ Complete Code listing
   Click on `app.py` and run the app.
 
   <img src="images/pycharm2.png" width="90%" height="80%">
-  
+
   Open the following URL :code:`http://localhost:5000/contacts` you should be able see the contacts.
 
 ## Summary
