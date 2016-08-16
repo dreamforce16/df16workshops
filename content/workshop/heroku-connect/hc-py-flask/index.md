@@ -297,6 +297,38 @@ Complete Code listing
   Browse to URL `http://{your-app-name}.herokuapp.com/contacts` to see the list of contact names.
   <img src="images/show-contacts.png" width="80%" height="80%"> 
   
+## Show Contacts Locally
+
+  Configure the DATABASE_URL in the local environment
+
+  ``` bash
+    $ heroku config
+
+    === fast-sands-40695 Config Vars
+    DATABASE_URL:      postgres://<user_name>:<password>@<ipaddress>.compute-1.amazonaws.com:5432/<database_name>
+    HEROKUCONNECT_URL: DATABASE_URL:salesforce
+  ```
+
+  Export DATABASE_URL
+
+  ``` bash
+    $ export DATABASE_URL=postgres://<user_name>:<password>@<ipaddress>.compute-1.amazonaws.com:5432/<database_name>
+  ```
+
+  Open the following URL :code:`http://localhost:5000/contacts` you should be able see the contacts.
+
+## Executing using PYCHARM
+
+  Install the [Pycharm](https://www.jetbrains.com/pycharm/download/). And add your directory as a project to PyCharm.
+
+  <img src="images/pycharm1.png" width="90%" height="80%">
+
+  Click on `app.py` and run the app.
+
+  <img src="images/pycharm2.png" width="90%" height="80%">
+  
+  Open the following URL :code:`http://localhost:5000/contacts` you should be able see the contacts.
+
 ## Summary
 
   In this workshop we learnt how to configure a Python Flask Application to work with Heroku Connect. We used Psycopg2 driver for talking to the PostgreSQL database deployed on Heroku.
