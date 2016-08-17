@@ -459,15 +459,15 @@ You will see the output as shown below, we have removed the actual values of `us
 
 The App opens up in the default route `/` with the following view
 
-	<img src="images/1.png" width="90%" height="80%"> 
+<img src="images/1.png" width="90%" height="80%"> 
 	
 Browse to URL `http://localhost:8080/contacts` to see the list of contact names.
 
-	<img src="images/2.png" width="90%" height="80%">
+<img src="images/2.png" width="90%" height="80%">
 
 Browse to URL `http://localhost:8080/createcontactform` to get the Create Contact Form. Filling this and submitting results in data being inserted into PostgreSQL and Salesforce
 
-	<img src="images/3.png" width="90%" height="80%">
+<img src="images/3.png" width="90%" height="80%">
 	
 ### Open the Remote App in Heroku
 
@@ -476,17 +476,17 @@ Browse to URL `http://localhost:8080/createcontactform` to get the Create Contac
   ```
 The App opens up in the default route `/` with the following view
 
-	<img src="images/4.png" width="90%" height="80%">
+<img src="images/4.png" width="90%" height="80%">
 	
 ### Show Contacts
 
 Browse to URL `http://{your-app-name}.herokuapp.com/contacts` to see the list of contact names.
 
-	<img src="images/5.png" width="90%" height="80%">
+<img src="images/5.png" width="90%" height="80%">
 	
 ### Create Contact
 
-	<img src="images/6.png" width="90%" height="80%">
+<img src="images/6.png" width="90%" height="80%">
 	
 ## Summary
 
