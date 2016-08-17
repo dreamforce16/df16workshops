@@ -375,7 +375,7 @@ There is already a Procfile which tells the Heroku what kind of Dyno is required
 ## Deploying to Heroku
 
   ``` bash
-  $ heroku create
+  	$ heroku create
 	$ git push heroku master
   ```
 The App is deployed but still needs PostgreSQL to be configured along with Heroku Connect.
@@ -412,7 +412,7 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
 	
 4. Enter Salesforce.com developer account credentials
 
-	<img src="images/oauth4.png" width="90%" height="80%"> 
+	<img src="images/oauth4.png" width="40%" height="50%"> 
 	
 5. Create Mappings
 
@@ -453,21 +453,21 @@ You will see the output as shown below, we have removed the actual values of `us
   ```
   $ mvn spring-boot:run
   ```
-  `
+  
   **Note** :Make sure you kill previous instances of spring-boot instances started 
-  `
+  
 
 The App opens up in the default route `/` with the following view
 
-	<img src="images/heroku-connect-spring-boot-local-home-1.png" width="90%" height="80%"> 
+	<img src="images/1.png" width="90%" height="80%"> 
 	
 Browse to URL `http://localhost:8080/contacts` to see the list of contact names.
 
-	<img src="images/heroku-connect-spring-boot-local-contacts.png" width="90%" height="80%">
+	<img src="images/2.png" width="90%" height="80%">
 
 Browse to URL `http://localhost:8080/createcontactform` to get the Create Contact Form. Filling this and submitting results in data being inserted into PostgreSQL and Salesforce
 
-	<img src="images/heroku-connect-spring-boot-local-create-contact.png" width="90%" height="80%">
+	<img src="images/3.png" width="90%" height="80%">
 	
 ### Open the Remote App in Heroku
 
@@ -476,17 +476,17 @@ Browse to URL `http://localhost:8080/createcontactform` to get the Create Contac
   ```
 The App opens up in the default route `/` with the following view
 
-	<img src="images/heroku-connect-spring-boot-contacts-remote-home.png" width="90%" height="80%">
+	<img src="images/4.png" width="90%" height="80%">
 	
 ### Show Contacts
 
 Browse to URL `http://{your-app-name}.herokuapp.com/contacts` to see the list of contact names.
 
-	<img src="images/heroku-connect-spring-boot-contacts-remote-get-contacts.png" width="90%" height="80%">
+	<img src="images/5.png" width="90%" height="80%">
 	
 ### Create Contact
 
-	<img src="images/heroku-connect-spring-boot-local-contacts-remote-create-contact.png" width="90%" height="80%">
+	<img src="images/6.png" width="90%" height="80%">
 	
 ## Summary
 
