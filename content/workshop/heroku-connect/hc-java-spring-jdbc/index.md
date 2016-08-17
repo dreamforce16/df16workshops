@@ -28,6 +28,8 @@ title = "Heroku Connect : Sync Heroku app with Salesforce using Java Spring and 
 
 This article shows how to run a [Spring Boot](http://projects.spring.io/spring-boot/) with PostgreSQL JDBC driver which connects to the database populated by Heroku Connect.
 
+<img src="images/heroku-connect-spring-boot-flow.png" width="70%" height="70%">
+
 Figure 1 : Heroku-Connect Spring Boot Data flow
 
 Figure 1 show the  how HerokuConnect Add-On interacts with Heroku PostgreSQL and Force.com behind the scenes.
@@ -398,18 +400,32 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
 
 1. Setup Connection
 
+	<img src="images/setup-connection1.png" width="90%" height="80%"> 
+   
 2. Enter Schema Name : This is the schema name underwhich database will be created.
 
+	<img src="images/enter-schemaname2.png" width="90%" height="80%"> 
+	
 3. Trigger OAuth 
 
+	<img src="images/trigger-oauth3.png" width="90%" height="80%"> 
+	
 4. Enter Salesforce.com developer account credentials
 
+	<img src="images/oauth4.png" width="90%" height="80%"> 
+	
 5. Create Mappings
 
+	<img src="images/create-mappings5.png" width="90%" height="80%"> 
+	
 6. Create Mappings Contacts : Choose the fields in Salesforce Schema which need to be mapped to Postgres Database in the application. Make sure you select the Writable checkbox
+
+	<img src="images/create-mapping-contacts6.png" width="90%" height="80%"> 
 
 7. Explore Contacts in the Dashboard
 
+	<img src="images/contacts-explorer7.png" width="90%" height="80%"> 
+	
 ## Connect to PostgreSQL from Local Instance
 
 1. Find the DATABASE_URL of the remote database using the following command
@@ -443,8 +459,16 @@ You will see the output as shown below, we have removed the actual values of `us
 
 The App opens up in the default route `/` with the following view
 
+	<img src="images/heroku-connect-spring-boot-local-home-1.png" width="90%" height="80%"> 
+	
 Browse to URL `http://localhost:8080/contacts` to see the list of contact names.
 
+	<img src="images/heroku-connect-spring-boot-local-contacts.png" width="90%" height="80%">
+
+Browse to URL `http://localhost:8080/createcontactform` to get the Create Contact Form. Filling this and submitting results in data being inserted into PostgreSQL and Salesforce
+
+	<img src="images/heroku-connect-spring-boot-local-create-contact.png" width="90%" height="80%">
+	
 ### Open the Remote App in Heroku
 
   ``` bash
@@ -452,12 +476,18 @@ Browse to URL `http://localhost:8080/contacts` to see the list of contact names.
   ```
 The App opens up in the default route `/` with the following view
 
+	<img src="images/heroku-connect-spring-boot-contacts-remote-home.png" width="90%" height="80%">
+	
 ### Show Contacts
 
 Browse to URL `http://{your-app-name}.herokuapp.com/contacts` to see the list of contact names.
 
+	<img src="images/heroku-connect-spring-boot-contacts-remote-get-contacts.png" width="90%" height="80%">
+	
 ### Create Contact
 
+	<img src="images/heroku-connect-spring-boot-local-contacts-remote-create-contact.png" width="90%" height="80%">
+	
 ## Summary
 
 In this workshop we learnt how to configure a **Pre-existing** Spring Boot Application to work with Heroku Connect. We used PostgreSQL JDBC driver for talking to the PostgreSQL database deployed on Heroku.
