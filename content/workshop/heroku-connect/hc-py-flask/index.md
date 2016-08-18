@@ -1,6 +1,7 @@
 +++
 date = "2016-07-29T16:18:23+05:30"
 draft = true
+
 title = "Heroku Connect : Sync Heroku app with Salesforce using Python Flask"
 
 +++
@@ -19,10 +20,11 @@ title = "Heroku Connect : Sync Heroku app with Salesforce using Python Flask"
 12. [Add Jinja Template](#add-jinja-template)
 13. [Update python packages](#update-python-packages)
 14. [Add Requirements file](#add-requirements-file)
-15. [Create a Procfile](#create-again-a-procfile)
-16. [Update Changes in Heroku](#update-changes-in-heroku)
-17. [Show Contacts](#show-contacts)
-18. [Summary](#summary)
+15. [Update Changes in Heroku](#update-changes-in-heroku)
+16. [Show Contacts](#show-contacts)
+17. [Show Contacts Locally](#show-contacts-locally)
+18. [Executing using PyCharm](#executing-using-pycharm)
+17. [Summary](#summary)
   
 # Introduction
 
@@ -30,12 +32,12 @@ This workshop shows how to **Create** and **Run** a Python app with psycopg2 whi
 
 <img src="images/heroku-connect-flow-flask-psycopg2.png" width="70%" height="70%">
 
-Figure 1 show the  how HerokuConnect Add-On interacts with Heroku Postgres and force.com behind the scenes
-Make sure you have Python installed.  Also, install the [Heroku Toolbelt](https://toolbelt.heroku.com/)
+Figure 1 show how the HerokuConnect Add-On interacts with Heroku Postgres and force.com behind the scenes.
+Make sure you have [Python](https://www.python.org/downloads/) installed.  Also, install the [Heroku Toolbelt](https://toolbelt.heroku.com/)
 
 ## Install Virtual Environment
 
-Create a folder `flask-psycopg2-sample` and install a virtualenvironment in it.
+Locally, create a folder `flask-psycopg2-sample` and install a virtual environment in it.
 
   ``` bash
 
@@ -56,7 +58,7 @@ Install Dependencies
   
 ## Creating a Simple Flask App
 
-1. First Create a base Flask app with simple REST endpoint/ in a file `app.py` in the folder created above.
+1. First create a base Flask app with simple REST endpoint/ in a file and name it as `app.py` in the folder created above.
   
     ``` python
       
@@ -106,6 +108,8 @@ Create a file name `Procfile` in the root of the app and add following content. 
     
 ## Deploying to Heroku
 
+Before moving on, create a [Heroku](https://signup.heroku.com/) account and run `$ heroku login` command to login to your created heroku account.
+
   ``` bash
     $ heroku create
     $ git push heroku master
@@ -113,7 +117,7 @@ Create a file name `Procfile` in the root of the app and add following content. 
   ```
 ## Add PostgreSQL Add-On
 
-Add Postgress Add-On as shown below
+Add Postgress Add-On as shown below.
 
   ``` bash
   $ heroku addons:create heroku-postgresql:hobby-dev
@@ -277,12 +281,6 @@ Complete Code listing
   ``` bash
      $ pip freeze > requirements.txt
   ```
-  
-## Create again a Procfile
-
-  Create a Procfile which will be used to identify the web dyno and type of runtime
-  
-  ` web: gunicorn app:app --log-file=-`
 
 ## Update Changes in Heroku
 
@@ -303,6 +301,42 @@ Complete Code listing
   Browse to URL `http://{your-app-name}.herokuapp.com/contacts` to see the list of contact names.
   <img src="images/show-contacts.png" width="80%" height="80%"> 
   
+## Show Contacts Locally
+
+  Configure the DATABASE_URL in the local environment
+
+  ``` bash
+    $ heroku config
+
+    === fast-sands-40695 Config Vars
+    DATABASE_URL:      postgres://<user_name>:<password>@<ipaddress>.compute-1.amazonaws.com:5432/<database_name>
+    HEROKUCONNECT_URL: DATABASE_URL:salesforce
+  ```
+
+  Export DATABASE_URL
+
+  ``` bash
+    $ export DATABASE_URL=postgres://<user_name>:<password>@<ipaddress>.compute-1.amazonaws.com:5432/<database_name>
+  ```
+
+  Open the following URL :code:`http://localhost:5000/contacts` you should be able see the contacts.
+
+## Executing using PyCharm
+
+* Install the [Pycharm](https://www.jetbrains.com/pycharm/download/). And add your directory as a project to PyCharm.
+
+  <img src="images/pycharm1.png" width="90%" height="80%">
+
+* Set the Environment variable as `DATABASE_URL=postgres://<user_name>:<password>@<ipaddress>.compute-1.amazonaws.com:5432/<database_name>` by following the path File > Default Settings
+  
+  <img src="images/pycharm3.png" width="90%" height="80%">
+  
+* Click on `app.py` and run the app.
+
+  <img src="images/pycharm2.png" width="90%" height="80%">
+
+  Open the following URL `http://localhost:5000/contacts` you should be able see the contacts.
+
 ## Summary
 
   In this workshop we learnt how to configure a Python Flask Application to work with Heroku Connect. We used Psycopg2 driver for talking to the PostgreSQL database deployed on Heroku.
