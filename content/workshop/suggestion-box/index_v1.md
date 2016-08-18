@@ -515,33 +515,6 @@ You are now a mobile app developer! This is a simple but complete app, and from 
   
 ![alt text](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/suggestion-box/images/Step5.4.1.png?raw=true "Suggestion Dashboard")
 
-#Create the Suggestion Box App with Lightning Components
-
-##Create the SuggestionController Apex Class
-To act as server side controller for SuggestionBoxCreate component we will create in the next section
-
-###To Do
-
-##Create the SuggestionBoxCreate Component 
-To be used by employees to submit new suggestions
-
-###To Do
-
-##Create the SearchBar component
-To be used by employees to search for existing suggestions
-
-###To Do
-
-##Create the SearchKey Event and SuggestionList Component
-We will create a suggestionlist component to list down the existing components in the system and an event to connect the searchbar and suggestionlist component
-
-###To Do
-
-##Create a SuggestionDetail Component
-We will create this component to display the suggestion selected by emeployee from the SuggestionList component.This component will have a vote up button so that employees can vote for the suggestions they like.
-
-###To Do
-
 # Summary
 
 You did it! You built a simple suggestions management app, all without a single line of code! You started by creating the simple data model and the default user interface for managing suggestions. You then customized the user experience on the browser and mobile app by using drag-and-drop editors. Next, you added business logic with the formula language and process builder. Finally, you created some reports and dashboards so that you could monitor and analyze your business data. You can continue your journey and dive deeper by following the links in the Resources sections of this project.
@@ -555,5 +528,6 @@ You did it! You built a simple suggestions management app, all without a single 
 (https://developer.salesforce.com/trailhead/reports_dashboards/reports_dashboards_report_types)
 * [Reports & Dashboards > Visualizing Your Data]
 (https://developer.salesforce.com/trailhead/reports_dashboards/reports_dashboards_visualizing_data)
+
 
 
