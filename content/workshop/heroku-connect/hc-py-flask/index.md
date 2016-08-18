@@ -72,7 +72,7 @@ $ pip install flask gunicorn psycopg2
 ```
 
 
-2. Run the app using the following command
+Run the app using the following command
 
     ``` bash
     $ python app.py
