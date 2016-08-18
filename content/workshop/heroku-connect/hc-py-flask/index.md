@@ -74,9 +74,11 @@ $ pip install flask gunicorn psycopg2
 
 Run the app using the following command
 
-    ``` bash
-    $ python app.py
-    ```
+``` bash
+
+$ python app.py
+
+ ```
 
 Your app should now be running on [localhost:5000](http://localhost:5000)
 
