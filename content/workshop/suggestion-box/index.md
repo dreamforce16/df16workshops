@@ -369,6 +369,8 @@ This component will implement the *Search Suggestion* functionality.
     font-size: 15pt;
 }
 ```
+10. Select **File | Save**
+
 #### Code highlights:
 * The *SearchBar* component has a single input field where employee will type the serchkey and each key entered in this field will trigger the *searchKeyChange* client-side controller function
 * The *searchKeyChange* takes the event and sets the event parameter *searchKey* as the input field's value
@@ -411,7 +413,7 @@ This component will display the list of Suggestions based on the searchKey.
 * The suggestions attribute is defined to hold the list of suggestion objects returned from the server
 * The init handler is defined to execute some code when the component is initialized
 * <aura:iteration> is used to iterate through the list of suggestions and create an <li> for each suggestion
-* The <a href="{! '#suggestion/' + suggestion.Id }"> anchor tag around the suggestion data is defined to set the page hashtag to #suggestion/ followed by the suggestion id. The SuggestionDetails component will use this hashtag to display suggestion details every time an employee selects a suggestion from the list
+* The ``` <a href="{! '#suggestion/' + suggestion.Id }"> ``` anchor tag around the suggestion data is defined to set the page hashtag to #suggestion/ followed by the suggestion id. The SuggestionDetails component will use this hashtag to display suggestion details every time an employee selects a suggestion from the list
 
 4. Select **File | Save**
 5. In the button panel on the right, click **Controller**
@@ -450,12 +452,185 @@ This component will display the list of Suggestions based on the searchKey.
 This component will display the details of the suggestion selected by the employee from the Suggestionlist Component
 
 
+1. In the **Developer Console**, select **File | New | Lightning Component**
+2. For the component name, enter **SearchBar** and then click **Submit**
+3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
+
+```
+<aura:component controller="SuggestionFindController" implements="flexipage:availableForAllPageTypes">
+   <ltng:require styles="{!$Resource.slds}" />
+   <aura:attribute name="suggestion" type="Suggestion__c"/>
+   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+   <aura:handler event="aura:locationChange" action="{!c.locationChange}"/>
+   <aura:if isTrue="{! v.suggestion.Name !=null }">
+      <div class="details">
+         <ul class="slds-has-dividers--around-space">
+            <li class="slds-item">
+               <div class="slds-tile slds-tile--board">
+                  <h3 class="slds-truncate"><a href="javascript:void(0);">
+                     Suggestion Details
+                     </a>
+                  </h3>
+                  <div class="slds-tile__detail slds-text-body--small">
+                     <p class="slds-text-heading--medium">
+                        {!v.suggestion.Name} 
+                     </p>
+                     <p class="slds-truncate"><a href="javascript:void(0);">
+                        {!v.suggestion.Status__c} 
+                        </a>
+                     </p>
+                     <p class="slds-truncate">
+                        {!v.suggestion.Suggestion_Category__c} 
+                     </p>
+                     <p class="slds-truncate"><a href="javascript:void(0);">
+                        {!v.suggestion.Suggestion_Description__c} </a>
+                     </p>
+                     <p class="slds-truncate">
+                        {!v.suggestion.Vote_up__c}
+                        <aura:if isTrue="{! v.suggestion.Name !=null }"> Votes
+                        </aura:if>
+                     </p>
+                     <p class="slds-truncate">
+                        <a href="javascript:void(0);">
+                           <aura:if isTrue="{! v.suggestion.Name !=null }">
+                              <button class=".slds-button--neutral" type="button" onclick="{!c.voteup}" >Vote up</button>
+                           </aura:if>
+                        </a>
+                     </p>
+                  </div>
+               </div>
+            </li>
+         </ul>
+      </div>
+   </aura:if>
+</aura:component>
+```
+#### Code Highlights:
+
+* In the SuggestionList component we created, we wrapped each suggestion in the list with a <a href="{! '#suggestion/' + suggestion.Id }"> anchor tag that sets the page hashtag to #suggestion/ followed by the suggestion id of the clicked suggestion. In this component, the locationChange handler is defined to listen to hashtag changes, and execute the controller's locationChange() when it happens. The locationChange() function implemented in the next step retrieves and displays the selected suggestion
+* The button labeled as *Vote Up* is used by employees to vote up a suggestion.The button when clicked triggers the voteup function in the client-side controller
+
+4. Select **File | Save**
+5. In the button panel on the right, click **Controller**
+6. In place of the myAction JavaScript function, add the following code:
+
+```
+({
+    locationChange: function(component, event, helper) {
+        var token = event.getParam("token");
+        if (token != null) {
+            if (token.indexOf('suggestion/') === 0) {
+                var suggestionId = token.substr(token.indexOf('/') + 1);
+                var action = component.get("c.findById");
+                action.setParams({
+                    "suggestionId": suggestionId
+                });
+                action.setCallback(this, function(a) {
+                    component.set("v.suggestion", a.getReturnValue());
+                });
+                $A.enqueueAction(action);
+            }
+        }
+    },
 
 
+    doInit: function(component, event) {
+        var token = event.getParam("token");
+    },
+
+    voteup: function(component, event) {
+
+        var suggestionId = event.target.id;
+        var action = component.get("c.voteSuggestion");
+        action.setParams({
+            "suggestionId": component.get("v.suggestion.Id")
+        });
+        action.setCallback(this, function(a) {
+            component.set("v.suggestion", a.getReturnValue());
+        });
+        $A.enqueueAction(action);
+    }
+})
+```
+7. Select **File | Save**
+
+
+#### Code Highlights:
+* The *locationChange* function gets the new value of the hashtag which it then parses to extract the suggestion id and invokes the findById() method in the Apex controller SuggestionController. When the asynchronous call returns, it assigns the suggestion returned by findById() to the component's suggestion attribute.
+* The *voteup* function calls the voteSuggestion method in the server-side controller and passes the suggestion id as the method parameter.When the asynchronous call returns, it assigns the suggestion returned by voteupSuggestion() to the component's suggestion attribute thus updating the vote count
+
+## Create the SuggestionBox Component
+This component emcampasses all the components we have created together to form one single component
+
+1. In the **Developer Console**, select **File | New | Lightning Component**
+2. For the component name, enter **SuggestionBox** and then click **Submit**
+3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
+
+```
+<aura:component implements="flexipage:availableForAllPageTypes">
+   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+   <div class="slds-grid">
+      <div class="slds-col">
+         <c:SuggestionBoxCreate />
+         <c:SearchBar />
+      </div>
+   </div>
+   <div class="slds-grid slds-grid--pull-padded">
+      <div class="slds-col--padded">
+         <c:SuggestionList />
+      </div>
+      <div class="slds-col--padded">
+         <c:SuggestionDetails />
+      </div>
+   </div>
+</aura:component>
+```
+4. Select **File | Save**
+
+#### Code Highlights:
+* The main objective of this component is th format the UI using SLDS
+
+## Create the SuggestionBoxApp Application
+This application holds the SuggestionBox component we created in the last step to make it a stand-alone application.
+
+1. In the **Developer Console**, select **File | New | Lightning Application**
+2. For the component name, enter **SuggestionBoxApp** and then click **Submit**
+3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
+
+```
+<aura:application >
+   <ltng:require styles="/resource/slds/assets/styles/salesforce-lightning-design-system-ltng.css" />
+   <div class="salesforce slds">
+      <div class="slds-grid slds-wrap slds-grid--pull-padded">
+         <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-6"></div>
+         <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--4-of-6">
+            <h3 class="slds-section-title--divider  slds-text-align--center textsize">SUGGESTION BOX APPLICATION</h3>
+         </div>
+         <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-6"></div>
+         <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-6"></div>
+         <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--4-of-6">
+            <c:Suggestionbox />
+         </div>
+         <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-6"></div>
+         <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-6"></div>
+         <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--4-of-6">
+            <h3 class="slds-section-title--divider  slds-text-align--center textsize">@created by Salesforce Developer Relations Team</h3>
+         </div>
+         <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-6"></div>
+      </div>
+   </div>
+</aura:application>
+```
+
+#### Code Highlights:
+* This application uses lightning design system guidelines to create the UI as explained [here](https://www.lightningdesignsystem.com/components/utilities/grid/)
 
 # Summary
+Congratulations! You've become a Lightning application developer! You created and wired up events between multiple Lightning components. You created a suggestion box component that is built with other components. You have created and used a server-side controller for pulling data out of Salesforce as well as several client-side components to handle user interaction.
 
-TODO
+These building blocks are used for creating every kind of Lighnting application! 
+
+
 
 
 
