@@ -43,9 +43,9 @@ The Lightning Component framework is a UI framework for developing dynamic web a
 
 Create a class to access data from Suggestion custom object:
 
-1. In your DE environment, click Your **Name | Developer Console**.
-2. Select **File | New | Apex Class**.
-3. For the class name, enter **SuggestionController** and then click **OK**.
+1. In your DE environment, click Your **Name | Developer Console**
+2. Select **File | New | Apex Class**
+3. For the class name, enter **SuggestionController** and then click **OK**
 4. In the body of the class (i.e. between the {} braces), enter the following code
 
 ```
@@ -96,10 +96,213 @@ public class SuggestionController {
 @AuraEnabled enables client and server-side access to the controller method. Select **File | Save**.
 
 
-### Create Component 
-To be used by employees to submit new suggestions
+### Create the SuggestionBoxCreate Component
 
-TODO
+A lightning component is a combination of markup, JavaScript, and CSS. You first create a component bundle.
+
+1. In the **Developer Console**, select **File | New | Lightning Component**
+2. For the component name, enter **SuggestionBoxCreate** and then click **Submit**
+3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
+
+```
+<aura:component controller="SuggestionController" implements="flexipage:availableForAllPageTypes">
+   <ltng:require styles="{!$Resource.slds + 'assets/styles/salesforce-lightning-design-system-vf.css'}" />
+   <aura:attribute name="suggestions" type="Suggestion__c[]" />
+   <aura:attribute name="newSuggestion" type="Suggestion__c"
+      default="{ 'sobjectType': 'Suggestion__c',
+      'Name': '',
+      'Status__c': '',
+      'Suggestion_Category__c': '',
+      'Suggestion_Description__c': ''
+      }"></aura:attribute>
+   <div class="container">
+      <h1>
+         Add Suggestions
+         <div style="margin-left: 0; height: 30px; float: right; margin-top: -3px; margin-right: 0; auto; vertical-align: inherit;">
+            <ui:button aura:id="addbutton" label="New" labelClass="assistiveText" class="myButton" press="{!c.addNew}" />
+         </div>
+      </h1>
+   </div>
+   <!-- Input Form using components -->
+   <div aura:id="formbox" class="myboxhidden">
+      <form>
+         <fieldset>
+            <ui:inputText aura:id="sugname" label="Suggestion Name"
+               class="form-control"
+               value="{!v.newSuggestion.Name}"
+               placeholder="Suggestion Name" required="true"/>
+            <ui:inputSelect aura:id="category" label="Suggestion Category"
+               class="cExpenseForm form-control"
+               value="{!v.newSuggestion.Suggestion_Category__c}"
+               required="true" >
+               <ui:inputSelectOption text="Customer Service" value="Customer Service"/>
+               <ui:inputSelectOption text="Employee Services" value="Employee Services"/>
+               <ui:inputSelectOption text="Facilities/ IT" value="Facilities/ IT" />
+               <ui:inputSelectOption text="Kitchen Snacks" value="Implemented"/>
+               <ui:inputSelectOption text="Others" value="Implemented"/>
+            </ui:inputSelect>
+            <ui:inputText aura:id="description" label="Suggestion Description"
+               class="cExpenseForm form-control"
+               value="{!v.newSuggestion.Suggestion_Description__c}"
+               placeholder="Describe your suggestion here" />
+            <ui:button label="Submit" press="{!c.createSuggestion}" />
+         </fieldset>
+      </form>
+   </div>
+</aura:component>
+```
+4. Select **File | Save**
+5. In the button panel on the right, click **Controller**
+6. In place of the myAction JavaScript function, add the following code:
+
+```
+({
+   addNew: function(component, event, helper) 
+    			{
+                var el = component.find('formbox');
+                if ($A.util.hasClass(el.getElement(), 'myboxhidden')) 
+                {
+                helper.showInput(component);
+				} 
+                    else {
+				helper.hideInput(component);
+						 }
+				},
+                
+    createSuggestion: function(component, event, helper) 
+    			{
+                var newSuggestion = component.get("v.newSuggestion");
+                helper.createSuggestion(component, newSuggestion);
+				}
+})
+```
+7. Select **File | Save**
+8. In the button panel on the right, click **Helper**
+9. In place of the helpermethod JavaScript function, add the following code:
+
+```
+({
+    showInput: function(component) {
+        var el = component.find('formbox');
+        $A.util.removeClass(el.getElement(), 'myboxhidden');
+        $A.util.addClass(el.getElement(), 'mybox');
+    },
+
+    hideInput: function(component) {
+        var el = component.find('formbox');
+        $A.util.addClass(el.getElement(), 'myboxhidden');
+    },
+
+    createSuggestion: function(component, suggestion) {
+        this.upsertSuggestion(component, suggestion, function(a) {
+            var suggestions = component.get("v.suggestions");
+            suggestions.unshift(a.getReturnValue());
+            component.set("v.suggestions", suggestions);
+            this.hideInput(component);
+        });
+    },
+    upsertSuggestion: function(component, suggestion, callback) {
+        var action = component.get("c.saveSuggestion");
+        action.setParams({
+            "suggestion": suggestion
+        });
+        if (callback) {
+            action.setCallback(this, callback);
+        }
+        $A.enqueueAction(action);
+    }
+
+})
+```
+10. Select **File | Save**
+11. In the button panel on the right, click **Style**
+12. In place of .THIS {}, add the following code:
+
+```
+.THIS h3 {
+	margin: 0px;
+}
+.THIS h1 {
+	font-size: 24pt;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 5px;
+	margin-right: 5px;
+    height: 35px;
+    
+}
+
+.THIS.container {
+	margin: 5px;
+	border: 1px solid black;
+	border-radius: 1px;
+	background-color: rgb(200, 198, 198);
+    font-size: 18pt;
+}
+
+.THIS .form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 14px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #000000;
+    background-color: #ffffff;
+    background-image: none;
+    border: 1px solid #cfd0d2;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.THIS .myButton {
+	width: 35px;
+	background-image: url(/resource/plusbutton);
+	background-repeat: no-repeat;
+	height: 35px;
+	background-size: contain;
+	/*margin-left: -50px;*/
+	border-style: none;
+	background-color: transparent;
+}
+
+.THIS .img {
+	background: url(/resource/plusbutton/) no-repeat;
+	width:50px;
+	height:25px;
+}
+
+.THIS.mybox {
+  /*display: block;*/
+  opacity: 1;
+  margin-left: 5px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  transform: scale(1, 1);
+  transition-property: transform, height;
+  transition-duration: 1s, 1s;
+}
+
+.THIS.myboxhidden {
+  /*display: none;*/
+  transform: scale(0,0);
+  height: 0;
+  /*opacity: 0;*/
+  transition-property: transform, height;
+  transition-duration: 1s, 1.2s;
+}
+```
+
+#### Code highlights:
+* Lightning components can include regular HTML markup and other Lightning components
+* The Server-side Apex Controller has methods which will be used by components to access and modify records in the database
+* The controller in the Component bundle has javascript methods which use the component attributes and invoke server side controller method to process data. *CreateSuggestion* is one such method which invokes *savesuggestion* method in the *SuggestionController* apex class
+*  *.THIS* in the CSS symbolises that the css written in the component bundle only applies to this specific component UI
+
 
 ## Create the SearchBar component
 To be used by employees to search for existing suggestions
