@@ -8,6 +8,7 @@ title = "Build a Suggestion Box App with Lightning Experience"
 
 1. [Introduction](#introduction)
 2. [Create a Server-side Apex Controller Class](#create-a-server-side-apex-controller-class)
+3. [Create the SuggestionBoxCreate Component](#create-the-suggestionboxcreate-component)
 3. [Create the SearchBar component](#create-the-searchbar-component)
 4. [Create the SearchKey Event and SuggestionList Component](#create-the-searchkey-event-and-suggestionlist-component)
 5. [Create a Suggestion Detail Component](#create-a-suggestion-detail-component)
@@ -97,6 +98,7 @@ public class SuggestionController {
 
 
 ### Create the SuggestionBoxCreate Component
+This component will implement the *Add Suggestion* functionality.
 
 A lightning component is a combination of markup, JavaScript, and CSS. You first create a component bundle.
 
@@ -300,12 +302,57 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
 #### Code highlights:
 * Lightning components can include regular HTML markup and other Lightning components
 * The Server-side Apex Controller has methods which will be used by components to access and modify records in the database
-* The controller in the Component bundle has javascript methods which use the component attributes and invoke server side controller method to process data. *CreateSuggestion* is one such method which invokes *savesuggestion* method in the *SuggestionController* apex class
+* The controller in the Component bundle has javascript methods which use the component attributes and invoke server side controller 	method to process data. *CreateSuggestion* is one such method which invokes *savesuggestion* method in the *SuggestionController* apex class
+* The *newSuggestion* attribute is defined to hold the new suggestion that will be created by employee via the form. 
+*{!v.newSuggestion.Name} is the Lightning data binding notation to take the name field as input from the user
 *  *.THIS* in the CSS symbolises that the css written in the component bundle only applies to this specific component UI
 
 
 ## Create the SearchBar component
-To be used by employees to search for existing suggestions
+This component will implement the *Search Suggestion* functionality.
+
+1. In the **Developer Console**, select **File | New | Lightning Component**
+2. For the component name, enter **SearchBar** and then click **Submit**
+3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
+
+```
+<aura:component implements="flexipage:availableForAllPageTypes" >
+   <ltng:require styles="{!$Resource.slds + 'assets/styles/salesforce-lightning-design-system-vf.css'}" />
+   <aura:registerEvent name="SKChange" type="c:SKChange"/>
+   <div class="slds-form-element">
+      <div class="slds-form-element__control">
+         <input id="text-input-01" class="slds-input textfont" type="text" onkeyup="{!c.searchKeyChange}" placeholder="Search for Suggestions" />
+      </div>
+   </div>
+</aura:component>
+
+```
+4. Select **File | Save**
+5. In the button panel on the right, click **Controller**
+6. In place of the myAction JavaScript function, add the following code:
+
+```
+({
+    searchKeyChange: function(component, event, helper) {
+        var myEvent = $A.get("e.c:SKChange");
+        myEvent.setParams({"searchKey": event.target.value});
+        myEvent.fire();
+    }
+})
+```
+7. Select **File | Save**
+8. In the button panel on the right, click **Style**
+9. In place of .THIS {}, add the following code:
+
+```
+.THIS .textfont{
+    font-family:'Salesforce Sans', Arial, sans-serif;   
+    font-size: 15pt;
+}
+```
+#### Code highlights:
+*
+
 
 TODO
 
