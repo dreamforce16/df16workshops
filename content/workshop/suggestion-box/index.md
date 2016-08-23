@@ -7,7 +7,7 @@ title = "Build a Suggestion Box App with Lightning Experience"
 
 
 1. [Introduction](#introduction)
-2. [Create the SuggestionBox](#create-the-suggestionbox)
+2. [Create a Server-side Apex Controller Class](#create-a-server-side-apex-controller-class)
 3. [Create the SearchBar component](#create-the-searchbar-component)
 4. [Create the SearchKey Event and SuggestionList Component](#create-the-searchkey-event-and-suggestionlist-component)
 5. [Create a Suggestion Detail Component](#create-a-suggestion-detail-component)
