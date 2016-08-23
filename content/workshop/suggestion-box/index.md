@@ -9,10 +9,12 @@ title = "Build a Suggestion Box App with Lightning Experience"
 1. [Introduction](#introduction)
 2. [Create a Server-side Apex Controller Class](#create-a-server-side-apex-controller-class)
 3. [Create the SuggestionBoxCreate Component](#create-the-suggestionboxcreate-component)
-3. [Create the SKChange Event and SearchBar Component](#create-the-skchange-event-and-searchBar-component)
-4. [Create the SuggestionList Component](#create-the-searchkey-event-and-suggestionlist-component)
-5. [Create a Suggestion Detail Component](#create-a-suggestion-detail-component)
-6. [Summary](#summary)
+3. [Create the SKChange Event and SearchBar Component](#create-the-skchange-event-and-searchbar-component)
+4. [Create the SuggestionList Component](#create-the-suggestionlist-component)
+5. [Create the SuggestionDetails Component](#create-the-suggestiondetails-component)
+6. [Create the SuggestionBox Component](#create-the-suggestionbox-component)
+7. [Create the SuggestionBoxApp Application](#create-the-suggestionboxapp-application)
+8. [Summary](#summary)
 
 ## Introduction
 In this project, you learn how to build a Lightning Application on App Cloud from start to finish.If you're new to App Cloud, the goal is to introduce you to the basics of app building together with introduction to the new lightning platform and basics to develop application using lightning components.If you're familiar with the App Cloud Admin features—managing users and security, customizing standard objects, and so on—the goal is to apply those skills to developing new application and learn how to extend the functionality of these applications using lightning. You need a Developer Edition org to complete this project. If you don't have one, you can sign up [here](https://developer.salesforce.com/signup).
@@ -309,7 +311,7 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
 
 
 ## Create the SKChange Event and SearchBar Component
-We are creating 2 components namely the SearchBar and SuggestionList components which need to communicate with each other so as to implment the seach functionality.When employee types the searchkey in the searchbar, the Suggestionlist should be updated with relevant suggestions.This communicate will be done using Lightning Event.
+We are creating two components namely the SearchBar and SuggestionList which need to communicate with each other to implement the search functionality.When employee types the searchkey in the searchbar, the Suggestionlist component should be updated with relevant suggestions.This communication will happen using the Lightning Event.
 
 1. In the **Developer Console**, select **File | New | Lightning Event**
 2. For the event name, enter **SKChange** and then click **Submit**
@@ -373,17 +375,83 @@ This component will implement the *Search Suggestion* functionality.
 * Once set, it fires the event for the registered listners can catch it
 
 
-TODO
+## Create the SuggestionList Component
+This component will display the list of Suggestions based on the searchKey.
 
-## Create the SearchKey Event and SuggestionList Component
-We will create a suggestionlist component to list down the existing components in the system and an event to connect the searchbar and suggestionlist component
+1. In the **Developer Console**, select **File | New | Lightning Component**
+2. For the component name, enter **SuggestionList** and then click **Submit**
+3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
 
-TODO
+```
+<aura:component controller="SuggestionController" implements="flexipage:availableForAllPageTypes">
+   <ltng:require styles="{!$Resource.slds +'assets/styles/salesforce-lightning-design-system-vf.css'}" />
+   <aura:attribute name="suggestions" type="Suggestion__c[]"/>
+   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+   <aura:handler event="c:SKChange" action="{!c.searchKeyChange}" />
+   <div class=" salesforce slds">
+      <ul class="slds-has-dividers--around-space">
+         <aura:iteration items="{!v.suggestions}" var="suggestion">
+            <li class="slds-item">
+               <div class="slds-tile slds-tile--board">
+                  <h3 class="slds-truncate" ><a href="{! '#suggestion/' + suggestion.Id }">Name: {!suggestion.Name}</a></h3>
+                  <div class="slds-tile__detail slds-text-body--small">
+                     <p class="slds-text-heading--medium">Description : {!suggestion.Suggestion_Description__c}</p>
+                  </div>
+               </div>
+            </li>
+         </aura:iteration>
+      </ul>
+   </div>
+</aura:component>
+```
 
-## Create a Suggestion Detail Component
-We will create this component to display the suggestion selected by emeployee from the SuggestionList component.This component will have a vote up button so that employees can vote for the suggestions they like.
+#### Code highlights:
+* The controller assigned to the component refers to the server-side controller SuggestionController 
+* This component catches the SKChange Event and handles it with the  <aura:handler> tag triggering the client-side controller function *searchKeyChange*
+* The suggestions attribute is defined to hold the list of suggestion objects returned from the server
+* The init handler is defined to execute some code when the component is initialized
+* <aura:iteration> is used to iterate through the list of suggestions and create an <li> for each suggestion
+* The <a href="{! '#suggestion/' + suggestion.Id }"> anchor tag around the suggestion data is defined to set the page hashtag to #suggestion/ followed by the suggestion id. The SuggestionDetails component will use this hashtag to display suggestion details every time an employee selects a suggestion from the list
 
-TODO
+4. Select **File | Save**
+5. In the button panel on the right, click **Controller**
+6. In place of the myAction JavaScript function, add the following code:
+
+```
+({
+    doInit : function(component, event) {
+        var action = component.get("c.findAll");
+        action.setCallback(this, function(a) {
+            component.set("v.suggestions", a.getReturnValue());
+        });
+        $A.enqueueAction(action);
+    },
+    
+    searchKeyChange: function(component, event) {
+    var searchKey = event.getParam("searchKey");
+    var action = component.get("c.findByName");
+    action.setParams({
+      "searchKey": searchKey
+    });
+    action.setCallback(this, function(a) {
+        component.set("v.suggestions", a.getReturnValue());
+    });
+    $A.enqueueAction(action);
+	}
+    
+})
+```
+#### Code highlights:
+* We get the value of the searchKey and then invoke findByName() method in the SuggestionController Apex class
+* A callback is used here as the call to the server is an asynchronous call. When this call returns some value, we assign the list of suggestions returned by findByName() to the component's suggestions attribute.
+ 
+
+## Create the SuggestionDetails Component
+This component will display the details of the suggestion selected by the employee from the Suggestionlist Component
+
+
+
+
 
 # Summary
 
