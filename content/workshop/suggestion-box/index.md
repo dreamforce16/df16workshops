@@ -507,7 +507,7 @@ This component will display the details of the suggestion selected by the employ
 ```
 #### Code Highlights:
 
-* In the SuggestionList component we created, we wrapped each suggestion in the list with a <a href="{! '#suggestion/' + suggestion.Id }"> anchor tag that sets the page hashtag to #suggestion/ followed by the suggestion id of the clicked suggestion. In this component, the locationChange handler is defined to listen to hashtag changes, and execute the controller's locationChange() when it happens. The locationChange() function implemented in the next step retrieves and displays the selected suggestion
+* In the SuggestionList component we created, we wrapped each suggestion in the list with a ``` <a href="{! '#suggestion/' + suggestion.Id }"> ``` anchor tag that sets the page hashtag to #suggestion/ followed by the suggestion id of the clicked suggestion. In this component, the locationChange handler is defined to listen to hashtag changes, and execute the controller's locationChange() when it happens. The locationChange() function implemented in the next step retrieves and displays the selected suggestion
 * The button labeled as *Vote Up* is used by employees to vote up a suggestion.The button when clicked triggers the voteup function in the client-side controller
 
 4. Select **File | Save**
