@@ -9,8 +9,8 @@ title = "Build a Suggestion Box App with Lightning Experience"
 1. [Introduction](#introduction)
 2. [Create a Server-side Apex Controller Class](#create-a-server-side-apex-controller-class)
 3. [Create the SuggestionBoxCreate Component](#create-the-suggestionboxcreate-component)
-3. [Create the SearchBar component](#create-the-searchbar-component)
-4. [Create the SearchKey Event and SuggestionList Component](#create-the-searchkey-event-and-suggestionlist-component)
+3. [Create the SKChange Event and SearchBar Component](#create-the-skchange-event-and-searchBar-component)
+4. [Create the SuggestionList Component](#create-the-searchkey-event-and-suggestionlist-component)
 5. [Create a Suggestion Detail Component](#create-a-suggestion-detail-component)
 6. [Summary](#summary)
 
@@ -36,7 +36,7 @@ Let's begin with exploring our prebuilt Suggestion Box App which was installed u
 
 All eyes on the screen!
 
-Now, that we know and understand how we can build a basic application using point-and-click, let us now extend this app using lightning components.
+Now, that we know and understand how we can build a basic application using point-and-click, let us now extend this app using lightning components.The UI of the Application we will create will resemble the Lightning Experience UI as we will make use of Salesforce Lightning Design System.
 
 The Lightning Component framework is a UI framework for developing dynamic web apps for mobile and desktop devices. In this workshop, you'll create a simple Lightning Application that is built of smaller components which will help you create, search and vote for existing suggestions in your org. You'll start by creating an Apex controller class, then create the Lightning Components and an event handler and finally render the Application UI using all the components together.
 
@@ -308,7 +308,24 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
 *  *.THIS* in the CSS symbolises that the css written in the component bundle only applies to this specific component UI
 
 
-## Create the SearchBar component
+## Create the SKChange Event and SearchBar Component
+We are creating 2 components namely the SearchBar and SuggestionList components which need to communicate with each other so as to implment the seach functionality.When employee types the searchkey in the searchbar, the Suggestionlist should be updated with relevant suggestions.This communicate will be done using Lightning Event.
+
+1. In the **Developer Console**, select **File | New | Lightning Event**
+2. For the event name, enter **SKChange** and then click **Submit**
+3. Edit the code as shown below:
+
+```
+<aura:event type="APPLICATION">
+    <aura:attribute name="searchKey" type="String"/>
+</aura:event>
+```
+
+#### Code highlights:
+* This event holds a single attribute named searchkey
+
+Creating the SearchBar Component
+
 This component will implement the *Search Suggestion* functionality.
 
 1. In the **Developer Console**, select **File | New | Lightning Component**
@@ -351,7 +368,9 @@ This component will implement the *Search Suggestion* functionality.
 }
 ```
 #### Code highlights:
-*
+* The *SearchBar* component has a single input field where employee will type the serchkey and each key entered in this field will trigger the *searchKeyChange* client-side controller function
+* The *searchKeyChange* takes the event and sets the event parameter *searchKey* as the input field's value
+* Once set, it fires the event for the registered listners can catch it
 
 
 TODO
