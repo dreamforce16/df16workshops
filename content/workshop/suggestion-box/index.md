@@ -33,8 +33,68 @@ Each rectangle in this image represents a lightning component:
 
 Let's begin with exploring our prebuilt Suggestion Box App which was installed using the package.
 
-##
-## Create the SuggestionBox
+All eyes on the screen!
+
+Now, that we know and understand how we can build a basic application using point-and-click, let us now extend this app using lightning components.
+
+The Lightning Component framework is a UI framework for developing dynamic web apps for mobile and desktop devices. In this workshop, you'll create a simple Lightning Application that is built of smaller components which will help you create, search and vote for existing suggestions in your org. You'll start by creating an Apex controller class, then create the Lightning Components and an event handler and finally render the Application UI using all the components together.
+
+## Create a Server-side Apex Controller Class
+
+Create a class to access data from Suggestion custom object:
+
+1. In your DE environment, click Your **Name | Developer Console**.
+2. Select **File | New | Apex Class**.
+3. For the class name, enter **SuggestionController** and then click **OK**.
+4. In the body of the class (i.e. between the {} braces), enter the following code
+
+```
+public class SuggestionController {
+
+  	@AuraEnabled
+	public static List<Suggestion__c> getSuggestions() {
+		return [SELECT id, Name, Status__c, Suggestion_Category__c, Suggestion_Description__c,	Implemented_Date__c, createdDate 
+			FROM Suggestion__c 
+			ORDER BY createdDate DESC];
+	  }
+    
+    @AuraEnabled
+    public static Suggestion__c saveSuggestion(Suggestion__c suggestion) {
+        upsert suggestion;
+        return suggestion;
+    }
+    
+    @AuraEnabled
+    public static List<Suggestion__c> findAll() {
+        return [SELECT id, name, Suggestion_Description__c, Vote_up__c FROM Suggestion__c LIMIT 50];
+    }
+    
+    @AuraEnabled
+    public static List<Suggestion__c> findByName(String searchKey) {
+        String name = '%' + searchKey + '%';
+        return [SELECT id, name, Suggestion_Description__c, Vote_up__c FROM Suggestion__c WHERE name LIKE :name LIMIT 50];
+    }  
+   
+    @AuraEnabled
+    public static Suggestion__c findById(String suggestionId) {
+        return [SELECT id, name, Status__c, Suggestion_Category__c, Suggestion_Description__c,Vote_up__c
+                    FROM Suggestion__c WHERE Id = :suggestionId];
+    }
+    
+    @AuraEnabled
+    public static Suggestion__c voteSuggestion(String suggestionId) {
+        Suggestion__c s = new Suggestion__c();
+        s=[SELECT id, name, Status__c, Suggestion_Category__c, Suggestion_Description__c,Vote_up__c
+                    FROM Suggestion__c WHERE Id =:suggestionId];
+        
+        s.Vote_up__c = s.Vote_up__c + 1;
+        upsert s;
+        return s;
+    } 
+} 
+```
+@AuraEnabled enables client and server-side access to the controller method. Select **File | Save**.
+
 
 ### Create Component 
 To be used by employees to submit new suggestions
