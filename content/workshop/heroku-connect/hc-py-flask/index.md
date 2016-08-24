@@ -7,23 +7,23 @@ title = "Heroku Connect : Sync Heroku app with Salesforce using Python Flask"
 +++
 
 1. [Introduction](#introduction)
-2. [Install Virtual Environment](#install-virtual-environment)
-3. [Creating a Simple Flask App](#creating-a-simple-flask-app)
-4. [Initialize Git](#initialize-git)
-5. [Create a Requirements File](#create-a-requirements-file)
-6. [Create a Procfile](#create-a-procfile)
-7. [Deploying to Heroku](#deploying-to-heroku)
-8. [Add PostgreSQL Add-On](#add-postgresql-add-on)
-9. [Add Heroku Connect Add-On](#add-heroku-connect-add-on)
-10. [Configure Heroku Connect Add-On](#configure-heroku-connect-add-on)
-11. [Add Code for contacts endpoint](#add-code-for-contacts-endpoint) 
-12. [Add Jinja Template](#add-jinja-template)
-13. [Update python packages](#update-python-packages)
-14. [Add Requirements file](#add-requirements-file)
-15. [Update Changes in Heroku](#update-changes-in-heroku)
-16. [Show Contacts](#show-contacts)
-17. [Show Contacts Locally](#show-contacts-locally)
-18. [Executing using PyCharm](#executing-using-pycharm)
+2. [Clone the Source Code](#clone-the-source-code)
+3. [Install Virtual Environment](#install-virtual-environment)
+4. [Requirements File](#requirements-file)
+5. [Procfile](#procfile)
+6. [DB Initialization](#db-initialization)
+7. [Flask Controller](#flask-controller)
+  * [List Contacts](#list-contacts) 
+  * [Create Contacts](#create-contacts)
+8. [Deploying to Heroku](#deploying-to-heroku)
+9. [Add PostgreSQL Add-On](#add-postgresql-add-on)
+10. [Add Heroku Connect Add-On](#add-heroku-connect-add-on)
+11. [Configure Heroku Connect Add-On](#configure-heroku-connect-add-on)
+12. [Home Page](#home-page)
+13. [Contact List](#contact-list)
+14. [Create a New Contact](#create-a-new-contact)
+15. [Show Contacts Locally](#show-contacts-locally)
+16. [Executing using PyCharm](#executing-using-pycharm)
 17. [Summary](#summary)
   
 # Introduction
@@ -74,9 +74,11 @@ $ pip install flask gunicorn psycopg2
 
 Run the app using the following command
 
-    ``` bash
-    $ python app.py
-    ```
+``` bash
+
+$ python app.py
+
+ ```
 
 Your app should now be running on [localhost:5000](http://localhost:5000)
 
