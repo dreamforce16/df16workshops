@@ -25,9 +25,10 @@ You will build a Suggestion Box Lightning Application that allows employees to s
   This package includes the app definition, data model, validation rules, process and reports and dashboard which together form the basic Suggestion box Application
 * Extend this application using Lightning components to design a stand-alone Suggestion Box Application which will look somethng like this:
  
-![alt text](https://github.com/sonamraju14/df16workshops/blob/master/content/workshop/suggestion-box/images/SB_app.png)
+![alt text](images/SB_app.png)
 
 Each rectangle in this image represents a lightning component:
+
 * Red box: Displays the "add suggestion" functionality
 * Yellow box: Displays the "search suggestion" functionality
 * Green box: Displays the "results" of the search functionality
