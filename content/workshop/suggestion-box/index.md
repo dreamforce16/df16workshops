@@ -51,7 +51,7 @@ Create a class to access data from Suggestion custom object:
 3. For the class name, enter **SuggestionController** and then click **OK**
 4. In the body of the class (i.e. between the {} braces), enter the following code
 
-```
+```js
 public class SuggestionController {
 
   	@AuraEnabled
@@ -108,7 +108,7 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
 2. For the component name, enter **SuggestionBoxCreate** and then click **Submit**
 3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
 
-```
+```html
 <aura:component controller="SuggestionController" implements="flexipage:availableForAllPageTypes">
    <ltng:require styles="{!$Resource.slds + 'assets/styles/salesforce-lightning-design-system-vf.css'}" />
    <aura:attribute name="suggestions" type="Suggestion__c[]" />
@@ -159,7 +159,7 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
 5. In the button panel on the right, click **Controller**
 6. In place of the myAction JavaScript function, add the following code:
 
-```
+```js
 ({
    addNew: function(component, event, helper) 
     			{
@@ -184,7 +184,7 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
 8. In the button panel on the right, click **Helper**
 9. In place of the helpermethod JavaScript function, add the following code:
 
-```
+```js
 ({
     showInput: function(component) {
         var el = component.find('formbox');
@@ -222,7 +222,7 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
 11. In the button panel on the right, click **Style**
 12. In place of .THIS {}, add the following code:
 
-```
+```css
 .THIS h3 {
 	margin: 0px;
 }
@@ -317,7 +317,7 @@ We are creating two components namely the SearchBar and SuggestionList which nee
 2. For the event name, enter **SKChange** and then click **Submit**
 3. Edit the code as shown below:
 
-```
+```html
 <aura:event type="APPLICATION">
     <aura:attribute name="searchKey" type="String"/>
 </aura:event>
@@ -334,7 +334,7 @@ This component will implement the *Search Suggestion* functionality.
 2. For the component name, enter **SearchBar** and then click **Submit**
 3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
 
-```
+```html
 <aura:component implements="flexipage:availableForAllPageTypes" >
    <ltng:require styles="{!$Resource.slds + 'assets/styles/salesforce-lightning-design-system-vf.css'}" />
    <aura:registerEvent name="SKChange" type="c:SKChange"/>
@@ -350,7 +350,7 @@ This component will implement the *Search Suggestion* functionality.
 5. In the button panel on the right, click **Controller**
 6. In place of the myAction JavaScript function, add the following code:
 
-```
+```js
 ({
     searchKeyChange: function(component, event, helper) {
         var myEvent = $A.get("e.c:SKChange");
@@ -363,7 +363,7 @@ This component will implement the *Search Suggestion* functionality.
 8. In the button panel on the right, click **Style**
 9. In place of .THIS {}, add the following code:
 
-```
+```css
 .THIS .textfont{
     font-family:'Salesforce Sans', Arial, sans-serif;   
     font-size: 15pt;
@@ -384,7 +384,7 @@ This component will display the list of Suggestions based on the searchKey.
 2. For the component name, enter **SuggestionList** and then click **Submit**
 3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
 
-```
+```html
 <aura:component controller="SuggestionController" implements="flexipage:availableForAllPageTypes">
    <ltng:require styles="{!$Resource.slds +'assets/styles/salesforce-lightning-design-system-vf.css'}" />
    <aura:attribute name="suggestions" type="Suggestion__c[]"/>
@@ -419,7 +419,7 @@ This component will display the list of Suggestions based on the searchKey.
 5. In the button panel on the right, click **Controller**
 6. In place of the myAction JavaScript function, add the following code:
 
-```
+```js
 ({
     doInit : function(component, event) {
         var action = component.get("c.findAll");
@@ -456,7 +456,7 @@ This component will display the details of the suggestion selected by the employ
 2. For the component name, enter **SearchBar** and then click **Submit**
 3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
 
-```
+```html
 <aura:component controller="SuggestionFindController" implements="flexipage:availableForAllPageTypes">
    <ltng:require styles="{!$Resource.slds}" />
    <aura:attribute name="suggestion" type="Suggestion__c"/>
@@ -514,7 +514,7 @@ This component will display the details of the suggestion selected by the employ
 5. In the button panel on the right, click **Controller**
 6. In place of the myAction JavaScript function, add the following code:
 
-```
+```js
 ({
     locationChange: function(component, event, helper) {
         var token = event.getParam("token");
@@ -566,7 +566,7 @@ This component emcampasses all the components we have created together to form o
 2. For the component name, enter **SuggestionBox** and then click **Submit**
 3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
 
-```
+```html
 <aura:component implements="flexipage:availableForAllPageTypes">
    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
    <div class="slds-grid">
@@ -597,7 +597,7 @@ This application holds the SuggestionBox component we created in the last step t
 2. For the component name, enter **SuggestionBoxApp** and then click **Submit**
 3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
 
-```
+```html
 <aura:application >
    <ltng:require styles="/resource/slds/assets/styles/salesforce-lightning-design-system-ltng.css" />
    <div class="salesforce slds">
