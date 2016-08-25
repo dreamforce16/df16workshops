@@ -38,8 +38,8 @@ pygmentsStyle="friendly"
 
 [[menu.main]]
 
-    name = "Wave APIs"
+    name = "Prediction IO"
     pre = "<i class='fa fa-list fa-fw'></i>"
     weight = 1
-    identifier = "Wave APIs"
-    url = "/workshop/wave-apis"
+    identifier = "Prediction IO"
+    url = "/workshop/prediction-io"
