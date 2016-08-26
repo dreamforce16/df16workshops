@@ -18,7 +18,7 @@ pygmentsStyle="friendly"
     pre = "<i class='fa fa-list fa-fw'></i>"
     weight = 1
     identifier = "workshop"
-    url = "/workshop/"
+    url = "/workshop"
 
 [[menu.main]]
 
