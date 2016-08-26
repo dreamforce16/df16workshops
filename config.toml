@@ -21,11 +21,11 @@ pygmentsStyle="friendly"
 
 [[menu.main]]
 
-    name = "Conference Management"
+    name = "Battle Station"
     pre = "<i class='fa fa-list fa-fw'></i>"
     weight = 1
-    identifier = "conference management"
-    url = "/workshop/conference-mgmt"
+    identifier = "battle station"
+    url = "/workshop/battle-station"
 
 [[menu.main]]
 
