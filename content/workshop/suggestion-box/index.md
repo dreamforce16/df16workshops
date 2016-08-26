@@ -51,7 +51,7 @@ Create a class to access data from Suggestion custom object:
 3. For the class name, enter **SuggestionController** and then click **OK**
 4. In the body of the class (i.e. between the {} braces), enter the following code
 
-```js
+```java
 public class SuggestionController {
 
   	@AuraEnabled
