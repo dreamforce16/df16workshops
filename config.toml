@@ -22,24 +22,24 @@ pygmentsStyle="friendly"
 
 [[menu.main]]
 
-    name = "Suggestion Box"
-    pre = "<i class='fa fa-list fa-circle-o'></i>"
+    name = "  Suggestion Box"
+    pre = "<i class=''></i>"
     weight = 2
     identifier = "Suggestion Box"
     url = "/workshop/suggestion-box"
 
 [[menu.main]]
 
-    name = "Battle Station"
-    pre = "<i class='fa fa-list fa-circle-o'></i>"
+    name = "  Battle Station"
+    pre = "<i class=''></i>"
     weight = 3
     identifier = "battle station"
     url = "/workshop/battle-station"
 
 [[menu.main]]
 
-    name = "Heroku Connect"
-    pre = "<i class='fa fa-list fa-circle-o'></i>"
+    name = "  Heroku Connect"
+    pre = "<i class=''></i>"
     weight = 4
     identifier = "Heroku Connect"
     url = "/workshop/heroku-connect"
@@ -47,8 +47,8 @@ pygmentsStyle="friendly"
 
 [[menu.main]]
 
-    name = "Prediction IO"
-    pre = "<i class='fa fa-list fa-circle-o'></i>"
+    name = "  Prediction IO"
+    pre = "<i class=''></i>"
     weight = 5
     identifier = "Prediction IO"
     url = "/workshop/prediction-io"
