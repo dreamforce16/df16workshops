@@ -144,7 +144,7 @@ Check the data generated using the following curl command
 http://localhost:7070/events.json?accessKey=&limit=-1
 ```
 
-<img src="/workshop/prediction-io/images/localhost_events.png" width="100%" height="100%">
+<img src="/workshop/prediction-io/recommendation_engine/images/localhost_events.png" width="100%" height="100%">
 
 
 

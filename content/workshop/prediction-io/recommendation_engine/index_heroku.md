@@ -158,7 +158,7 @@ http://rd-pio-eventserver-1.herokuapp.com/events.json?accessKey=2Evbo5hiUiXXXCu_
 
 ```
 
-<img src="/workshop/prediction-io/images/pio-events-screenshot.png" width="100%" height="100%">
+<img src="/workshop/prediction-io/recommendation_engine/images/pio-events-screenshot.png" width="100%" height="100%">
 
 ## Deploy Recommendation Engine 
 
@@ -238,6 +238,11 @@ EVENT_SERVER_PORT: 80
 
 ```
 
+## Increase Heap size for Java VM
+
+``` bash
+
+```
 ## Train
 
 ``` bash
@@ -261,7 +266,7 @@ Output
 
 Check the Recommendation Engine running in the browser
 
-<img src="/workshop/prediction-io/images/pio-engine-screenshot.png" width="100%" height="100%">
+<img src="/workshop/prediction-io/recommendation_engine/images/pio-engine-screenshot.png" width="100%" height="100%">
 
 ## Predict
 

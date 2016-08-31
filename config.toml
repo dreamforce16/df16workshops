@@ -1,6 +1,6 @@
 
 
-baseurl = "/home"
+baseurl = "/"
 languageCode = "en-us"
 title = "DreamForce 2016"
 PygmentsCodeFences=true
@@ -10,8 +10,8 @@ pygmentsStyle="friendly"
     name = "Home"
     pre = "<i class='fa fa-home fa-fw'></i>"
     weight = 0
-    identifier = "home"
-    url = "/home"
+    identifier = ""
+    url = "/"
 
 [[menu.main]]
     name = "WORKSHOPS"
@@ -43,7 +43,6 @@ pygmentsStyle="friendly"
     weight = 4
     identifier = "Heroku Connect"
     url = "/workshop/heroku-connect"
-
 
 [[menu.main]]
 
