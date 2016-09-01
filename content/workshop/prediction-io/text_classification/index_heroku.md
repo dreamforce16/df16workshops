@@ -342,20 +342,10 @@ $ curl -H "Content-Type: application/json -d '{ "text":"Earn extra cash!" }' \
 
 ```
 
-``` json
+   ``` json 
+{"category":"not spam","confidence":0.7219493232910391}
 
-{"itemScores":
-	[
-		{
-			"item":"i44","score":0.2805472425881496
-		},
-		
-		{
-			"item":"i41","score":0.14458527026450552
-		}
-	]
-}
+   ```
 
-```
 
 
