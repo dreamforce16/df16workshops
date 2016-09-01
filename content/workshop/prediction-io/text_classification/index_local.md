@@ -192,8 +192,8 @@ http://localhost:7070/events.json?accessKey=SOME_ACCESS_KEY&limit=-1
 
    ``` bash
 
-$ curl -H '{ "text":"Earn extra cash!" }' \
-       http://localhost:8000/queries.json
+$ curl -H "Content-Type: application/json" -d '{ "text":"Earn extra cash!" }' \
+    http://localhost:8000/queries.json
 
    ```
    

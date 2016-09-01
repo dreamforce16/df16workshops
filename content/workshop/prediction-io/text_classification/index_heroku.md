@@ -1,31 +1,31 @@
 +++
 date = "2016-07-29T16:18:23+05:30"
 draft = true
-title = "Build a Recommendation Engine with Prediction IO : Heroku"
+title = "Text Classification : Spam Detection Engine using Logistical Regression : Heroku"
 
 +++
 
 ## Introduction
 
-In this workshop you will learn how to use Prediction IO Machine Learning library to build a recommendation engine based on Alternative Least Square Algorithm. Prediction IO uses Spark MLlib's implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.
+In this workshop you will learn how to use Prediction IO Machine Learning library to build a Spam Detection Engine using Classification Technique of Logisitical Regression. Prediction IO uses Spark MLlib's implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.
+
 
 ## Pre-requisities
 
 * git command line
 * JDK 1.8.x or above
-* Scala 2.10.6 or above
-* sbt tool
 
 ## Source Code
 
 Source code of this workshop resides in two repos listed below
 
 * https://github.com/rajdeepd/pio-eventserver-heroku
-* https://github.com/rajdeepd/pio-engine-heroku
+* https://github.com/rajdeepd/pio-engine-textclassfication-heroku
+* https://github.com/rajdeepd/pio-upload-data
 
 **pio-eventserver-heroku** : Provdes storage for events being generated based on which we want to create our training model.
 
-**pio-engine-heroku** : Engine which wraps the ALS Algorithm implementation and provides APIs to create a model, train it and use it to make prediction.
+**pio-engine-textclassfication-heroku** : Engine which wraps the [Logisitic Regression Algorithm](https://en.wikipedia.org/wiki/Logistic_regression) implementation and provides APIs to create a model, train it and use it to make prediction.
 
 We will be using PostgreSQL database for this workshop.
 
@@ -37,7 +37,7 @@ Clone the source code
 
 $ git clone https://github.com/rajdeepd/pio-eventserver-heroku
 
-$ git clone https://github.com/rajdeepd/pio-engine-heroku
+$ git clone https://github.com/rajdeepd/pio-engine-textclassfication-heroku
 
 ```
 ## Step 2 Create a Heroku App
@@ -119,42 +119,113 @@ DATABASE_URL: postgres://rdatjvbvdwqvyq:nNL9b1cnjoQt8hCcQumEMahrmL@ec2-54-243-20
 
 ``` bash
 
-$ heroku run console app new MyApp1
+$ heroku run console app new MyAppLR
+
 ```
 
 ```
-Running `console app new MyApp1` attached to terminal... up, run.5174
-[INFO] [App$] Initialized Event Store for this app ID: 1.
+Running `console app new MyAppLR` attached to terminal... up, run.4659
+[INFO] [App$] Initialized Event Store for this app ID: 2.
 [INFO] [App$] Created new app:
-[INFO] [App$]       Name: MyApp1
-[INFO] [App$]         ID: 1
-[INFO] [App$] Access Key: 2Evbo5hiUiXXXCu_uB-gK1Q3EiT2N8nGd1-AGY5hjrsQ3PonJCdwP1YZ5WN5519O
+[INFO] [App$]       Name: MyAppLR
+[INFO] [App$]         ID: 2
+[INFO] [App$] Access Key: 2eNMw5lydFtFl4uT8l5oARd48VDxJz9sIEUuigshZJHttReO5lpiNDeZwELVV3_7
+WARNING: Toolbelt v3.43.9 update available.
 
 ```
-Set Environment variable
+Set Environment variable ACCESS_KEY
 
 ``` bash
 
-$ export ACCESS_KEY=2Evbo5hiUiXXXCu_uB-gK1Q3EiT2N8nGd1-AGY5hjrsQ3PonJCdwP1YZ5WN5519O
+$ export ACCESS_KEY=<ACCESS_KEY>
 
 ```
 
 ## Populate Event Server with Events
 
-``` bash
+We will use a Scala Application cloned from https://github.com/rajdeepd/pio-upload-data to upload data. It will make a Http Post request and upload email and stop word data.
 
-for i in {1..5}; do curl -i -X POST http://rd-pio-eventserver-1.herokuapp.com/events.json?accessKey=$ACCESS_KEY -H "Content-Type: application/json" -d "{ \"event\" : \"\$set\", \"entityType\" : \"user\", \"entityId\" : \"u$i\" }"; done
+Sample email event
 
-for i in {1..50}; do curl -i -X POST http://CHANGEME.herokuapp.com/events.json?accessKey=$ACCESS_KEY -H "Content-Type: application/json" -d "{ \"event\" : \"\$set\", \"entityType\" : \"item\", \"entityId\" : \"i$i\", \"properties\" : { \"categories\" : [\"c1\", \"c2\"] } }"; done
+``` json
 
-for i in {1..5}; do curl -i -X POST http://CHANGEME.herokuapp.com/events.json?accessKey=$ACCESS_KEY -H "Content-Type: application/json" -d "{ \"event\" : \"view\", \"entityType\" : \"user\", \"entityId\" : \"u$i\",  \"targetEntityType\" : \"item\", \"targetEntityId\" : \"i$(( ( RANDOM % 50 )  + 1 ))\" }"; done
+{
+  "eventTime": "2015-06-08T16:45:00.595+0000",
+  "entityId": 2,
+  "properties": {
+    "text": " some spam text",
+    "label": "spam"
+  },
+  "event": "e-mail",
+  "entityType": "content"
+}
+
+```
+
+
+1. Copy application.conf.sample to application.conf as shown below
+
+	``` bash
+
+$ cd pio-upload-data
+$ cp pio-upload-data/src/main/resources/application.conf.sample \
+   pio-upload-data/src/main/resources/application.conf
+
+	 ```
+2. Open `application.conf` file
+
+``` 
+
+pio {
+  access_token = "TODO"
+  app_name = "TODO"
+  host = "localhost:7070"
+}
+
+```
+    
+    Update with appropriate values as shown below
+
+
+``` 
+	
+pio {
+  access_token = "2eNMw5lydFtFl4uT..Jz9sIEUuigshZJHttReO5lpiNDeZwELVV3_7"
+  app_name = "MyTextLR"
+  host = "rd-pio-eventserver-1.herokuapp.com"
+}
+
+```
+
+3. Execute Upload
+
+We will upload 100 emails and 300+ stopwords (in real use case your email data will be much larger)
+
+	``` 
+
+	$ cd ~/pio-upload-data
+	$ ./sbt "runMain UploadEmails"
+	$ ./sbt "runMain UploadStopWords"
+	
+	```
+Your output will be similar to listing below
+
+```
+98
+HttpResponseProxy{HTTP/1.1 201 Created [Connection: keep-alive, Server: spray-can/1.3.3, Date: Wed, 31 Aug 2016 07:07:24 GMT, Content-Type: application/json; charset=UTF-8, Content-Length: 46, Via: 1.1 vegur] ResponseEntityProxy{[Content-Type: application/json; charset=UTF-8,Content-Length: 46,Chunked: false]}}
+99
+HttpResponseProxy{HTTP/1.1 201 Created [Connection: keep-alive, Server: spray-can/1.3.3, Date: Wed, 31 Aug 2016 07:07:25 GMT, Content-Type: application/json; charset=UTF-8, Content-Length: 46, Via: 1.1 vegur] ResponseEntityProxy{[Content-Type: application/json; charset=UTF-8,Content-Length: 46,Chunked: false]}}
+100
+Completed uploads
+[success] Total time: 96 s, completed 31 Aug, 2016 12:37:25 PM
 
 ```
 
 ### Check the Events Inserted
 
 ``` bash
-http://rd-pio-eventserver-1.herokuapp.com/events.json?accessKey=2Evbo5hiUiXXXCu_uB-gK1Q3EiT2N8nGd1-AGY5hjrsQ3PonJCdwP1YZ5WN5519O&limit=100
+
+http://rd-pio-eventserver-1.herokuapp.com/events.json?accessKey=MYACCESSKEY&limit=100
 
 ```
 
@@ -164,7 +235,7 @@ http://rd-pio-eventserver-1.herokuapp.com/events.json?accessKey=2Evbo5hiUiXXXCu_
 
 ``` bash
 
-$ heroku create rd-pio-engine-1
+$ heroku create rd-pio-engine-text-class
 $ git push heroku master
 
 ```
@@ -185,15 +256,13 @@ heroku-postgresql:hobby-dev  postgresql-pointy-19292  free
 
 ``` bash
 
-$ heroku addons:remove postgresql-pointy-19292
+$ heroku addons:destroy postgresql-pointy-19292
 
 ```
 
 Output
 
 ``` 
-
-WARNING: `heroku addons:remove` has been deprecated. Please use `heroku addons:destroy` instead.
 
  !    WARNING: Destructive Action
  !    This command will affect the app: rd-pio-engine-1
@@ -255,28 +324,20 @@ $ heroku run train
 Output
 
 ```
-
-[INFO] [Engine$] ALSModel does not support data sanity check. Skipping check.
-[INFO] [Engine$] EngineWorkflow.train completed
-[INFO] [Engine] engineInstanceId=efb28115-5007-4356-a45c-cab9b7b1da6f
-[INFO] [CoreWorkflow$] Inserting persistent model
-[INFO] [CoreWorkflow$] Updating engine instance
-[INFO] [CoreWorkflow$] Training completed successfully.
-[INFO] [ServerConnector] Stopped ServerConnector@18578491{HTTP/1.1}{0.0.0.0:4040}
+TODO
 
 ```
 
-Check the Recommendation Engine running in the browser
+Check the Classification Engine running in the browser
 
-<img src="/workshop/prediction-io/recommendation_engine/images/pio-engine-screenshot.png" width="100%" height="100%">
+<img src="/workshop/prediction-io/text_classification/images/pio-engine-screenshot.png" width="100%" height="100%" alt="engine image">
 
 ## Predict
 
-Items similar to i3
 
 ``` bash
-$ curl -H "Content-Type: application/json" -d '{ "items": ["i3"], "num": 4 }' \
-   -k http://rd-pio-engine-1.herokuapp.com/queries.json
+$ curl -H "Content-Type: application/json -d '{ "text":"Earn extra cash!" }' \
+       http://rd-pio-engine-text-class.herokuapp.com/queries.json
 
 
 ```
