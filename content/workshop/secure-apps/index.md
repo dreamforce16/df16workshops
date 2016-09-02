@@ -20,7 +20,13 @@ To get set up in the Kingdom Management developer org, you’ll need to sign up:
 1. Go to the custom sign-up page for the Kingdom Management developer org: 
     https://security.secure.force.com/SecDev_Trailhead_Signup
 2. Fill out the form using an active email address and click Sign Me Up.
+
+	<img src="images/1.png" width="70%" height="70%">
+
 3. Check your email for an activation request. 
+
+	<img src="images/2.png" width="70%" height="70%">
+
 4. Click the link in the email, and complete your registration by setting a new password and challenge question.
     You should now be logged into the Kingdom Management developer org that we’ll be using for this class. This is an org that we’ve expanded from our Trailhead class so after you’ve completed this workshop you can use this same org to continue on your secure coding training! For this workshop we’ve expanding the existing trailhead demos to add a few new ones that we’ll use today. So let’s enable those now.
 5. Click on the Setup link
@@ -29,6 +35,8 @@ To get set up in the Kingdom Management developer org, you’ll need to sign up:
 8. Click the checkbox next to DF16 Workshop to make our custom app visible
 9. Click the Save button
 10. Select the DF16 Workshop from the app selector in the top right corner
+
+	<img src="images/3.png" width="70%" height="70%">
 
 If you see something similar to the above screen you are now ready to start learning how to defend your users against XSS attacks by using application security!
 
@@ -56,6 +64,8 @@ In the Kingdom Management app, there is a page to create a scroll that can be us
 7. Enter the following in the message text field: ``` <img src=x onerror="alert(\'I said, HEAR YE, HEAR YE, COME ONE, COME ALL!!\');"></img>```
 8. Click Create Scroll. You will see a little window pop up.
 
+	<img src="images/4.png" width="70%" height="70%">
+
 ## Try Another Cross-Site Scripting Attack
 
 1. In your Kingdom Management developer org, navigate to the XSS Basics Challenge tab in the Cross-site Scripting (XSS) application. You will see an input field and a button.
@@ -77,6 +87,8 @@ Let’s see this in action in our Kingdom management org.
 
 1. Click on the Automatic HTML Encoding Demo tab
   On this tab we have a simple app which has a greeting message to the user
+
+  <img src="images/5.png" width="70%" height="70%">
 
   You may notice that to construct this greeting the app utilizes the URL parameter name as a input.
 2. Try changing value of the name parameter to something different like THIS IS A TEST and the message should change
@@ -106,6 +118,8 @@ Let’s see what happens when this attribute is set to false in our demo org.
 3. Navigate back to **XSS Disable HTML Encoding** tab 
 4. Set the name parameter to one of our XSS attack payloads: ` <img src="test" onerror="alert('THIS IS AN XSS ATTACK')"/>`
 
+	<img src="images/6.png" width="70%" height="70%">
+
   The attack works! 
 
   While disabling encoding may be necessary for certain use cases, you should exercise **extreme caution**. If you disable automatic encoding, you have to rely on other XSS prevention techniques (like whitelisting) to ensure that your code isn’t vulnerable to XSS.
@@ -134,6 +148,9 @@ Let’s dive into some examples in your developer org
 4. Navigate back to the **XSS in HTML Context** tab
 5. Change the URL parameter **userInput** to the following value test'); alert('XSS
 6. Click on **Click me!**
+
+	<img src="images/7.png" width="70%" height="70%">
+
   Why did this work? If you look again at the code from Step 3 userInput is rendered with a JavaScript execution context embedded with an HTML context. Therefore **The auto-HTML encoding alone is insufficient**. So it’s important to remember if your application passes through multiple parsing contexts, the default protection isn’t **fully sufficient**.
 
 ### Script Context
@@ -151,6 +168,9 @@ When inserting merge fields into JavaScript, watch out for XSS vulnerabilities. 
   We’ve got a user controllable variable userInput being included directly in script context. Is this vulnerable? Let’s find out.
 3. Navigate back to the **XSS in Script Context** tab
 4. Try typing in the following string for the userInput URL parameter ` ‘;alert(‘XSS’);//` 
+ 
+	<img src="images/8.png" width="70%" height="70%">
+
   Yes it is vulnerable! So keep in mind that any user input is inserted into script context isn’t automatically encoded and is vulnerable to XSS.
 
 ### Style Context
@@ -169,6 +189,8 @@ Let see what a vulnerable app would look like in your developer org!
 4. Try entering the following for the color parameter ``` blue</style><img src=x onerror="alert(1)"/>```
 
   You should see something like this:
+
+  <img src="images/9.png" width="70%" height="70%">
   
   So as you can see, the default automatic HTML encoding doesn’t apply and the application is vulnerable to XSS.
 
