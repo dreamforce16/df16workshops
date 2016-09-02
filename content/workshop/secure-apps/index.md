@@ -241,14 +241,12 @@ Now let’s learn how to fix a JavaScript-based XSS vulnerabilities using JSENCO
   ```
   Visualforce:
   <script>
-                    var vip = '{!title}';
-
-                    [...]
+        var vip = '{!title}';
+        [...]
                     
-                </script>
-                
-          [...]
-                <apex:commandButton value="Click here to view the JavaScript-based XSS!" action="{!JSXSS}"/>
+  </script>
+        [...]
+  <apex:commandButton value="Click here to view the JavaScript-based XSS!" action="{!JSXSS}"/>
   ```
   You’ll notice that when the button is clicked on line 36 it called the JSXSS function in Apex. This function sets the title to a XSS payload which is then rendered in Visualforce on line 14. 
 
