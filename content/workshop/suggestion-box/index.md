@@ -22,10 +22,10 @@ In this project, you learn how to build a Lightning Application on App Cloud fro
 You will build a Suggestion Box Lightning Application that allows employees to submit suggestions, search for existing suggestions and vote for them.All of this with the following steps:
 
 * Install the pre-created building blocks of the Suggestion Box App by clicking [here](http://bit.ly/df16_sb_package)
-  This package includes the app definition, data model, validation rules, process and reports and dashboard which together form the basic Suggestion box Application
+  This package includes the app definition, data model, validation rules, process and reports and dashboard which together form the basic Suggestion box Application.You can install this app for Admins only for now.Go [here](https://help.salesforce.com/apex/HTViewHelpDoc?id=distribution_installing_packages.htm) for detailed steps to install an unmanaged package.
 * Extend this application using Lightning components to design a stand-alone Suggestion Box Application which will look somethng like this:
  
-![alt text](https://github.com/sonamraju14/df16workshops/blob/master/content/workshop/suggestion-box/images/SB_app.png)
+![alt text](images/SB_app.png)
 
 Each rectangle in this image represents a lightning component:
 * Red box: Displays the "add suggestion" functionality
@@ -101,6 +101,8 @@ public class SuggestionController {
 
 ### Create the SuggestionBoxCreate Component
 This component will implement the *Add Suggestion* functionality.
+
+![alt text](images/Addsuggestion.png)
 
 A lightning component is a combination of markup, JavaScript, and CSS. You first create a component bundle.
 
@@ -330,6 +332,8 @@ Creating the SearchBar Component
 
 This component will implement the *Search Suggestion* functionality.
 
+![alt text](images/Searchbar.png)
+
 1. In the **Developer Console**, select **File | New | Lightning Component**
 2. For the component name, enter **SearchBar** and then click **Submit**
 3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
@@ -379,6 +383,8 @@ This component will implement the *Search Suggestion* functionality.
 
 ## Create the SuggestionList Component
 This component will display the list of Suggestions based on the searchKey.
+
+![alt text](images/Searchbar_searchlist.png)
 
 1. In the **Developer Console**, select **File | New | Lightning Component**
 2. For the component name, enter **SuggestionList** and then click **Submit**
@@ -449,7 +455,9 @@ This component will display the list of Suggestions based on the searchKey.
  
 
 ## Create the SuggestionDetails Component
-This component will display the details of the suggestion selected by the employee from the Suggestionlist Component
+This component will display the details of the suggestion selected by the employee from the Suggestionlist Component.
+
+![alt text](images/Searchdetail.png)
 
 
 1. In the **Developer Console**, select **File | New | Lightning Component**
