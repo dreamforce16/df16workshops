@@ -139,10 +139,10 @@ Let’s dive into some examples in your developer org
 3. Search for ` {!$CurrentPage.parameters.userInput}` in the code and you should see two instances of this variable being used
  
    ``` html
-     <apex:outputtext>
-     {!$CurrentPage.parameters.userInput} 
-     </apex:outputtext>
-     <div onclick=”console.log(‘{!$CurrentPage.parameters.userInput}’)”>Click me!</div>
+   <apex:outputtext>
+   {!$CurrentPage.parameters.userInput} 
+   </apex:outputtext>
+   <div onclick=”console.log(‘{!$CurrentPage.parameters.userInput}’)”>Click me!</div>
   ```
   
   The first as we’ve discussed extensively is safe, the platform automatically encodes all merge fields included in HTML context. But what about the second?
@@ -161,11 +161,11 @@ When inserting merge fields into JavaScript, watch out for XSS vulnerabilities. 
 1. Click on the **XSS in Script Context** tab
 2. Click on the Visualforce link at the bottom to view the code
  
-  ``` 
-     <script>
-     var a = '{!$CurrentPage.parameters.userInput}';
-     </script>
-     <apex:outputtext>The value of the userInput parameter is: {!$CurrentPage.parameters.userInput}</apex:outputtext> 
+  ``` html 
+   <script>
+   var a = '{!$CurrentPage.parameters.userInput}';
+   </script>
+   <apex:outputtext>The value of the userInput parameter is: {!$CurrentPage.parameters.userInput}</apex:outputtext> 
   ```
   We’ve got a user controllable variable userInput being included directly in script context. Is this vulnerable? Let’s find out.
 3. Navigate back to the **XSS in Script Context** tab
@@ -237,22 +237,21 @@ Now let’s learn how to fix a JavaScript-based XSS vulnerabilities using JSENCO
   **Apex**:
 
   ``` java 
-    public pageReference JSXSS(){
-        title = 'THEME VIOLATION!!!!\';var newHTML = document.createElement(\'div\');newHTML.innerHTML = \'<img src="https://developer.salesforce.com/resource/images/astro.png" />\';document.body.appendChild (newHTML);var x =\'x';
-        return null;
+  public pageReference JSXSS(){
+      title = 'THEME VIOLATION!!!!\';var newHTML = document.createElement(\'div\');newHTML.innerHTML = \'<img src="https://developer.salesforce.com/resource/images/astro.png" />\';document.body.appendChild (newHTML);var x =\'x';
+      return null;
     }
   ```
   
   **Visualforce**:
   
-  ```
-     <script>
-        var vip = '{!title}';
-        [...]
-                    
-     </script>
-        [...]
-     <apex:commandButton value="Click here to view the JavaScript-based XSS!" action="{!JSXSS}"/>
+  ``` html
+  <script>
+      var vip = '{!title}';
+      [...]
+  </script>
+      [...]
+  <apex:commandButton value="Click here to view the JavaScript-based XSS!" action="{!JSXSS}"/>
   ```
   You’ll notice that when the button is clicked on line 36 it called the JSXSS function in Apex. This function sets the title to a XSS payload which is then rendered in Visualforce on line 14. 
 
@@ -287,7 +286,9 @@ In the Kingdom Management app, you’ve started developing a profile page. Your 
   Because of the escape=”false” setting, user-controlled content is rendered directly on the page. 
 5. Edit the code, and add your defensive encoding as follows.
   
-  ` <apex:outputText value="Welcome, <b>{!HTMLENCODE($CurrentPage.Parameters.user)}</b>!" escape="false"/> `
+  ``` html
+  <apex:outputText value="Welcome, <b>{!HTMLENCODE($CurrentPage.Parameters.user)}</b>!" escape="false"/> 
+  ```
 6. Click Save and navigate to the XSS Visualforce Mitigations Demo tab.
 7. Click the HTML-based XSS button again.
 
@@ -309,25 +310,25 @@ Let’s try out the JSINHTMLENCODE function.
   **Visualforce**:
   
   ``` html
-     <script>
-      [...]
-    var html = '<br/><br/><b>---------------------</b>';
-                html += '<br/>Personnel Name: {!JSENCODE(name)}';
-                html += '<br/>Favorite color: {!JSENCODE(color)}';
-                html += '<br/>Favorite animal: {!JSENCODE(animal)}';
-                html += '<br/><b>---------------------</b>';
-                document.getElementById('{!$Component.output2}').innerHTML = html;
-      </script>
-      [...]
-      <apex:commandButton value="Click here to view the JavaScript + HTML-based XSS!" action="{!JSINHTMLXSS}"/>
+  <script>
+    [...]
+  var html = '<br/><br/><b>---------------------</b>';
+        html += '<br/>Personnel Name: {!JSENCODE(name)}';
+        html += '<br/>Favorite color: {!JSENCODE(color)}';
+        html += '<br/>Favorite animal: {!JSENCODE(animal)}';
+        html += '<br/><b>---------------------</b>';
+        document.getElementById('{!$Component.output2}').innerHTML = html;
+  </script>
+  [...]
+  <apex:commandButton value="Click here to view the JavaScript + HTML-based XSS!" action="{!JSINHTMLXSS}"/>
   ```
   **Apex**:
   
   ``` java
-     public pageReference JSINHTMLXSS(){
-          color = 'THEME VIOLATION!!!! <img src="https://developer.salesforce.com/resource/images/astro.png"/>';
-          return null;
-     }
+  public pageReference JSINHTMLXSS(){
+    color = 'THEME VIOLATION!!!! <img src="https://developer.salesforce.com/resource/images/astro.png"/>';
+        return null;
+  }
   ```
   When the user clicks the commandButton the application called the JSINHTMLXSS function in Apex. This function sets a XSS payload to the color variable that is then processed by Visualforce.
 
