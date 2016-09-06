@@ -13,8 +13,10 @@ In this workshop you will learn how to use Prediction IO Machine Learning librar
 
 * git command line
 * JDK 1.8.x or above
-* Scala 2.10.6 or above
-* sbt tool
+* Heroku Account with Credit Card Information (even though we will only use free dynos)
+* Heroku CLI
+
+Heroku account with Credit Card is required for two Dynos to run simultaneously
 
 ## Source Code
 
@@ -43,6 +45,8 @@ $ git clone https://github.com/rajdeepd/pio-engine-heroku
 ## Step 2 Create a Heroku App
 
 ``` bash
+
+$ cd pio-eventserver-heroku
 $ heroku create rd-pio-eventserver-1
 
 ```
@@ -117,6 +121,8 @@ DATABASE_URL: postgres://rdatjvbvdwqvyq:nNL9b1cnjoQt8hCcQumEMahrmL@ec2-54-243-20
 
 ## Create a new app 
 
+Prediction IO tracks events, ML engine based on App ID. We will create a new app and tie events to this ID as well the ML engine which will be trained later
+
 ``` bash
 
 $ heroku run console app new MyApp1
@@ -151,7 +157,7 @@ for i in {1..5}; do curl -i -X POST http://CHANGEME.herokuapp.com/events.json?ac
 
 ```
 
-### Check the Events Inserted
+### Check the Events Inserted in a Browser
 
 ``` bash
 http://rd-pio-eventserver-1.herokuapp.com/events.json?accessKey=2Evbo5hiUiXXXCu_uB-gK1Q3EiT2N8nGd1-AGY5hjrsQ3PonJCdwP1YZ5WN5519O&limit=100
@@ -246,6 +252,27 @@ $ heroku config:set JAVA_OPTS="-Xmx512m"
 
 ```
 ## Train
+
+In this step we will train the Recommendation Engine based on the Events inserted above. Code listed below is the core training method called inside Prediction IO Servier
+
+``` scala
+
+val m = ALS.trainImplicit(
+      ratings = mllibRatings,
+      rank = ap.rank,
+      iterations = ap.numIterations,
+      lambda = ap.lambda,
+      blocks = -1,
+      alpha = 1.0,
+      seed = seed)
+
+    new ALSModel(
+      productFeatures = m.productFeatures.collectAsMap.toMap,
+      itemStringIntMap = itemStringIntMap,
+      items = items
+    )
+    
+```
 
 ``` bash
 

@@ -146,6 +146,72 @@ http://localhost:7070/events.json?accessKey=&limit=-1
 
 <img src="/workshop/prediction-io/recommendation_engine/images/localhost_events.png" width="100%" height="100%">
 
+## Step 5 : Train the Model
+
+1. Set your PredictionIO app's access key and app name in your env vars:
+   
+     ``` bash
+
+     export ACCESS_KEY=<YOUR ACCESS KEY>
+     export APP_NAME=<YOUR APP NAME>
+
+     ```
+
+    Note: These values come from the apps defined in your event server.
+
+2. Train the app:
+    
+     ``` bash
+
+     source bin/env.sh && ./sbt "runMain TrainApp"
+
+     ```
+
+3. Start the server:
+
+    ``` bash
+
+    source bin/env.sh && ./sbt "runMain ServerApp"
+
+    ```
+
+4. Check the status of your engine at `http://localhost:8000`
+
+
+     <img src="/workshop/prediction-io/recommendation_engine/images/pio-engine-recommendation-local.png" width="100%" height="100%">
+
+## Step 6 : Predict Spam vs Non Spam
+
+   ``` bash
+
+$ curl -H "Content-Type: application/json" -d '{ "items": ["i3"], "num": 4 }' \
+    http://localhost:8000/queries.json
+
+   ```
+   
+Response
+
+   ``` json 
+
+{
+	"itemScores":
+	[
+		{
+			"item":"i44","score":0.2805472425881496
+		},
+		
+		{
+			"item":"i41","score":0.14458527026450552
+		}
+	]
+}
+
+   ```
+
+
+
+
+
 
 
 

@@ -14,6 +14,10 @@ In this workshop you will learn how to use Prediction IO Machine Learning librar
 
 * git command line
 * JDK 1.8.x or above
+* Heroku Account with Credit Card Information (even though we will only use free dynos)
+* Heroku CLI
+
+Heroku account with Credit Card is required for two Dynos to run simultaneously
 
 ## Source Code
 
@@ -23,7 +27,7 @@ Source code of this workshop resides in two repos listed below
 * https://github.com/rajdeepd/pio-engine-textclassfication-heroku
 * https://github.com/rajdeepd/pio-upload-data
 
-**pio-eventserver-heroku** : Provdes storage for events being generated based on which we want to create our training model.
+**pio-eventserver-heroku** : Provides storage for events being generated based on which we want to create our training model.
 
 **pio-engine-textclassfication-heroku** : Engine which wraps the [Logisitic Regression Algorithm](https://en.wikipedia.org/wiki/Logistic_regression) implementation and provides APIs to create a model, train it and use it to make prediction.
 
@@ -42,7 +46,12 @@ $ git clone https://github.com/rajdeepd/pio-engine-textclassfication-heroku
 ```
 ## Step 2 Create a Heroku App
 
+First we will create a new Heroku app locally.
+
+Note : Please replace `rd-pio-eventserver-1` with the name of your app
+
 ``` bash
+$ cd pio-eventserver-heroku
 $ heroku create rd-pio-eventserver-1
 
 ```
@@ -75,7 +84,7 @@ origin	https://github.com/rajdeepd/pio-eventserver-heroku (push)
 
 ``` bash
 
-$ get push heroku master
+$ git push heroku master
 
 ```
 
@@ -117,6 +126,8 @@ DATABASE_URL: postgres://username:password@ec2-54-243-208-195.compute-1.amazonaw
 ```
 
 ## Create a new app 
+
+Prediction IO tracks events, ML engine based on App ID. We will create a new app and tie events to this ID as well the ML engine which will be trained later
 
 ``` bash
 
@@ -221,7 +232,7 @@ Completed uploads
 
 ```
 
-### Check the Events Inserted
+### Check the Events Inserted in a Browser
 
 ``` bash
 
@@ -315,6 +326,8 @@ $ heroku config:set JAVA_OPTS="-Xmx512m"
 
 ```
 ## Train
+
+In this step we will train the Recommendation Engine based on the Events inserted above.
 
 ``` bash
 
