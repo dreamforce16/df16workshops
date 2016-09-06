@@ -85,8 +85,9 @@ Output
 remote:        [info] Done updating.
 remote:        [info] Compiling 1 Scala source to /tmp/scala_...
 remote:        [success] Total time: 42 s, completed Aug 25, 2016 9:59:56 AM
-remote:        [info] Wrote scala-2.10/pio-eventserver-heroku_2.10-0.1-SNAPSHOT.pom
-remote:        [info] Packaging pio-eventserver-heroku_2.10-0.1-SNAPSHOT.jar ...
+remote:        [info] Wrote 
+                 scala-2.10/pio-eventserver-heroku_2.10-0.1-SNAPSHOT.pom
+remote:        [info] Packaging pio-eventserver-heroku_2.10-0.1-SNAPSHOT.jar 
 remote:        [info] Done packaging.
 remote:        [success] Total time: 2 s, completed Aug 25, 2016 9:59:58 AM
 remote: -----> Dropping ivy cache from the slug
@@ -112,7 +113,7 @@ Check the `DATABASE_URL`
 ``` bash
 $ heroku config
 === rd-pio-eventserver-1 Config Vars
-DATABASE_URL: postgres://rdatjvbvdwqvyq:nNL9b1cnjoQt8hCcQumEMahrmL@ec2-54-243-208-195.compute-1.amazonaws.com:5432/d8spomhdp00n03
+DATABASE_URL: postgres://username:password@ec2-54-243-208-195.compute-1.amazonaws.com:5432/d8spomhdp00n03
 ```
 
 ## Create a new app 
@@ -143,7 +144,7 @@ $ export ACCESS_KEY=<ACCESS_KEY>
 
 ## Populate Event Server with Events
 
-We will use a Scala Application cloned from https://github.com/rajdeepd/pio-upload-data to upload data. It will make a Http Post request and upload email and stop word data.
+We will use a Scala Application cloned from [https://github.com/rajdeepd/pio-upload-data](https://github.com/rajdeepd/pio-upload-data) to upload data. It will make a Http Post request and upload email and stop word data.
 
 Sample email event
 
@@ -165,56 +166,55 @@ Sample email event
 
 1. Copy application.conf.sample to application.conf as shown below
 
-	``` bash
+    ``` bash
 
-$ cd pio-upload-data
-$ cp pio-upload-data/src/main/resources/application.conf.sample \
-   pio-upload-data/src/main/resources/application.conf
+    $ cd pio-upload-data
+    $ cp pio-upload-data/src/main/resources/application.conf.sample \
+       pio-upload-data/src/main/resources/application.conf
+      
+    ```
 
-	 ```
 2. Open `application.conf` file
 
-``` 
+    ``` bash
 
-pio {
-  access_token = "TODO"
-  app_name = "TODO"
-  host = "localhost:7070"
-}
+    pio {
+      access_token = "TODO"
+      app_name = "TODO"
+      host = "localhost:7070"
+    }
 
-```
+    ```
     
     Update with appropriate values as shown below
 
 
-``` 
-	
-pio {
-  access_token = "2eNMw5lydFtFl4uT..Jz9sIEUuigshZJHttReO5lpiNDeZwELVV3_7"
-  app_name = "MyTextLR"
-  host = "rd-pio-eventserver-1.herokuapp.com"
-}
+    ``` bash
+    	
+    pio {
+      access_token = "2eNMw5lydFtFl4uT..Jz9sIEUuigshZJHttReO5lpiNDeZwELVV3_7"
+      app_name = "MyTextLR"
+      host = "rd-pio-eventserver-1.herokuapp.com"
+    }
 
-```
+    ```
 
 3. Execute Upload
 
-We will upload 100 emails and 300+ stopwords (in real use case your email data will be much larger)
+    We will upload 100 emails and 300+ stopwords (in real use case your email data will be much larger)
 
-	``` 
-
-	$ cd ~/pio-upload-data
-	$ ./sbt "runMain UploadEmails"
-	$ ./sbt "runMain UploadStopWords"
-	
-	```
+    
+        $ cd ~/pio-upload-data
+        $ ./sbt "runMain UploadEmails"
+        $ ./sbt "runMain UploadStopWords"
+   
 Your output will be similar to listing below
 
 ```
 98
-HttpResponseProxy{HTTP/1.1 201 Created [Connection: keep-alive, Server: spray-can/1.3.3, Date: Wed, 31 Aug 2016 07:07:24 GMT, Content-Type: application/json; charset=UTF-8, Content-Length: 46, Via: 1.1 vegur] ResponseEntityProxy{[Content-Type: application/json; charset=UTF-8,Content-Length: 46,Chunked: false]}}
+HttpResponseProxy{HTTP/1.1 201 Created [Connection: .. charset=UTF-8,Content-Length: 46,Chunked: false]}}
 99
-HttpResponseProxy{HTTP/1.1 201 Created [Connection: keep-alive, Server: spray-can/1.3.3, Date: Wed, 31 Aug 2016 07:07:25 GMT, Content-Type: application/json; charset=UTF-8, Content-Length: 46, Via: 1.1 vegur] ResponseEntityProxy{[Content-Type: application/json; charset=UTF-8,Content-Length: 46,Chunked: false]}}
+HttpResponseProxy{HTTP/1.1 201 Created [Connection: .. charset=UTF-8,Content-Length: 46,Chunked: false]}}
 100
 Completed uploads
 [success] Total time: 96 s, completed 31 Aug, 2016 12:37:25 PM
@@ -278,7 +278,7 @@ Removing vars for DATABASE from rd-pio-engine-1 and restarting... done, v5
 
 ``` bash
 
-$ heroku config:set DATABASE_URL=postgres://rdatjvbvdwqvyq:nNL9b1cnjoQt8hCcQumEMahrmL@ec2-54-243-208-195.compute-1.amazonaws.com:5432/d8spomhdp00n03
+$ heroku config:set DATABASE_URL=postgres://username:password@ec2-54-243-208-195.compute-1.amazonaws.com:5432/d8spomhdp00n03
 
 ```
 
@@ -324,13 +324,42 @@ $ heroku run train
 Output
 
 ```
-TODO
+Running `train` attached to terminal... up, run.6559
+Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
+[WARN] [NativeCodeLoader] Unable to load native-hadoop library for your
+        platform... using builtin-java classes where applicable
+[INFO] [Remoting] Starting remoting
+[INFO] [Remoting] Remoting started; listening on addresses :
+       [akka.tcp://sparkDriver@172.16.194.10:48050]
+[INFO] [Server] jetty-8.y.z-SNAPSHOT
+[INFO] [AbstractConnector] Started SocketConnector@0.0.0.0:33483
+[INFO] [Server] jetty-8.y.z-SNAPSHOT
+[INFO] [AbstractConnector] Started SelectChannelConnector@0.0.0.0:4040
+[INFO] [Engine$] EngineWorkflow.train
+[INFO] [Engine$] DataSource: 
+             org.template.textclassification.DataSource@1a47a1e8
+[INFO] [Engine$] Preparator: org.template.textclassification.Preparator@3811510
+[INFO] [Engine$] AlgorithmList: List(org.template.textclassification.LRAlgorithm@748f93bb)
+[INFO] [Engine$] Data sanity check is on.
+[INFO] [Engine$] org.template.textclassification.TrainingData supports 
+                 data sanity check. Performing check.Observation 1 label: 1.0
+Observation 2 label: 1.0
+Observation 3 label: 1.0
+Observation 4 label: 1.0
+Observation 5 label: 1.0
+
+[INFO] [Engine$] org.template.textclassification.PreparedData 
+                 does not support data sanity check. Skipping check.                                      
+INFO] [Engine$] org.template.textclassification.LRModel does not 
+                support data sanity check. Skipping check.
+[INFO] [Engine$] EngineWorkflow.train completed
+[INFO] [Engine] engineInstanceId=7e2e9a86-a17c-4ac7-bfde-9941430e85dd
 
 ```
 
 Check the Classification Engine running in the browser
 
-<img src="/workshop/prediction-io/text_classification/images/pio-engine-screenshot.png" width="100%" height="100%" alt="engine image">
+<img src="/workshop/prediction-io/text_classification/images/pio-text-engine-heroku-screenshot.png" width="100%" height="100%" alt="engine image">
 
 ## Predict
 
