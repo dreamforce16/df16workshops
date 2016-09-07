@@ -21,11 +21,11 @@ To get set up in the Kingdom Management developer org, you’ll need to sign up:
     https://security.secure.force.com/SecDev_Trailhead_Signup
 2. Fill out the form using an active email address and click Sign Me Up.
 
-	<img src="images/1.png" width="70%" height="70%">
+  <img src="images/1.png" width="70%" height="70%">
 
 3. Check your email for an activation request. 
 
-	<img src="images/2.png" width="70%" height="70%">
+  <img src="images/2.png" width="70%" height="70%">
 
 4. Click the link in the email, and complete your registration by setting a new password and challenge question.
     You should now be logged into the Kingdom Management developer org that we’ll be using for this class. This is an org that we’ve expanded from our Trailhead class so after you’ve completed this workshop you can use this same org to continue on your secure coding training! For this workshop we’ve expanding the existing trailhead demos to add a few new ones that we’ll use today. So let’s enable those now.
@@ -36,7 +36,7 @@ To get set up in the Kingdom Management developer org, you’ll need to sign up:
 9. Click the Save button
 10. Select the DF16 Workshop from the app selector in the top right corner
 
-	<img src="images/3.png" width="70%" height="70%">
+  <img src="images/3.png" width="70%" height="70%">
 
 If you see something similar to the above screen you are now ready to start learning how to defend your users against XSS attacks by using application security!
 
@@ -64,14 +64,14 @@ In the Kingdom Management app, there is a page to create a scroll that can be us
 7. Enter the following in the message text field: ``` <img src=x onerror="alert(\'I said, HEAR YE, HEAR YE, COME ONE, COME ALL!!\');"></img>```
 8. Click Create Scroll. You will see a little window pop up.
 
-	<img src="images/4.png" width="70%" height="70%">
+  <img src="images/4.png" width="70%" height="70%">
 
 ## Try Another Cross-Site Scripting Attack
 
 1. In your Kingdom Management developer org, navigate to the XSS Basics Challenge tab in the Cross-site Scripting (XSS) application. You will see an input field and a button.
 2. Using the input field, enter a cross-site scripting payload that meets the following requirements:
-  * Includes HTML text in the following form:  <a>any text</a>
-  * Uses the onmouseover property of the html <a> tag to initiate a JavaScript alert
+  * Includes HTML text in the following form:  `<a>any text</a>`
+  * Uses the onmouseover property of the html `<a>` tag to initiate a JavaScript alert
   * Will show the XSS payload when a mouse is hovered over the text 
 3. Click **Attempt XSS!** and hover over the resulting text to confirm your payload was successful.
 
@@ -118,7 +118,7 @@ Let’s see what happens when this attribute is set to false in our demo org.
 3. Navigate back to **XSS Disable HTML Encoding** tab 
 4. Set the name parameter to one of our XSS attack payloads: ` <img src="test" onerror="alert('THIS IS AN XSS ATTACK')"/>`
 
-	<img src="images/6.png" width="70%" height="70%">
+  <img src="images/6.png" width="70%" height="70%">
 
   The attack works! 
 
@@ -138,10 +138,11 @@ Let’s dive into some examples in your developer org
 2. Click on the Visualforce Page link at the bottom to view the source code
 3. Search for ` {!$CurrentPage.parameters.userInput}` in the code and you should see two instances of this variable being used
  
-   ``` <apex:outputtext>
-      {!$CurrentPage.parameters.userInput} 
-      </apex:outputtext>
-      <div onclick=”console.log(‘{!$CurrentPage.parameters.userInput}’)”>Click me!</div>
+   ``` html
+   <apex:outputtext>
+   {!$CurrentPage.parameters.userInput} 
+   </apex:outputtext>
+   <div onclick=”console.log(‘{!$CurrentPage.parameters.userInput}’)”>Click me!</div>
   ```
   
   The first as we’ve discussed extensively is safe, the platform automatically encodes all merge fields included in HTML context. But what about the second?
@@ -149,7 +150,7 @@ Let’s dive into some examples in your developer org
 5. Change the URL parameter **userInput** to the following value test'); alert('XSS
 6. Click on **Click me!**
 
-	<img src="images/7.png" width="70%" height="70%">
+  <img src="images/7.png" width="70%" height="70%">
 
   Why did this work? If you look again at the code from Step 3 userInput is rendered with a JavaScript execution context embedded with an HTML context. Therefore **The auto-HTML encoding alone is insufficient**. So it’s important to remember if your application passes through multiple parsing contexts, the default protection isn’t **fully sufficient**.
 
@@ -160,16 +161,17 @@ When inserting merge fields into JavaScript, watch out for XSS vulnerabilities. 
 1. Click on the **XSS in Script Context** tab
 2. Click on the Visualforce link at the bottom to view the code
  
-  ``` <script>
-      var a = '{!$CurrentPage.parameters.userInput}';
-      </script>
-      <apex:outputtext>The value of the userInput parameter is: {!$CurrentPage.parameters.userInput}</apex:outputtext> 
+  ``` html 
+   <script>
+   var a = '{!$CurrentPage.parameters.userInput}';
+   </script>
+   <apex:outputtext>The value of the userInput parameter is: {!$CurrentPage.parameters.userInput}</apex:outputtext> 
   ```
   We’ve got a user controllable variable userInput being included directly in script context. Is this vulnerable? Let’s find out.
 3. Navigate back to the **XSS in Script Context** tab
 4. Try typing in the following string for the userInput URL parameter ` ‘;alert(‘XSS’);//` 
  
-	<img src="images/8.png" width="70%" height="70%">
+  <img src="images/8.png" width="70%" height="70%">
 
   Yes it is vulnerable! So keep in mind that any user input is inserted into script context isn’t automatically encoded and is vulnerable to XSS.
 
@@ -231,21 +233,24 @@ Now let’s learn how to fix a JavaScript-based XSS vulnerabilities using JSENCO
 
   You should see an image-based XSS injected into the page, defacing it. 
 3. Click the Visualforce and Apex links at the bottom of the page to find the vulnerable code.
-  ```
-  Apex:
-    public pageReference JSXSS(){
-        title = 'THEME VIOLATION!!!!\';var newHTML = document.createElement(\'div\');newHTML.innerHTML = \'<img src="https://developer.salesforce.com/resource/images/astro.png" />\';document.body.appendChild (newHTML);var x =\'x';
-        return null;
+  
+  **Apex**:
+
+  ``` java 
+  public pageReference JSXSS(){
+      title = 'THEME VIOLATION!!!!\';var newHTML = document.createElement(\'div\');newHTML.innerHTML = \'<img src="https://developer.salesforce.com/resource/images/astro.png" />\';document.body.appendChild (newHTML);var x =\'x';
+      return null;
     }
   ```
-  ```
-  Visualforce:
+  
+  **Visualforce**:
+  
+  ``` html
   <script>
-        var vip = '{!title}';
-        [...]
-                    
+      var vip = '{!title}';
+      [...]
   </script>
-        [...]
+      [...]
   <apex:commandButton value="Click here to view the JavaScript-based XSS!" action="{!JSXSS}"/>
   ```
   You’ll notice that when the button is clicked on line 36 it called the JSXSS function in Apex. This function sets the title to a XSS payload which is then rendered in Visualforce on line 14. 
@@ -275,13 +280,15 @@ In the Kingdom Management app, you’ve started developing a profile page. Your 
   https://c.na35.visual.force.com/apex/xss_visualforce_mitigations_demo?user=THEME+VIOLATION%21%21%21%21+%3Cimg+src%3D%22https%3A%2F%2Fdeveloper.salesforce.com%2Fresource%2Fimages%2Fastro.png%22%2F%3E
 4. Use the link at the bottom of the page to view the Visualforce code and you see the following.
   
-  ```
+  ``` html
   <apex:outputText value="Welcome, <b>{!$CurrentPage.Parameters.user}</b>!" escape="false"/>
   ```
   Because of the escape=”false” setting, user-controlled content is rendered directly on the page. 
 5. Edit the code, and add your defensive encoding as follows.
   
-  ` <apex:outputText value="Welcome, <b>{!HTMLENCODE($CurrentPage.Parameters.user)}</b>!" escape="false"/> `
+  ``` html
+  <apex:outputText value="Welcome, <b>{!HTMLENCODE($CurrentPage.Parameters.user)}</b>!" escape="false"/> 
+  ```
 6. Click Save and navigate to the XSS Visualforce Mitigations Demo tab.
 7. Click the HTML-based XSS button again.
 
@@ -300,30 +307,28 @@ Let’s try out the JSINHTMLENCODE function.
   You should see an image defacing the page.
 3. To find the vulnerable code, click the Visualforce and Apex links at the bottom of the page.
 
-  ```
-  Visualforce:
-
+  **Visualforce**:
+  
+  ``` html
   <script>
-                      [...]
-
-                      var html = '<br/><br/><b>---------------------</b>';
-                      html += '<br/>Personnel Name: {!JSENCODE(name)}';
-                      html += '<br/>Favorite color: {!JSENCODE(color)}';
-                      html += '<br/>Favorite animal: {!JSENCODE(animal)}';
-                      html += '<br/><b>---------------------</b>';
-                      document.getElementById('{!$Component.output2}').innerHTML = html;
-                      
-                  </script>
+    [...]
+  var html = '<br/><br/><b>---------------------</b>';
+        html += '<br/>Personnel Name: {!JSENCODE(name)}';
+        html += '<br/>Favorite color: {!JSENCODE(color)}';
+        html += '<br/>Favorite animal: {!JSENCODE(animal)}';
+        html += '<br/><b>---------------------</b>';
+        document.getElementById('{!$Component.output2}').innerHTML = html;
+  </script>
   [...]
   <apex:commandButton value="Click here to view the JavaScript + HTML-based XSS!" action="{!JSINHTMLXSS}"/>
   ```
-  ```
-  Apex:
+  **Apex**:
   
-   public pageReference JSINHTMLXSS(){
-          color = 'THEME VIOLATION!!!! <img src="https://developer.salesforce.com/resource/images/astro.png"/>';
-          return null;
-      }
+  ``` java
+  public pageReference JSINHTMLXSS(){
+    color = 'THEME VIOLATION!!!! <img src="https://developer.salesforce.com/resource/images/astro.png"/>';
+        return null;
+  }
   ```
   When the user clicks the commandButton the application called the JSINHTMLXSS function in Apex. This function sets a XSS payload to the color variable that is then processed by Visualforce.
 
