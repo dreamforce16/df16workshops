@@ -5,8 +5,5 @@ title = "Dreamforce 2016 Minihacks"
 
 +++
 
-* Challege 1 : Save Some Clicks	
+* Challenge 1 : Save Some Clicks	
 * Challenge 2 : Lightning Contacts
-
-
-

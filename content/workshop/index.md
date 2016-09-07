@@ -9,6 +9,7 @@ title = "Dreamforce 2016 Workshops"
 * [Build a Battle Station App using Lightning](/workshop/battle-station)
 * [Build a Heroku Connect App to sync Heroku with Salesforce](/workshop/heroku-connect)
 * [Prediction IO : Recommendation Engine](/workshop/prediction-io)
+* [Secure Apps : Understand Cross Site Scripting](/workshop/secure-apps)
 
 
 
