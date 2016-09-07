@@ -22,7 +22,7 @@ pygmentsStyle="friendly"
 
 [[menu.main]]
 
-    name = "  Suggestion Box"
+    name = "  Lightning : Suggestion Box"
     pre = "<i class=''></i>"
     weight = 2
     identifier = "Suggestion Box"
@@ -30,7 +30,7 @@ pygmentsStyle="friendly"
 
 [[menu.main]]
 
-    name = "  Battle Station"
+    name = "  Lightning : Battle Station"
     pre = "<i class=''></i>"
     weight = 3
     identifier = "battle station"
@@ -51,6 +51,14 @@ pygmentsStyle="friendly"
     weight = 5
     identifier = "Prediction IO"
     url = "/workshop/prediction-io"
+
+[[menu.main]]
+
+    name = "  Secure Apps"
+    pre = "<i class=''></i>"
+    weight = 6
+    identifier = "Secure Apps"
+    url = "/workshop/secure-apps"
 
 
 [[menu.main]]
