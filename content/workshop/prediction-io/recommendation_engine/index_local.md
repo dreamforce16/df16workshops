@@ -9,12 +9,13 @@ title = "Build a Recommendation Engine with Prediction IO : Local"
 
 In this workshop you will learn how to use Prediction IO Machine Learning library to build a recommendation engine based on Alternative Least Square Algorithm. Prediction IO uses Spark MLlib's implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.
 
+<img src="/workshop/prediction-io/recommendation_engine/images/recommendation_engine_local.png" width="80%" height="80%">
+
 ## Pre-requisities
 
-* git command line
+* git command line tool
 * JDK 1.8.x or above
-* Scala 2.10.6 or above
-* sbt tool
+* PostgreSQL 9.6 or above
 
 ## Source Code
 
@@ -25,7 +26,7 @@ Source code of this workshop resides in two repos listed below
 
 **pio-eventserver-heroku** : Provdes storage for events being generated based on which we want to create our training model.
 
-**pio-engine-heroku** : Engine which wraps the ALS Algorithm implementation and provides APIs to create a model, train it and use it to make prediction.
+**pio-engine-heroku** : Engine wraps the ALS Algorithm implementation and provides APIs to create a model, train it and use it to make prediction.
 
 We will be using PostgreSQL database for this workshop.
 
@@ -36,12 +37,11 @@ Clone the source code
 ``` bash
 
 $ git clone https://github.com/rajdeepd/pio-eventserver-heroku
-
 $ git clone https://github.com/rajdeepd/pio-engine-heroku
 
 ```
 
-## step 2 : Start the PostgreSQL server
+## Step 2 : Start the PostgreSQL 9.6 server
 
 Make sure PostgreSQL server is running locally
 
@@ -55,7 +55,10 @@ $ sudo service postgresql status
 ```
 Create a pio role with password pio in PostgreSQL
 
-``` 
+``` bash
+$ psql
+
+ubuntu=# CREATE USER pio WITH PASSWORD 'pio';
 
 ```
 
@@ -178,9 +181,11 @@ http://localhost:7070/events.json?accessKey=&limit=-1
 4. Check the status of your engine at `http://localhost:8000`
 
 
-     <img src="/workshop/prediction-io/recommendation_engine/images/pio-engine-recommendation-local.png" width="100%" height="100%">
+    <img src="/workshop/prediction-io/recommendation_engine/images/pio-engine-recommendation-local.png" width="100%" height="100%">
 
-## Step 6 : Predict Spam vs Non Spam
+## Step 6 : Predict Recommended Items
+
+Let us look at recommendation for other items based on a  item already bought by the user. Make sure by looking at the events in the event server that this item was bought, else recommended items will be empty list.
 
    ``` bash
 
