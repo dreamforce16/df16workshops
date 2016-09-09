@@ -1,8 +1,12 @@
-baseurl = "http://replace-this-with-your-hugo-site.com/"
+baseurl = "http://www.sfdcworkshop.com/"
 languageCode = "en-us"
-title = "DreamForce 2016 Workshops"
+title = "Dreamforce 2016 Workshops"
 PygmentsCodeFences=true
-pygmentsStyle="friendly"            
+pygmentsStyle="friendly"
+
+[params]
+  # Shown in the home page
+  brand = "<div><img src='/workshop/dreamforce.png' height='90'></div>"
 
 [[menu.main]]
     name = "Home"
