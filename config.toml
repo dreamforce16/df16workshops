@@ -1,17 +1,12 @@
-
-
-baseurl = "/"
+baseurl = "http://www.sfdcworkshop.com/"
 languageCode = "en-us"
-title = "DreamForce 2016"
+title = "Dreamforce 2016 Workshops"
 PygmentsCodeFences=true
-pygmentsStyle="friendly"   
+pygmentsStyle="friendly"
 
-[[menu.main]]
-    name = "Home"
-    pre = "<i class='fa fa-home fa-fw'></i>"
-    weight = 0
-    identifier = ""
-    url = "/"
+[params]
+  # Shown in the home page
+  brand = "<div><img src='/workshop/dreamforce.png' height='90'></div>"
 
 [[menu.main]]
     name = "WORKSHOPS"
