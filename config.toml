@@ -1,6 +1,6 @@
 baseurl = "http://www.sfdcworkshop.com/"
 languageCode = "en-us"
-title = "Dreamforce 2016 Workshops"
+title = "Dreamforce 2016"
 PygmentsCodeFences=true
 pygmentsStyle="friendly"
 
@@ -9,41 +9,56 @@ pygmentsStyle="friendly"
   brand = "<div><img src='/workshop/dreamforce.png' height='90'></div>"
 
 [[menu.main]]
-    name = "Home"
-    pre = "<i class='fa fa-home fa-fw'></i>"
-    weight = 0
-    identifier = "home"
-    url = "/workshop/"
+    name = "WORKSHOPS"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 1
+    identifier = "workshop"
+    url = "/workshop"
 
 [[menu.main]]
 
-    name = "Suggestion Box"
-    pre = "<i class='fa fa-list fa-fw'></i>"
-    weight = 1
+    name = "  Lightning : Suggestion Box"
+    pre = "<i class=''></i>"
+    weight = 2
     identifier = "Suggestion Box"
     url = "/workshop/suggestion-box"
 
 [[menu.main]]
 
-    name = "Battle Station"
-    pre = "<i class='fa fa-list fa-fw'></i>"
-    weight = 1
+    name = "  Lightning : Battle Station"
+    pre = "<i class=''></i>"
+    weight = 3
     identifier = "battle station"
     url = "/workshop/battle-station"
 
 [[menu.main]]
 
-    name = "Heroku Connect"
-    pre = "<i class='fa fa-list fa-fw'></i>"
-    weight = 1
+    name = "  Heroku Connect"
+    pre = "<i class=''></i>"
+    weight = 4
     identifier = "Heroku Connect"
     url = "/workshop/heroku-connect"
 
+[[menu.main]]
+
+    name = "  Prediction IO"
+    pre = "<i class=''></i>"
+    weight = 5
+    identifier = "Prediction IO"
+    url = "/workshop/prediction-io"
 
 [[menu.main]]
 
-    name = "Wave APIs"
+    name = "  Secure Apps"
+    pre = "<i class=''></i>"
+    weight = 6
+    identifier = "Secure Apps"
+    url = "/workshop/secure-apps"
+
+
+[[menu.main]]
+    name = "MINIHACKS"
     pre = "<i class='fa fa-list fa-fw'></i>"
-    weight = 1
-    identifier = "Wave APIs"
-    url = "/workshop/wave-apis"
+    identifier = "minihacks"
+    weight = 8
+    url = "/minihacks/"
