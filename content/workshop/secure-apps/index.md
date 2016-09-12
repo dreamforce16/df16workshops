@@ -28,7 +28,9 @@ To get set up in the Kingdom Management developer org, you’ll need to sign up:
 
 4. Click the link in the email, and complete your registration by setting a new password and challenge question.
 
-  You should now be logged into the Kingdom Management developer org that we’ll be using for this class. This is an org that we’ve expanded from our Trailhead class so after you’ve completed this workshop you can use this same org to continue on your secure coding training! For this workshop we’ve expanding the existing trailhead demos to add a few new ones that we’ll use today. So let’s enable those now.
+  You should now be logged into the Kingdom Management developer org that we’ll be using for this class. This is an org that we’ve expanded from our newly launched Trailhead modules so after you’ve completed this workshop you can use this same org to continue on your secure coding training! For this workshop we’ve expanding the existing trailhead demos to add a few new ones that we’ll use today. 
+
+  Let’s enable those now.
 
 5. Click on the **Setup** link
 6. Click *Manage Users -> Profiles -> System Administrator*
@@ -54,19 +56,22 @@ In the Kingdom Management app, there is a page to create a scroll that can be us
 
 **Note**: For each of the demos in this class please **Firefox** as your web browser
 
-1. In your Kingdom Management developer org select the **XSS Basics - Demo** tab.
+1. In your Kingdom Management developer org select the **XSS Basics** tab.
 2. In the message text field, enter a basic message like: *Hear ye, hear ye, come one, come all!* and click the **Create Scroll** button.
 3. The page should refresh, and you should see the text you entered in the previous step.
 4. Right click on the page and select **View source**.
-5. If you search in the raw HTML for your message, you should see HTML like: ```<i>Hear ye, hear ye, come one, come all!</i>```
+5. Search in the HTML using CTRL+F for your message and you should see HTML like: ```<i>Hear ye, hear ye, come one, come all!</i>```
 
-  But what if you tried something different? XSS vulnerabilities result when user input is executed as code. So what happens if we enter code into this message box? Will it execute?
+  Input that we entered into the form was rendered in the page, just what we expected. But what if you tried something different? 
+  XSS vulnerabilities result when user input is executed as code. So what happens if we enter code into this message box? Will it execute?
 
-6. Back in the Kingdom Management developer org, enter the following before clicking **Create Scroll**: ```<u> Testing for boldness </u>```
+6. Back in the Kingdom Management developer org, enter the following before clicking **Create Scroll**: ```<u> Testing for underline </u>```
 
-  Did the underline effect occur? Yes! It appears that text we enter into the input box is being interpreted as code! Now what happens if we try something a lot more complicated?
+  Did the underline effect occur? Yes! It appears that text we enter into the input box is being interpreted as code! 
 
-7. Enter the following in the message text field: ``` <img src=x onerror="alert(\'I said, HEAR YE, HEAR YE, COME ONE, COME ALL!!\');"></img>```
+  Now what happens if we try something a lot more complicated?
+
+7. Enter the following in the message text field: ``` <img src=x onerror="alert(\'I said, HEAR YE, HEAR YE, COME ONE, COME ALL!!\');"/>```
 8. Click **Create Scroll**. You will see a little window pop up.
 
   <img src="images/4.png" width="70%" height="70%">
