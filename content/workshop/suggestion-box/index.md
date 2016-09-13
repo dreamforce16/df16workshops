@@ -7,14 +7,15 @@ title = "Build a Suggestion Box App with Lightning Experience"
 
 
 1. [Introduction](#introduction)
-2. [Create a Server-side Apex Controller Class](#create-a-server-side-apex-controller-class)
-3. [Create the SuggestionBoxCreate Component](#create-the-suggestionboxcreate-component)
-3. [Create the SKChange Event and SearchBar Component](#create-the-skchange-event-and-searchbar-component)
-4. [Create the SuggestionList Component](#create-the-suggestionlist-component)
-5. [Create the SuggestionDetails Component](#create-the-suggestiondetails-component)
-6. [Create the SuggestionBox Component](#create-the-suggestionbox-component)
-7. [Create the SuggestionBoxApp Application](#create-the-suggestionboxapp-application)
-8. [Summary](#summary)
+2. [Add a Custom Domain to Your Org with My Domain](#add_a_custom_domain_to_your_org_with_my_domain)
+3. [Create a Server-side Apex Controller Class](#create-a-server-side-apex-controller-class)
+4. [Create the SuggestionBoxCreate Component](#create-the-suggestionboxcreate-component)
+5. [Create the SKChange Event and SearchBar Component](#create-the-skchange-event-and-searchbar-component)
+6. [Create the SuggestionList Component](#create-the-suggestionlist-component)
+7. [Create the SuggestionDetails Component](#create-the-suggestiondetails-component)
+8. [Create the SuggestionBox Component](#create-the-suggestionbox-component)
+9. [Create the SuggestionBoxApp Application](#create-the-suggestionboxapp-application)
+10. [Summary](#summary)
 
 ## Introduction
 In this project, you learn how to build a Lightning Application on App Cloud from start to finish.If you're new to App Cloud, the goal is to introduce you to the basics of app building together with introduction to the new lightning platform and basics to develop application using lightning components.If you're familiar with the App Cloud Admin features—managing users and security, customizing standard objects, and so on—the goal is to apply those skills to developing new application and learn how to extend the functionality of these applications using lightning. You need a Developer Edition org to complete this project. If you don't have one, you can sign up [here](https://developer.salesforce.com/signup).
@@ -23,7 +24,7 @@ You will build a Suggestion Box Lightning Application that allows employees to s
 
 * Install the pre-created building blocks of the Suggestion Box App by clicking [here](http://bit.ly/df16_sb_package)
   This package includes the app definition, data model, validation rules, process and reports and dashboard which together form the basic Suggestion box Application.You can install this app for Admins only for now.Go [here](https://help.salesforce.com/apex/HTViewHelpDoc?id=distribution_installing_packages.htm) for detailed steps to install an unmanaged package.
-* Extend this application using Lightning components to design a stand-alone Suggestion Box Application which will look somethng like this:
+* Extend this application using Lightning components to design a stand-alone Suggestion Box Application which will look something like this:
  
 ![alt text](images/SB_app.png)
 
@@ -41,6 +42,40 @@ All eyes on the screen!
 Now, that we know and understand how we can build a basic application using point-and-click, let us now extend this app using lightning components.The UI of the Application we will create will resemble the Lightning Experience UI as we will make use of Salesforce Lightning Design System.
 
 The Lightning Component framework is a UI framework for developing dynamic web apps for mobile and desktop devices. In this workshop, you'll create a simple Lightning Application that is built of smaller components which will help you create, search and vote for existing suggestions in your org. You'll start by creating an Apex controller class, then create the Lightning Components and an event handler and finally render the Application UI using all the components together.
+
+## Add a Custom Domain to Your Org with My Domain
+
+To use Lightning Components, your organization needs to have a custom domain configured using My Domain.
+
+To provide world class security for apps, we’re requiring that all users of Lightning Components use My Domain, just as we do for other advanced features, such as Salesforce Identity. If you want to use Lightning Components in Lightning tabs, Lightning Pages, or as standalone apps, you must enable My Domain in your org.
+
+#### Enable My Domain in Your Org
+
+Set up a custom domain with the Salesforce My Domain feature to put your Lightning Components to work.
+If you already have My Domain enabled in your Developer org, you can skip this section and the next one.
+
+1. From Setup, go to My Domain
+2. Enter the subdomain name you want to use within the sample URL. For example, a company called Universal Containers wants to use the subdomain universalcontainers. The company’s login URL would be https://universalcontainers.my.salesforce.com/. Your name can include up to 40 letters, numbers, and hyphens. 
+
+You can’t use these reserved words for subdomains:
+www *or* salesforce *or* heroku
+
+You can’t start the domain name with:
+
+root *or* status *or* a hyphen
+
+3. Click Check Availability. If your name is already taken, choose a different one.
+4. Click Terms and Conditions to review your agreement, then select the checkbox.
+5. Click Register Domain.
+You receive an email when your domain name is ready for testing. It can take up to 3 minutes.
+
+#### Roll Out My Domain to Your Org
+
+After you set up your domain name, test it and then roll it out to your org. Even though you don't have any users to deploy it to in your DE org, you must still roll out My Domain to make your custom Lightning components available in Lightning Pages, in the Lightning App Builder, and for standalone apps.
+
+1. Test your domain login. From Setup, go to  My Domain, then Click here to login. Or, log out of your DE org and log in to Salesforce using your custom domain name. You can click the login link in the activation email you received.
+2. Test the new domain name by clicking tabs and links. All pages now show your new domain name. 
+3. To roll out the new domain name to your organization, from Setup, go to My Domain , then select OK
 
 ## Create a Server-side Apex Controller Class
 
@@ -376,7 +411,7 @@ This component will implement the *Search Suggestion* functionality.
 10. Select **File | Save**
 
 #### Code highlights:
-* The *SearchBar* component has a single input field where employee will type the serchkey and each key entered in this field will trigger the *searchKeyChange* client-side controller function
+* The *SearchBar* component has a single input field where employee will type the searchkey and each key entered in this field will trigger the *searchKeyChange* client-side controller function
 * The *searchKeyChange* takes the event and sets the event parameter *searchKey* as the input field's value
 * Once set, it fires the event for the registered listners can catch it
 
@@ -465,7 +500,7 @@ This component will display the details of the suggestion selected by the employ
 3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
 
 ```html
-<aura:component controller="SuggestionFindController" implements="flexipage:availableForAllPageTypes">
+<aura:component controller="SuggestionController" implements="flexipage:availableForAllPageTypes">
    <ltng:require styles="{!$Resource.slds}" />
    <aura:attribute name="suggestion" type="Suggestion__c"/>
    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
