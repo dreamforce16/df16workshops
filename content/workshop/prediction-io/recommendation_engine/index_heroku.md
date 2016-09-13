@@ -296,7 +296,18 @@ val m = ALS.trainImplicit(
       items = items
     )
 
+**Optional Step**
+
 ```
+If you are running free dynos makes sure you scale down the web dynos before training
+
+``` bash
+
+$ heroku ps:scale web=0 train=0
+
+```
+
+Now run the training command
 
 ``` bash
 
@@ -316,6 +327,16 @@ Output
 [INFO] [ServerConnector] Stopped ServerConnector@18578491{HTTP/1.1}{0.0.0.0:4040}
 
 ```
+
+Bring back the Web dyno (for setups using free dynos)
+
+``` bash
+
+heroku ps:scale web=1 train=0
+
+
+```
+
 
 Check the Recommendation Engine running in the browser
 
