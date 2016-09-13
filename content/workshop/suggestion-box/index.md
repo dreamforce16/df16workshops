@@ -7,7 +7,7 @@ title = "Build a Suggestion Box App with Lightning Experience"
 
 
 1. [Introduction](#introduction)
-2. [Add a Custom Domain to Your Org with My Domain](#add_a_custom_domain_to_your_org_with_my_domain)
+2. [Add a Custom Domain to Your Org with My Domain](#add-a-custom-domain-to-your-org-with-my-domain)
 3. [Create a Server-side Apex Controller Class](#create-a-server-side-apex-controller-class)
 4. [Create the SuggestionBoxCreate Component](#create-the-suggestionboxcreate-component)
 5. [Create the SKChange Event and SearchBar Component](#create-the-skchange-event-and-searchbar-component)
@@ -54,8 +54,8 @@ To provide world class security for apps, we’re requiring that all users of Li
 Set up a custom domain with the Salesforce My Domain feature to put your Lightning Components to work.
 If you already have My Domain enabled in your Developer org, you can skip this section and the next one.
 
-1. From Setup, go to My Domain
-2. Enter the subdomain name you want to use within the sample URL. For example, a company called Universal Containers wants to use the subdomain universalcontainers. The company’s login URL would be https://universalcontainers.my.salesforce.com/. Your name can include up to 40 letters, numbers, and hyphens. 
+1. From **Setup**, go to **My Domain**
+2. Enter the **subdomain name** you want to use within the sample URL. For example, a company called Universal Containers wants to use the subdomain universalcontainers. The company’s login URL would be https://universalcontainers.my.salesforce.com/. Your name can include up to 40 letters, numbers, and hyphens. 
 
 You can’t use these reserved words for subdomains:
 www *or* salesforce *or* heroku
@@ -64,18 +64,18 @@ You can’t start the domain name with:
 
 root *or* status *or* a hyphen
 
-3. Click Check Availability. If your name is already taken, choose a different one.
-4. Click Terms and Conditions to review your agreement, then select the checkbox.
-5. Click Register Domain.
+3. Click **Check Availability**. If your name is already taken, choose a different one.
+4. Click **Terms and Conditions** to review your agreement, then select the checkbox.
+5. Click **Register Domain**.
 You receive an email when your domain name is ready for testing. It can take up to 3 minutes.
 
 #### Roll Out My Domain to Your Org
 
 After you set up your domain name, test it and then roll it out to your org. Even though you don't have any users to deploy it to in your DE org, you must still roll out My Domain to make your custom Lightning components available in Lightning Pages, in the Lightning App Builder, and for standalone apps.
 
-1. Test your domain login. From Setup, go to  My Domain, then Click here to login. Or, log out of your DE org and log in to Salesforce using your custom domain name. You can click the login link in the activation email you received.
+1. Test your domain login. From **Setup**, go to  **My Domain**, then **Click here to login**. Or, log out of your DE org and log in to Salesforce using your custom domain name. You can click the login link in the activation email you received.
 2. Test the new domain name by clicking tabs and links. All pages now show your new domain name. 
-3. To roll out the new domain name to your organization, from Setup, go to My Domain , then select OK
+3. To roll out the new domain name to your organization, from **Setup**, go to **My Domain** , then select **OK**
 
 ## Create a Server-side Apex Controller Class
 
@@ -363,7 +363,7 @@ We are creating two components namely the SearchBar and SuggestionList which nee
 #### Code highlights:
 * This event holds a single attribute named searchkey
 
-Creating the SearchBar Component
+## Creating the SearchBar Component
 
 This component will implement the *Search Suggestion* functionality.
 
@@ -453,7 +453,7 @@ This component will display the list of Suggestions based on the searchKey.
 * This component catches the SKChange Event and handles it with the  <aura:handler> tag triggering the client-side controller function *searchKeyChange*
 * The suggestions attribute is defined to hold the list of suggestion objects returned from the server
 * The init handler is defined to execute some code when the component is initialized
-* <aura:iteration> is used to iterate through the list of suggestions and create an <li> for each suggestion
+* <aura:iteration> is used to iterate through the list of suggestions and create an ``` <li> ``` for each suggestion
 * The ``` <a href="{! '#suggestion/' + suggestion.Id }"> ``` anchor tag around the suggestion data is defined to set the page hashtag to #suggestion/ followed by the suggestion id. The SuggestionDetails component will use this hashtag to display suggestion details every time an employee selects a suggestion from the list
 
 4. Select **File | Save**
@@ -496,7 +496,7 @@ This component will display the details of the suggestion selected by the employ
 
 
 1. In the **Developer Console**, select **File | New | Lightning Component**
-2. For the component name, enter **SearchBar** and then click **Submit**
+2. For the component name, enter **SuggestionDetails** and then click **Submit**
 3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
 
 ```html
