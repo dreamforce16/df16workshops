@@ -29,10 +29,9 @@ In this workshop you will learn how to use Prediction IO Machine Learning librar
 
 ## Prerequisites
 
-* git command line
-* JDK 1.8.x or above
-* Heroku Account with Credit Card Information (even though we will only use free dynos)
-* Heroku CLI
+* Heroku Account
+* Heroku CLI (git is part of Heroku CLI)
+* curl
 
 Heroku account with Credit Card is required for two Dynos to run simultaneously
 
@@ -99,7 +98,7 @@ origin	https://github.com/rajdeepd/pio-eventserver-heroku (push)
 
 ``` bash
 
-$ get push heroku master
+$ git push heroku master
 
 ```
 
@@ -157,7 +156,9 @@ Running `console app new MyApp1` attached to terminal... up, run.5174
 [INFO] [App$] Access Key: 2Evbo5hiUiXXXCu_uB-gK1Q3EiT2N8nGd1-AGY5hjrsQ3PonJCdwP1YZ5WN5519O
 
 ```
-Set Environment variable
+### Set Environment variable
+
+#### Linux, Mac OS X
 
 ``` bash
 
@@ -165,9 +166,19 @@ $ export ACCESS_KEY=2Evbo5hiUiXXXCu_uB-gK1Q3EiT2N8nGd1-AGY5hjrsQ3PonJCdwP1YZ5WN5
 
 ```
 
+##### Windows
+
+``` bash
+
+$ set ACCESS_KEY=2Evbo5hiUiXXXCu_uB-gK1Q3EiT2N8nGd1-AGY5hjrsQ3PonJCdwP1YZ5WN5519O
+
+```
+
 ## Step 5 Populate Event Server with Events
 
 Please change heroku app name from CHANGEME to the actual value you gave earier in the URL for all the commands listed below. 
+
+#### Linux, Mac OS X
 
 ``` bash
 
@@ -179,9 +190,29 @@ for i in {1..5}; do curl -i -X POST http://CHANGEME.herokuapp.com/events.json?ac
 
 ```
 
+#### Windows 
+
+``` bash
+
+for /L %a IN (1,1,5) DO (
+  curl -i -X POST http://rd-pio-eventserver-t1.herokuapp.com/events.json?accessKey=%ACCESS_KEY% -H "Content-Type: application/json" -d "{ \"event\" : \"\$set\", \"entityType\" : \"user\", \"entityId\" : \"u%a\" }"
+)
+
+
+for /L %a IN (1,1,50) DO (
+  curl -i -X POST http://rd-pio-eventserver-t1.herokuapp.com/events.json?accessKey=%ACCESS_KEY% -H "Content-Type: application/json" -d "{ \"event\" : \"\$set\", \"entityType\" : \"item\", \"entityId\" : \"i%a\", \"properties\" : { \"categories\" : [\"c1\", \"c2\"] } }"
+)
+
+for /L %a IN (1,1,5) DO (
+     curl -i -X POST http://rd-pio-eventserver-t1.herokuapp.com/events.json?accessKey=%ACCESS_KEY% -H "Content-Type: application/json" -d "{ \"event\" : \"view\", \"entityType\" : \"user\", \"entityId\" : \"u1\",  \"targetEntityType\" : \"item\", \"targetEntityId\" : \"i%a\" }"
+)
+
+```
+
 ### Step 5.1 Check the Events Inserted in a Browser
 
 ``` bash
+
 http://rd-pio-eventserver-1.herokuapp.com/events.json?accessKey=2Evbo5hiUiXXXCu_uB-gK1Q3EiT2N8nGd1-AGY5hjrsQ3PonJCdwP1YZ5WN5519O&limit=100
 
 ```
@@ -346,12 +377,22 @@ Check the Recommendation Engine running in the browser
 
 Items similar to i3
 
+####  Linux, Mac OSX
+
 ``` bash
 $ curl -H "Content-Type: application/json" -d '{ "items": ["i3"], "num": 4 }' \
    -k http://rd-pio-engine-1.herokuapp.com/queries.json
 
+```
+#### Windows
+
+``` bash
+curl -H "Content-Type: application/json" ^
+    -d "{\"items\": [\"i3\"], \"num\": 4 }" ^
+    -k http://rd-pio-engine-1.herokuapp.com/queries.json
 
 ```
+Response will be similar to the listing below
 
 ``` json
 
