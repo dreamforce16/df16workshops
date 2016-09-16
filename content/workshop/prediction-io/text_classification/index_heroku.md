@@ -43,6 +43,8 @@ $ git clone https://github.com/rajdeepd/pio-eventserver-heroku
 
 $ git clone https://github.com/rajdeepd/pio-engine-textclassfication-heroku
 
+$ git clone https://github.com/rajdeepd/pio-upload-data
+
 ```
 ## Step 2 Create a Heroku App
 
@@ -378,7 +380,7 @@ Check the Classification Engine running in the browser
 
 
 ``` bash
-$ curl -H "Content-Type: application/json -d '{ "text":"Earn extra cash!" }' \
+$ curl -H "Content-Type: application/json" -d '{ "text":"Earn extra cash!" }' \
        http://rd-pio-engine-text-class.herokuapp.com/queries.json
 
 
