@@ -76,15 +76,6 @@ In the Kingdom Management app, there is a page to create a scroll that can be us
 
     <img src="images/4.png" width="70%" height="70%">
 
-## Try Another Cross-Site Scripting Attack
-
-1. In your Kingdom Management developer org, navigate to the **XSS Basics Challenge** tab. You will see an input field and a button.
-2. Using the input field, enter a cross-site scripting payload that meets the following requirements:
-  * Includes HTML text in the following form:  `<a>any text</a>`
-  * Uses the onmouseover property of the html `<a>` tag to initiate a JavaScript alert
-  * Will show the XSS payload when a mouse is hovered over the text 
-3. Click **Attempt XSS!** and hover over the resulting text to confirm your payload was successful.
-
 ## Force.com XSS Protections
 
 As a platform, Salesforce offers its customers and developers maximum flexibility for accessing and storing data. We don’t control what you place on our platform, but wherever possible we make sure it’s displayed securely. So the Salesforce approach to XSS defense is to perform output encoding. In fact, by default all merge fields are automatically HTML encoded! We’ll discuss gaps that you’ll need to be aware of and account for in your applications.
@@ -95,7 +86,7 @@ As we mentioned previously, Salesforce automatically HTML encodes any values and
 
 Let’s see this in action in our Kingdom management org.
 
-1. Click on the **Automatic HTML Encoding Demo** tab
+1. Click on the **XSS Automatic HTML Encoding Demo** tab
 
     On this tab we have a simple app which has a greeting message to the user
 
@@ -103,11 +94,17 @@ Let’s see this in action in our Kingdom management org.
 
     You may notice that to construct this greeting the app utilizes the URL parameter name as a input.
 
-2. Try changing value of the name parameter to something different like *THIS IS A TEST* and the message should change
+2. Try changing value of the **name** URL parameter to something different like *THIS IS A TEST*. 
+ 
+    Your URL should look something like this:
+    
+    ```
+    https://c.[yourinstance].visual.force.com/apex/xss_automatic_html_encoding_demo?name=This is a test
+    ```
 
-    Let’s see if this is vulnerable to XSS by using an attack payload similar to one that we’ve used before
+    When you hit enter the message should have changed to render the value of the URL parameter. Let’s see if this is vulnerable to XSS by using an attack payload similar to one that we’ve used before.
 
-3. Change the name parameter to ` <img src="test" onerror="alert(‘THIS IS AN XSS ATTACK’)"/>`
+3. Change the value of the name URL parameter to ` <img src="test" onerror="alert(‘THIS IS AN XSS ATTACK’)"/>`
 
     Wait...the alert message didn’t pop up. Why?
 
@@ -126,18 +123,18 @@ While it’s great that Salesforce provides this functionality for developers ou
 
 Let’s see what happens when this attribute is set to false in our demo org.
 
-1. Click on the **XSS Disabling HTML Encoding Demo** tab
+1. Click on the **XSS Disabling HTML Encoding** tab
   
-    You’ll see the same app as before. It’s a simple app designed to take in the value of the url parameter name and inserts it into a greeting message. However this time the visualforce page is applying some extra styling to the merge field.
+    You’ll see the same app as before. It’s a simple app designed to take in the value of the URL parameter **name** and insert it into a greeting message. However this time the visualforce page is applying some extra styling to the merge field.
 
-2. Click on the visualforce link at the bottom to see the code
+2. Click on the **Visualforce Page** link at the bottom to see the code
 
     ` <apex:outputlabel value="Hello <b>{!name}</b>!" escape="false"/>`
   
     The platform encoding is explicitly disabled by the addition fo the escape = “false” attribute.
 
-3. Navigate back to **XSS Disable HTML Encoding** tab 
-4. Set the name parameter to one of our XSS attack payloads: ` <img src="test" onerror="alert('THIS IS AN XSS ATTACK')"/>`
+3. Navigate back to **XSS Disabling HTML Encoding** tab 
+4. Just as we did in the previous demo, set the value of the name URL parameter to one of our XSS attack payloads: ` <img src="test" onerror="alert('THIS IS AN XSS ATTACK')"/>`
 
     <img src="images/6.png" width="70%" height="70%">
 
@@ -148,34 +145,6 @@ While disabling encoding may be necessary for certain use cases, you should exer
 ## Salesforce Default Protections in Different Execution Contexts
 
 As we’ve seen from our above demos the platform automatically HTML encodes merge fields (assuming you have not explicitly disabled it) protecting you from XSS attacks. However this protection is specific to fields utilized HTML context. What about other contexts like script and style? Let’s find out! 
-
-### HTML Context
-
-The first context that we’ll look at is HTML context. Remember that unless explicitly disabled Salesforce will automatically HTML encode any merge fields included in HTML context. 
-
-Let’s dive into some examples in your developer org
-
-1. Click on the **XSS in HTML Context** Tab
-2. Click on the **Visualforce Page** link at the bottom to view the source code
-3. Search for ` {!$CurrentPage.parameters.userInput}` in the code and you should see two instances of this variable being used
- 
-     ``` html
-     <apex:outputtext>
-        {!$CurrentPage.parameters.userInput} 
-     </apex:outputtext>
-
-     <div onclick=”console.log(‘{!$CurrentPage.parameters.userInput}’)”>Click me!</div>
-    ```
-  
-  The first as we’ve discussed extensively is safe, the platform automatically encodes all merge fields included in HTML context. But what about the second?
-
-4. Navigate back to the **XSS in HTML Context** tab
-5. Change the URL parameter **userInput** to the following value test'); alert('XSS
-6. Click on **Click me!**
-
-    <img src="images/7.png" width="70%" height="70%">
-
-Why did this work? If you look again at the code from Step 3 userInput is rendered with a JavaScript execution context embedded with an HTML context. Therefore **The auto-HTML encoding alone is insufficient**. So it’s important to remember if your application passes through multiple parsing contexts, the default protection **isn’t fully sufficient**.
 
 ### Script Context
 
@@ -195,6 +164,12 @@ When inserting merge fields into JavaScript, watch out for XSS vulnerabilities. 
 
 3. Navigate back to the **XSS in Script Context** tab
 4. Try typing in the following string for the userInput URL parameter ` ‘;alert(‘XSS’);//` 
+
+    HINT: The URL in a your address bar should look something like this
+    
+    ```
+    https://c.[yourinstance].visual.force.com/apex/XSS_in_Script_Context?userInput=';alert('XSS');//
+    ```
  
     <img src="images/8.png" width="70%" height="70%">
 
@@ -202,18 +177,26 @@ Yes it is vulnerable! So keep in mind that any user input is inserted into scrip
 
 ### Style Context
 
-CSS (cascading style sheets) is an increasingly complex language that is slowly becoming standardized across browsers. Modern browsers don’t allow JavaScript injection within CSS attribute values. However, some older browsers do. As a result, be careful about utilizing merge fields within a style context.
+CSS (cascading style sheets) is an increasingly complex language that is slowly becoming standardized across browsers. Modern browsers don’t allow JavaScript injection within CSS attribute values. However, some older browsers do. As a result, be careful about utilizing merge fields within style context.
 
 Let see what a vulnerable app would look like in your developer org!
 
 1. Click on the **XSS in Style Context** tab
 2. Click on the **Visualforce Page** link at the bottom of the screen to view the source code
 
+    ```
+    <style type="text/css">
+      p{ background-color: {!color};}
+    </style>
+    
+    <p> <b>This is some styled text </b></p>
+    ```
+
     You’ll notice in this simple app the developer is using the variable “color” in order to add additional style to the paragraph attribute.
 
-3. Navigate back to the **XSS in Style Context** tab and try entering different values for the URL parameter color like red
+3. Navigate back to the **XSS in Style Context** tab and try entering different values for the URL parameter color like green or blue
   
-    The background color of the page should change! User controllable input that’s being used directly in the visualforce page, is this vulnerable to XSS attacks?
+    The background color of the page should change! User controllable input that’s being used directly in the visualforce page....is this vulnerable to XSS attacks?
 
 4. Try entering the following for the color parameter ``` blue</style><img src=x onerror="alert(1)"/>```
 
@@ -221,21 +204,13 @@ Let see what a vulnerable app would look like in your developer org!
 
     <img src="images/9.png" width="70%" height="70%">
   
-So as you can see, the default automatic HTML encoding doesn’t apply and the application is vulnerable to XSS.
-
-## Identify potential cross-site scripting vectors.
-
-1. In your Kingdom Management developer org, navigate to the **Built-In XSS Protections Challenge** tab. You will see text output corresponding to merge fields in the Visualforce code.
-2. Use the link on the bottom of the page to edit the Visualforce page Built_In_XSS_Protections_Challenge, or access the code through the developer console or your favorite IDE.
-3. Locate any usage of the merge field ```{!sampleMergeField}```. Edit the code comment beneath the merge field to indicate whether or not this code block is vulnerable to cross-site scripting. 
-  * If the code is vulnerable, the comment should appear as ```<!-- Line 10 is vulnerable to XSS: YES -->```
-  * If the code is not vulnerable, the comment should appear as ```<!-- Line 10 is vulnerable to XSS: NO-->```
+So as you can see, the default automatic HTML encoding doesn’t apply here and the application is vulnerable to XSS. Again be very careful about any use of merge fields in style context as it will leave your applications vulnerable to XSS attacks.
   
 # Prevent XSS in Force.com Applications
 
 ## Platform Provided Encoding Functions 
 
-While the automatic HTML encoding provided by the platform is a fantastic default protection for a majority of use cases, it’s not a complete solution. Luckily Salesforce provides encoding functions in both Visualforce and Apex. In this unit, we’ll cover each of these along with example code that you can walk through to learn how to remediate XSS vulnerabilities.
+While the automatic HTML encoding provided by the platform is a fantastic default protection for a majority of use cases, it’s not a complete solution for developers that more customized applications. Luckily Salesforce provides output encoding functions for both Visualforce and Apex that you can leverage to fortify your code.
 
 ## Platform Encoding in Visualforce
 
@@ -243,22 +218,22 @@ In Visualforce, the platform has three main encoding functions that developers c
 
   * If the value is going to parsed by the JavaScript parser, use JSENCODE().
   * If the value is going to parsed by the HTML parser, use HTMLENCODE().
-  * If it’s a combination of both …
+  * If it’s a combination of both use JSINHTMLENCODE().
 
 We’ll give examples to illustrate where and when to apply each encoding function.
 
 ## JSENCODE()
 
-**JSENCODE()** is a function that developers can use to perform JavaScript encoding of input prior to reflection in JavaScript context. This function encodes text and merge field values for use in JavaScript by inserting escape characters, such as a backslash (\), before unsafe JavaScript characters, such as the apostrophe ('). The function is used in cases where a merge field is directly used as a JavaScript variable.
+**JSENCODE()** is a function that developers can use to perform JavaScript encoding of input prior to reflection in JavaScript context. This function encodes text and merge field values for use in JavaScript by inserting escape characters, such as a backslash before unsafe JavaScript characters, such as the apostrophe ('). The function is used in cases where a merge field is directly used as a JavaScript variable.
 
 ## JSENCODE() in Action!
 
 Now let’s learn how to fix a JavaScript-based XSS vulnerabilities using JSENCODE.
 
-1. Click the **XSS Visualforce Mitigations Demo** tab.
-2. Click the **JavaScript-based XSS** button to demo the vulnerability.
+1. Click the **XSS Visualforce Mitigations** tab.
+2. Click the **Click here to view the JavaScript-based XSS** button to demo the vulnerability.
 
-    You should see an image-based XSS injected into the page, defacing it. 
+    You should see a alert box pop up on your screen.
 
 3. Click the **Visualforce Page** and **Apex** links at the bottom of the page to find the vulnerable code.
   
@@ -266,9 +241,9 @@ Now let’s learn how to fix a JavaScript-based XSS vulnerabilities using JSENCO
 
     ``` java 
     public pageReference JSXSS(){
-        title = 'THEME VIOLATION!!!!\';var newHTML = document.createElement(\'div\');newHTML.innerHTML = \'<img src="https://developer.salesforce.com/resource/images/astro.png" />\';document.body.appendChild (newHTML);var x =\'x';
+        title = 'Test title\'; alert(\'This is a Javascript based XSS!\');//';
         return null;
-      }
+    }
     ```
     
     **Visualforce**:
@@ -282,15 +257,15 @@ Now let’s learn how to fix a JavaScript-based XSS vulnerabilities using JSENCO
     <apex:commandButton value="Click here to view the JavaScript-based XSS!" action="{!JSXSS}"/>
     ```
     
-    You’ll notice that when the button is clicked on line 36 it called the JSXSS function in Apex. This function sets the title to a XSS payload which is then rendered in Visualforce on line 14. 
+    You’ll notice that when the button is clicked it calla the JSXSS function in Apex. This function sets the title to a XSS payload which is then rendered in Visualforce. 
 
-    We’ll need to put some encoding around the output in line 14 to prevent this attack!
+    We’ll need to put some encoding around this output in visualforce to prevent this attack!
 
-4. Edit the Visualforce page by changing line 14 to `Var vip = ‘{!JSENCODE(title)}’;`.
+4. Edit the Visualforce page by wrapping the title merge field in JSENCODE like the following: `var vip = ‘{!JSENCODE(title)}’;`.
 5. Click **Save** and navigate back to the **XSS Visualforce Mitigations Demo**.
 6. Click the **JavaScript-based XSS** button again.
 
-If no image appears on the screen, then you’ve successfully mitigated XSS!
+If no popup appears on the screen, then you’ve successfully mitigated XSS!
 
 ## HTMLENCODE()
 
@@ -298,16 +273,15 @@ If no image appears on the screen, then you’ve successfully mitigated XSS!
 
 ## HTMLENCODE() in Action
 
-In the Kingdom Management app, you’ve started developing a profile page. Your eventual goal is to include a “friend finder” feature. Because users have control over the values in their profiles, you need to make sure you protect against XSS. Let’s go through it.
+Now let’s learn how to fix HTML-based XSS vulnerabilities using HTMLENCODE().
 
 1. Click the **XSS Visualforce Mitigations Demo** tab.
+2. Click the button labeled **Click here to view the HTML-based XSS**.
 
-    On the Visualforce page you see the various parts of the user profile, as well as buttons for testing cross-site scripting. These should save some time while testing your defenses! 
+    An XSS in the form of a embedded image appears on the page. Remember: defacement is also a valid impact of XSS. 
 
-2. Click the first button labeled **Click here to view HTML-based XSS**.
-
-    An XSS in the form of a embedded image appears on the page. This code is injected via the user parameter in the URL:  
-    https://c.na35.visual.force.com/apex/xss_visualforce_mitigations_demo?user=THEME+VIOLATION%21%21%21%21+%3Cimg+src%3D%22https%3A%2F%2Fdeveloper.salesforce.com%2Fresource%2Fimages%2Fastro.png%22%2F%3E
+    This code is injected via the user parameter in the URL:  
+    https://c.[yourinstance].visual.force.com/apex/xss_visualforce_mitigations_demo?user=THEME+VIOLATION%21%21%21%21+%3Cimg+src%3D%22https%3A%2F%2Fdeveloper.salesforce.com%2Fresource%2Fimages%2Fastro.png%22%2F%3E
 
 3. Use the link at the bottom of the page to view the Visualforce code and you see the following.
   
@@ -326,11 +300,11 @@ In the Kingdom Management app, you’ve started developing a profile page. Your 
 5. Click **Save** and navigate back to the **XSS Visualforce Mitigations Demo** tab.
 6. Click the **HTML-based XSS** button again.
 
-The name looks strange, but there’s no theme violation. You prevented the XSS!
+The injected image no longer renders. You prevented the XSS!
 
 ## JSINHTMLENCODE()
 
-**JSINHTMLENCODE** is a legacy Visualforce function that was introduced when the platform didn’t always automatically HTML encode merge-fields. JSINHTMLENCODE is effectively a combination of HTMLENCODE(JSENCODE()), so before the introduction of auto-HTML encoding, developers called this function when including merge-fields in JavaScript event handlers within HTML (that is, onerror, onload). Now that the platform auto-HTML encodes, it’s sufficient to just call JSENCODE().
+**JSINHTMLENCODE** is a Visualforce encoding function that was introduced when the platform didn’t always automatically HTML encode merge-fields. JSINHTMLENCODE is effectively a combination of HTMLENCODE(JSENCODE()), so before the introduction of auto-HTML encoding, developers called this function when including merge-fields in JavaScript event handlers within HTML (that is, onerror, onload). Now that the platform auto-HTML encodes, it’s sufficient to just call JSENCODE() in most cases. However there are still some cases where you'll want to ensure that you're using the full JSINHTMLENCODE() function. We'll demo one below! 
 
 ## JSINHTMLENCODE in Action!
 
@@ -358,6 +332,7 @@ Let’s try out the JSINHTMLENCODE function.
     [...]
     <apex:commandButton value="Click here to view the JavaScript + HTML-based XSS!" action="{!JSINHTMLXSS}"/>
     ```
+
     **Apex**:
     
     ``` java
@@ -367,13 +342,20 @@ Let’s try out the JSINHTMLENCODE function.
     }
     ```
 
-    When the user clicks the commandButton the application called the JSINHTMLXSS function in Apex. This function sets a XSS payload to the color variable that is then processed by Visualforce.
+    When the user clicks the commandButton the application calls the JSINHTMLXSS function in Apex. This function sets a XSS payload to the **color** variable that is then processed by Visualforce.
 
-    However, this time we’re wrapping the color variable in JSENCODE back in the visualforce page before rendering it to the user. So why is this still a vulnerability? 
+    However, this time we’re wrapping the **color** variable in JSENCODE back in the visualforce page before rendering it to the user. So why is this still a vulnerability? 
 
-    JSENCODE is an encoder specific to JavaScript context, so it prevents any JavaScript-based XSS such as “blue’;alert(‘hi’);//”. However, in this application our color variable is not just used in JavaScript context; it’s also written directly to the DOM via the innerHTML call, rendering the data as HTML. Therefore, in order to fully protect this application against XSS, both forms of encoding are required: JavaScript and HTML. Luckily, there is a combo encoding method provided by the platform: JSINHTMLENCODE().
+    JSENCODE is an encoder specific to JavaScript context, so it prevents any JavaScript-based XSS such as “blue’;alert(‘hi’);//”. However, in this application our **color** variable is not just used in JavaScript context; it’s also written directly to the DOM via the innerHTML call, rendering the data as HTML. Therefore, in order to fully protect this application against XSS, both forms of encoding are required: JavaScript and HTML. Luckily, there is a combo encoding method provided by the platform: JSINHTMLENCODE().
 
-4. Modify the Apex to use JSINHTMLENCODE() rather than JSENCODE().
+4. Modify the Apex to use JSINHTMLENCODE() rather than JSENCODE(). 
+  
+    Your visualforce should look like:
+
+    ```
+    html += '<br/>Favorite color: {!JSINHTMLENCODE(color)}';
+    ```
+
 5. Click **Save**.
 6. Navigate to the **XSS Visualforce Mitigations Demo** tab.
 7. Click the **JavaScript + HTML-based XSS** button again, and this time the embedded image shouldn’t appear.
@@ -401,29 +383,15 @@ We installed the Force.com ESAPI package in the Kingdom Management developer org
 
     You may remember from our discussion earlier that setting the escape attribute to false disables the built in HTML encoding provided by the platform. 
 
-3. View the apex controller by clicking the link at the bottom of the page to see why the developers have done this.
+3. View the Apex controller by clicking the link at the bottom of the page to see why the developers have done this.
 
-    Everything is wrapped in the ` <b>` tag! To maintain the designed effect, the encoding will need to occur in Apex, focused specifically on the user controlled values.
+    Everything is wrapped in the ` <b>` tag in each of the getters! To maintain the designed effect, the encoding will need to occur in Apex, focused specifically on the user controlled values.
 
-4. Edit the controller and for each item that is sent to the page inside HTML content, wrap it in the ESAPI.encoder().SFDC_HTMLENCODE() method, as in this example.
+4. Edit the controller and wrap each of the getters in the ESAPI.encoder().SFDC_HTMLENCODE() method, as in this example.
   
-    `title = '<b>' + ESAPI.encoder().SFDC_HTMLENCODE(person.Title__c) +'</b>';`
+    `return '<b>' + ESAPI.encoder().SFDC_HTMLENCODE(title) +'</b>';`
 
 5. Click **Save** and return to the **XSS Apex Mitigations Demo** tab
 6. Click the **View the HTML-based XSS!** button again
 
 You should see that the encoding functions neutralized that attack payloads but kept the rest of the data bolded as desired. All functionality is maintained even with the addition of security!
-
-## Final Challenge
-
-**Title**: Fix potential cross-site scripting vectors.
-
-**Description**: To complete this challenge, implement the correct cross-site scripting mitigation for each situation presented in the code. Some situations don’t require any mitigation at all. 
-
-**Requirements**:
-
-1. Navigate to the **XSS Mitigations Challenge**tab. You will see text output corresponding to merge fields in the Visualforce code.
-2. Use the link on the bottom of the page to edit the Visualforce page XSS_Mitigations_Challenge.
-3. Locate any usage of the merge field ```{!sampleMergeField}```. Review each instance of this merge field and wrap it in one of the following methods: **HTMLENCODE()**, **JSENCODE()**, **JSINHTMLENCODE()**. If the merge field doesn’t need any encoding, don’t make any changes to it.
-
-
