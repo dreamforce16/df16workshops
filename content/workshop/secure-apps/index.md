@@ -395,3 +395,7 @@ We installed the Force.com ESAPI package in the Kingdom Management developer org
 6. Click the **View the HTML-based XSS!** button again
 
 You should see that the encoding functions neutralized that attack payloads but kept the rest of the data bolded as desired. All functionality is maintained even with the addition of security!
+
+## Take Away XSS Challenge ##
+
+Place holder. More details later.
