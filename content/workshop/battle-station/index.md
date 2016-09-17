@@ -41,7 +41,7 @@ You will install the unmanaged package in your Developer Edition org.
 1. <a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04t28000000HAQs" target="_blank">Click here to install</a> the unmanaged package to get the Battle Station app metadata.
 <img src="images/packageInstall.png" width="90%" height="90%"/>
 
-2. Observe and understand the setup, i.e., the custom objects, fields and the report that are installed by the package, either in the Lightning Schema Builder or directly in the Setup. If you are using the Schema Builder, click "Clear All" in the object selection panel and select the Objects "Battle Station", "Resource" and "Supply". Schema Builder can be found by searching for "schema builder" in the Setup search.
+2. Observe and understand the setup, i.e., the custom objects, fields and the report that are installed by the package, either in the Schema Builder or directly in the Setup. If you are using the Schema Builder, click "Clear All" in the object selection panel and select the Objects "Battle Station", "Resource" and "Supply". Schema Builder can be found by searching for "schema builder" in the Setup search.
 <img src="images/schemaSetup.png" width="90%" height="90%"/>
 <img src="images/schemaBuilder.png" width="90%" height="90%"/>
 
@@ -215,12 +215,26 @@ You will create another Lightning component which shows a a single Battle Statio
 	    
 	</aura:component>
 	```
+3. Click on Controller in the right panel to open the client-side javascript controller section of the bundle.
 
-3. Add this new component to the previous BattleStationsList component's markup. To do so, open the `BattleStationsList` component markup and add the following line of markup inside the `aura:iteration` component.
+4. Clear the default Javascript code and replace with below code, and Save:
+	```javascript
+	({
+		loadDetail : function(component, event, helper) {
+	        var station = component.get("v.stationItem");
+	        var loadEvent = $A.get("e.c:StationClickEvent");
+	        loadEvent.setParams({"station":station,"new":false});
+	        loadEvent.fire();
+		},
+	})
+	```
+
+5. Add this new component to the previous BattleStationsList component's markup. To do so, open the `BattleStationsList` component markup and add the following line of markup inside the `aura:iteration` component.
 	```html
 	<c:BattleStationItem stationItem="{!station}"/>
 	```
 <img src="images/itemToList.png" width="90%" height="90%"/>
+
 
 
 ### <a name="step5"></a>Step 5: Create a BattleStationDetail component
