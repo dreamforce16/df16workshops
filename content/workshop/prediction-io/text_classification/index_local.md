@@ -133,16 +133,71 @@ pio=> select * from pio_meta_apps;
 
 We are going to upload emails and stopwords stored in json files.
 
+We will use a Scala Application cloned from [https://github.com/rajdeepd/pio-upload-data](https://github.com/rajdeepd/pio-upload-data) to upload data. It will make a Http Post request and upload email and stop word data.
 
+Sample email event
 
-``` bash
+``` json
 
-$ cd ~/pio-upload-data
-$ ./sbt "runMain UploadEmails"
-$ ./sbt "runMain UploadStopWords"
-
+{
+  "eventTime": "2015-06-08T16:45:00.595+0000",
+  "entityId": 2,
+  "properties": {
+    "text": " some spam text",
+    "label": "spam"
+  },
+  "event": "e-mail",
+  "entityType": "content"
+}
 
 ```
+
+
+1. Copy application.conf.sample to application.conf as shown below
+
+    ``` bash
+
+    $ cd pio-upload-data
+    $ cp pio-upload-data/src/main/resources/application.conf.sample \
+       pio-upload-data/src/main/resources/application.conf
+      
+    ```
+
+2. Open `application.conf` file
+
+    ``` bash
+
+    pio {
+      access_token = "TODO"
+      app_name = "TODO"
+      host = "localhost:7070"
+    }
+
+    ```
+    
+    Update with appropriate values as shown below
+
+
+    ``` bash
+      
+    pio {
+      access_token = "2eNMw5lydFtFl4uT..Jz9sIEUuigshZJHttReO5lpiNDeZwELVV3_7"
+      app_name = "MyTextLR"
+      host = "rd-pio-eventserver-1.herokuapp.com"
+    }
+
+    ```
+3. Execute the following commands on `UploadEmails` and `UploadStopWords` 
+
+
+    ``` bash
+
+    $ cd ~/pio-upload-data
+    $ ./sbt "runMain UploadEmails"
+    $ ./sbt "runMain UploadStopWords"
+
+
+    ```
 
 Check the data generated using the following curl command
 
@@ -204,6 +259,8 @@ Response
 
    ```
 
+
+**Note:** If the confidence level is showing as Nan, it means the data used to train is not sufficient for calculating the confidence level.
 
 
 
