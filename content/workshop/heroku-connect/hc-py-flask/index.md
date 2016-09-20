@@ -44,6 +44,14 @@ This app has four rest endpoints
     @app.route('/create_contact', methods=['POST','GET']) which creates a new contact
     @app.route('/contactform') which serves an HTML Form for entering new contact details
 
+## Prerequisites
+
+This workshop assumes you have following setup
+
+* [Heroku Login](https://signup.heroku.com/)
+* [Heroku CLI] (https://devcenter.heroku.com/articles/heroku-command-line#download-and-install)
+* PostgreSQL client 
+
 ## Clone the Source Code 
 
 ``` bash

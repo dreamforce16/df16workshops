@@ -22,9 +22,9 @@ Source code of this workshop resides in two repos listed below
 * https://github.com/rajdeepd/pio-engine-textclassfication-heroku
 * https://github.com/rajdeepd/pio-upload-data
 
-**pio-eventserver-heroku** : Provdes storage for events being generated based on which we want to create our training model.
+**pio-eventserver-heroku** : Provides storage for events being generated based on which we want to create our training model.
 
-**pio-textclassfication-engine-heroku** : Engine which wraps the Logitical Regression Algorithm implementation and provides APIs to create a model, train it and use it to make prediction.
+**pio-textclassfication-engine-heroku** : Engine which wraps the Logistical Regression Algorithm implementation and provides APIs to create a model, train it and use it to make prediction.
 
 We will be using PostgreSQL database for this workshop.
 
@@ -47,17 +47,27 @@ $ git clone https://github.com/rajdeepd/pio-upload-data
 
 Make sure PostgreSQL server is running locally
 
+**Linux**
+
 ``` bash
 
 $ sudo service postgresql status
-9.3/main (port 5432): online
-9.4/main (port 5433): online
-9.5/main (port 5434): online
 
 ```
+
+**Mac OS X**
+
+``` bash
+
+$ /Library/PostgreSQL/9.6/bin/pg_ctl restart -D /Library/PostgreSQL/9.6/data/
+
+```
+
 Create a pio role with password pio in PostgreSQL
 
-``` 
+``` bash
+
+CREATE USER pio WITH PASSWORD 'pio';
 
 ```
 
@@ -66,13 +76,15 @@ Create a pio role with password pio in PostgreSQL
 Use the following command to run the Event Server.
 
 ``` bash
+
 source bin/env.sh && ./sbt run
 
 ```
+
 ## Step 4 : Create an Event Application
 
 ``` bash
-
+cd pio-eventserver-heroku
 source bin/env.sh && ./sbt \
   "runMain io.prediction.tools.console.Console app new MyAppText"
 
