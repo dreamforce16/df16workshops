@@ -26,8 +26,10 @@ $ Defaults write com.apple.finder AppleShowAllFiles TRUE
 
 Now goto .bash_profile--->open with text editor and set the below variables
 
-export M2_HOME=/Users/username/apache-maven-3.3.9/
-export PATH=$PATH:/Users/username/apache-maven-3.3.9/bin
+```
+   export M2_HOME=/Users/username/apache-maven-3.3.9/
+   export PATH=$PATH:/Users/username/apache-maven-3.3.9/bin
+```
 And save the page.
 
 ### Step 5: Goto Terminal and check maven is installed or not.

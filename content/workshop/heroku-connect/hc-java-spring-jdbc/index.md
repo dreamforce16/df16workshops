@@ -35,7 +35,7 @@ Figure 1 : Heroku-Connect Spring Boot Data flow
 Figure 1 show the  how HerokuConnect Add-On interacts with Heroku PostgreSQL and Force.com behind the scenes.
 
 
-Note : Make sure you have Java 1.8, Maven 3.3.3 installed and [Heroku Toolbelt](https://toolbelt.heroku.com/)
+Note : Make sure you have Java 1.8, [Maven 3.3.3](https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/heroku-connect/hc-java-spring-jdbc/MavenInstallation.md) installed and [Heroku Toolbelt](https://toolbelt.heroku.com/)
 
 
 We will be using a Spring Boot Sample app available at [heroku connect spring boot](https://github.com/rajdeepd/heroku-connect-spring-boot-jdbc-rw)
