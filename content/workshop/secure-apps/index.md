@@ -222,19 +222,9 @@ Let see what a vulnerable app would look like in your developer org!
 
     <img src="images/9.png" width="70%" height="70%">
   
-<<<<<<< HEAD
-So as you can see, the default automatic HTML encoding doesn’t apply and the application is vulnerable to XSS.
 
-## Identify potential cross-site scripting vectors
-
-1. In your Kingdom Management developer org, navigate to the **Built-In XSS Protections Challenge** tab. You will see text output corresponding to merge fields in the Visualforce code.
-2. Use the link on the bottom of the page to edit the Visualforce page Built_In_XSS_Protections_Challenge, or access the code through the developer console or your favorite IDE.
-3. Locate any usage of the merge field ```{!sampleMergeField}```. Edit the code comment beneath the merge field to indicate whether or not this code block is vulnerable to cross-site scripting. 
-  * If the code is vulnerable, the comment should appear as ```<!-- Line 10 is vulnerable to XSS: YES -->```
-  * If the code is not vulnerable, the comment should appear as ```<!-- Line 10 is vulnerable to XSS: NO-->```
-=======
 So as you can see, the default automatic HTML encoding doesn’t apply here and the application is vulnerable to XSS. Again be very careful about any use of merge fields in style context as it will leave your applications vulnerable to XSS attacks.
->>>>>>> upstream/master
+
   
 # Prevent XSS in Force.com Applications
 
@@ -287,7 +277,7 @@ Now let’s learn how to fix a JavaScript-based XSS vulnerabilities using JSENCO
     <apex:commandButton value="Click here to view the JavaScript-based XSS!" action="{!JSXSS}"/>
     ```
     
-    You’ll notice that when the button is clicked it calla the JSXSS function in Apex. This function sets the title to a XSS payload which is then rendered in Visualforce. 
+    You’ll notice that when the button is clicked it calls the JSXSS function in Apex. This function sets the title to a XSS payload which is then rendered in Visualforce. 
 
     We’ll need to put some encoding around this output in visualforce to prevent this attack!
 
