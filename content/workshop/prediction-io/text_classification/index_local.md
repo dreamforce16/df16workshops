@@ -22,9 +22,9 @@ Source code of this workshop resides in two repos listed below
 * https://github.com/rajdeepd/pio-engine-textclassfication-heroku
 * https://github.com/rajdeepd/pio-upload-data
 
-**pio-eventserver-heroku** : Provdes storage for events being generated based on which we want to create our training model.
+**pio-eventserver-heroku** : Provides storage for events being generated based on which we want to create our training model.
 
-**pio-textclassfication-engine-heroku** : Engine which wraps the Logitical Regression Algorithm implementation and provides APIs to create a model, train it and use it to make prediction.
+**pio-textclassfication-engine-heroku** : Engine which wraps the Logistical Regression Algorithm implementation and provides APIs to create a model, train it and use it to make prediction.
 
 We will be using PostgreSQL database for this workshop.
 
@@ -47,17 +47,27 @@ $ git clone https://github.com/rajdeepd/pio-upload-data
 
 Make sure PostgreSQL server is running locally
 
+**Linux**
+
 ``` bash
 
 $ sudo service postgresql status
-9.3/main (port 5432): online
-9.4/main (port 5433): online
-9.5/main (port 5434): online
 
 ```
+
+**Mac OS X**
+
+``` bash
+
+$ /Library/PostgreSQL/9.6/bin/pg_ctl restart -D /Library/PostgreSQL/9.6/data/
+
+```
+
 Create a pio role with password pio in PostgreSQL
 
-``` 
+``` bash
+
+CREATE USER pio WITH PASSWORD 'pio';
 
 ```
 
@@ -66,13 +76,15 @@ Create a pio role with password pio in PostgreSQL
 Use the following command to run the Event Server.
 
 ``` bash
+
 source bin/env.sh && ./sbt run
 
 ```
+
 ## Step 4 : Create an Event Application
 
 ``` bash
-
+cd pio-eventserver-heroku
 source bin/env.sh && ./sbt \
   "runMain io.prediction.tools.console.Console app new MyAppText"
 
@@ -133,16 +145,71 @@ pio=> select * from pio_meta_apps;
 
 We are going to upload emails and stopwords stored in json files.
 
+We will use a Scala Application cloned from [https://github.com/rajdeepd/pio-upload-data](https://github.com/rajdeepd/pio-upload-data) to upload data. It will make a Http Post request and upload email and stop word data.
 
+Sample email event
 
-``` bash
+``` json
 
-$ cd ~/pio-upload-data
-$ ./sbt "runMain UploadEmails"
-$ ./sbt "runMain UploadStopWords"
-
+{
+  "eventTime": "2015-06-08T16:45:00.595+0000",
+  "entityId": 2,
+  "properties": {
+    "text": " some spam text",
+    "label": "spam"
+  },
+  "event": "e-mail",
+  "entityType": "content"
+}
 
 ```
+
+
+1. Copy application.conf.sample to application.conf as shown below
+
+    ``` bash
+
+    $ cd pio-upload-data
+    $ cp pio-upload-data/src/main/resources/application.conf.sample \
+       pio-upload-data/src/main/resources/application.conf
+      
+    ```
+
+2. Open `application.conf` file
+
+    ``` bash
+
+    pio {
+      access_token = "TODO"
+      app_name = "TODO"
+      host = "localhost:7070"
+    }
+
+    ```
+    
+    Update with appropriate values as shown below
+
+
+    ``` bash
+      
+    pio {
+      access_token = "2eNMw5lydFtFl4uT..Jz9sIEUuigshZJHttReO5lpiNDeZwELVV3_7"
+      app_name = "MyTextLR"
+      host = "rd-pio-eventserver-1.herokuapp.com"
+    }
+
+    ```
+3. Execute the following commands on `UploadEmails` and `UploadStopWords` 
+
+
+    ``` bash
+
+    $ cd ~/pio-upload-data
+    $ ./sbt "runMain UploadEmails"
+    $ ./sbt "runMain UploadStopWords"
+
+
+    ```
 
 Check the data generated using the following curl command
 
@@ -204,6 +271,8 @@ Response
 
    ```
 
+
+**Note:** If the confidence level is showing as Nan, it means the data used to train is not sufficient for calculating the confidence level.
 
 
 
