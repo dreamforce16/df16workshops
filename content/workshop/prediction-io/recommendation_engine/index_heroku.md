@@ -6,6 +6,22 @@ title = "Build a Recommendation Engine with Prediction IO : Heroku"
 +++
 
 1. [Introduction](#introduction)
+<<<<<<< HEAD
+2. [Pre-requisities](#pre-requisities)
+3. [Source Code](#source-code)
+ * [Clone the Source code](#clone-the-source-code)
+ * [Create a Heroku App](#create-a-heroku-app)
+4. [Create a new app](#create-a-new-app)
+5. [Populate Event Server with Events](#populate-event-server-with-events)
+ * [Check the Events Inserted in a Browser](#check-the-events-inserted-in-a-browser)
+6. [Deploy Recommendation Engine](#deploy-recommendation-engine)
+ * [Remove existing AddOn](#remove-existing-addon)
+ * [Configure DATABASE_URL to point to Event Server DB](#configure-database-url-to-point-to-event-server-db)
+7. [Configure the Heroku app](#configure-the-heroku-app)
+8. [Increase Heap size for Java VM](#increase-heap-size-for-java-vm)
+9. [Train](#train)
+10. [Predict](#predict)
+=======
 2. [Prerequisites](#prerequisites)
 3. [Source Code](#source-code)
 4. [Step 1 Clone the Source code ](#step-1-clone-the-source-code)
@@ -20,6 +36,7 @@ title = "Build a Recommendation Engine with Prediction IO : Heroku"
 13. [Step 10 Predict](#step-10-predict)
 
 
+>>>>>>> c366ac3c40e41321ee9d458e3449af72e3251f30
 
 ## Introduction
 
@@ -87,10 +104,10 @@ $ git remote -v
 
 ```
 ```
-heroku	https://git.heroku.com/rd-pio-eventserver-1.git (fetch)
-heroku	https://git.heroku.com/rd-pio-eventserver-1.git (push)
-origin	https://github.com/rajdeepd/pio-eventserver-heroku (fetch)
-origin	https://github.com/rajdeepd/pio-eventserver-heroku (push)
+heroku  https://git.heroku.com/rd-pio-eventserver-1.git (fetch)
+heroku  https://git.heroku.com/rd-pio-eventserver-1.git (push)
+origin  https://github.com/rajdeepd/pio-eventserver-heroku (fetch)
+origin  https://github.com/rajdeepd/pio-eventserver-heroku (push)
 
 ```
 
@@ -274,7 +291,11 @@ $ heroku config:set DATABASE_URL=postgres://rdatjvbvdwqvyq:nNL9b1cnjoQt8hCcQumEM
 
 ```
 
+<<<<<<< HEAD
+## Configure the Heroku app 
+=======
 ## Step 7 Configure the Heroku app
+>>>>>>> c366ac3c40e41321ee9d458e3449af72e3251f30
 
 ``` bash 
 heroku config:set ACCESS_KEY=<YOUR APP ACCESS KEY> APP_NAME=<APP NAME> EVENT_SERVER_IP=<YOUR EVENT SERVER HOSTNAME> EVENT_SERVER_PORT=80
@@ -397,15 +418,15 @@ Response will be similar to the listing below
 ``` json
 
 {"itemScores":
-	[
-		{
-			"item":"i44","score":0.2805472425881496
-		},
-		
-		{
-			"item":"i41","score":0.14458527026450552
-		}
-	]
+  [
+    {
+      "item":"i44","score":0.2805472425881496
+    },
+    
+    {
+      "item":"i41","score":0.14458527026450552
+    }
+  ]
 }
 
 ```

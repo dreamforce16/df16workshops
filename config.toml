@@ -1,6 +1,6 @@
 baseurl = "http://www.sfdcworkshop.com/"
 languageCode = "en-us"
-title = "Dreamforce 2016 Workshops"
+title = "Dreamforce 2016"
 PygmentsCodeFences=true
 pygmentsStyle="friendly"
 
