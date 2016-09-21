@@ -66,7 +66,7 @@ This is a basic Spring-boot app which uses PostgrSQL JDBC driver to connect to t
 Structure of the App is Listed below
 
   ```
-    |-- pom.xml
+  |-- pom.xml
   |-- Procfile
   |-- README.md
   |-- src
@@ -363,7 +363,7 @@ Complete Code Listing can be found at [HerokuConnectApplication](https://github.
 1. Execute the following commands to compile and build the jar file
   
   ``` bash
-  $ mvn compile
+    $ mvn compile
     $ mvn package
   ```
 2. Run the app using the following command locally
@@ -389,7 +389,7 @@ Before moving forward, get signup for a Heroku account [here](https://signup.her
 
   ``` bash
   $ heroku login       
-    $ heroku create
+  $ heroku create
   $ git push heroku master
   ```
 The App is deployed but still needs PostgreSQL to be configured along with Heroku Connect.
