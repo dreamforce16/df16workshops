@@ -260,10 +260,12 @@ Now let’s learn how to fix a JavaScript-based XSS vulnerabilities using JSENCO
     **Apex**:
 
     ``` java 
+    
     public pageReference JSXSS(){
         title = 'Test title\'; alert(\'This is a Javascript based XSS!\');//';
         return null;
     }
+
     ```
     
     **Visualforce**:

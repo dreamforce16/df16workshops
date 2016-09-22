@@ -31,6 +31,7 @@ In this workshop you will learn how to use Prediction IO Machine Learning librar
 * Heroku Account
 * Heroku CLI (git is part of Heroku CLI)
 * curl
+* [git-bash](https://github.com/msysgit/msysgit/releases/tag/Git-1.9.5-preview20141217) 
 
 Heroku account with Credit Card is required for two Dynos to run simultaneously
 

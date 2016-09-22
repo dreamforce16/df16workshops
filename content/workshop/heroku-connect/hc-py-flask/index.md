@@ -7,26 +7,26 @@ title = "Heroku Connect : Sync Heroku app with Salesforce using Python Flask"
 +++
 
 1. [Introduction](#introduction)
-2. [Clone the Source Code](#clone-the-source-code)
-3. [Install Virtual Environment](#install-virtual-environment)
-4. [Requirements File](#requirements-file)
-5. [Procfile](#procfile)
-6. [DB Initialization](#db-initialization)
-7. [Flask Controller](#flask-controller)
+2. [Prerequisites](#prerequisites)
+3. [Clone the Source Code](#clone-the-source-code)
+4. [Install Virtual Environment](#install-virtual-environment)
+5. [Requirements File](#requirements-file)
+6. [Procfile](#procfile)
+7. [DB Initialization](#db-initialization)
+8. [Flask Controller](#flask-controller)
   * [List Contacts](#list-contacts) 
   * [Create Contacts](#create-contacts)
-8. [Deploying to Heroku](#deploying-to-heroku)
-9. [Add PostgreSQL Add-On](#add-postgresql-add-on)
-10. [Add Heroku Connect Add-On](#add-heroku-connect-add-on)
-11. [Configure Heroku Connect Add-On](#configure-heroku-connect-add-on)
-12. [Home Page](#home-page)
-13. [Contact List](#contact-list)
-14. [Create a New Contact](#create-a-new-contact)
-15. [Show Contacts Locally](#show-contacts-locally)
-16. [Executing using PyCharm](#executing-using-pycharm)
+9. [Deploying to Heroku](#deploying-to-heroku)
+10. [Add PostgreSQL Add-On](#add-postgresql-add-on)
+11. [Add Heroku Connect Add-On](#add-heroku-connect-add-on)
+12. [Configure Heroku Connect Add-On](#configure-heroku-connect-add-on)
+13. [Home Page](#home-page)
+14. [Contact List](#contact-list)
+15. [Create a New Contact](#create-a-new-contact)
+16. [Show Contacts Locally](#show-contacts-locally)
 17. [Summary](#summary)
   
-# Introduction
+## Introduction
 
 This workshop shows how to **Create** and **Run** a Python app with psycopg2 which uses PostgreSQL based Heroku Connect
 
@@ -50,7 +50,11 @@ This workshop assumes you have following setup
 
 * [Heroku Login](https://signup.heroku.com/)
 * [Heroku CLI] (https://devcenter.heroku.com/articles/heroku-command-line#download-and-install)
-* PostgreSQL client 
+* Python 2.7
+* [pip](https://pip.pypa.io/en/stable/installing/) 
+* [virtualenv](https://virtualenv.pypa.io/en/stable/)
+* [git-bash](https://github.com/msysgit/msysgit/releases/tag/Git-1.9.5-preview20141217) (For Windows Only)
+* PostgreSQL client (Optional)
 
 ## Clone the Source Code 
 
@@ -304,27 +308,15 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
 
   Open the following URL :code:`http://localhost:5000/contacts` you should be able see the contacts.
 
-## Executing using PyCharm
 
-* Install the [Pycharm](https://www.jetbrains.com/pycharm/download/). And add your directory as a project to PyCharm.
-
-  <img src="images/pycharm1.png" width="90%" height="80%">
-
-* Set the Environment variable as `DATABASE_URL=postgres://<user_name>:<password>@<ipaddress>.compute-1.amazonaws.com:5432/<database_name>` by following the path File > Default Settings
-  
-  <img src="images/pycharm3.png" width="90%" height="80%">
-  
-* Click on `app.py` and run the app.
-
-  <img src="images/pycharm2.png" width="90%" height="80%">
-
-  Open the following URL `http://localhost:5000/contacts` you should be able see the contacts.
 
 ## Summary
 
   In this workshop we learnt how to configure a Python Flask Application to work with Heroku Connect. We used Psycopg2 driver for talking to the PostgreSQL database deployed on Heroku.
 
-  
+## Appendix
+
+[Execute using PyCharm](execute_using_pycharm)
 
   
   

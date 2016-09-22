@@ -6,27 +6,27 @@ title = "Heroku Connect : Sync Heroku app with Salesforce using Java Spring and 
 +++
 
 1. [Introduction](#introduction)
-2. [Clone the Source Code](#clone-the-source-code)
-  * [Code](#code)
-3. [About the Application](#about-the-application)
-4. [Get Contacts Implementation](#get-contacts-implementation)
-5. [Create Contact Form](#create-contact-form)
-6. [Complete code Listing for the Controller](#complete-code-listing-for-the-controller)
-7. [Compile the App Locally](#compile-the-app-locally)
+2. [Prerequisites](#prerequisites)
+3. [Clone the Source Code](#clone-the-source-code)
+4. [About the Application](#about-the-application)
+5. [Get Contacts Implementation](#get-contacts-implementation)
+6. [Create Contact Form](#create-contact-form)
+7. [Complete code Listing for the Controller](#complete-code-listing-for-the-controller)
+8. [Compile the App Locally](#compile-the-app-locally)
   * [Procfile](#procfile)  
-8. [Deploying to Heroku](#deploying-to-heroku)
+9. [Deploying to Heroku](#deploying-to-heroku)
   * [Add PostgreSQL Add-On](#add-postgresql-add-on)
   * [Add Heroku Connect Add-On](#add-heroku-connect-add-on)
   * [Configure Heroku Connect Add-On](configure-heroku-connect-add-on)
-9. [Connect to PostgreSQL from Local Instance](#connect-to-postgresql-from-local-instance)
+10. [Connect to PostgreSQL from Local Instance](#connect-to-postgresql-from-local-instance)
   * [Open the Remote App in Heroku](#open-the-remote-app-in-heroku)
   * [Show Contacts](#show-contacts)
   * [Create Contact](#create-contact)
-10. [Summary](#summary)
+11. [Summary](#summary)
 
 ## Introduction
 
-This article shows how to run a [Spring Boot](http://projects.spring.io/spring-boot/) with PostgreSQL JDBC driver which connects to the database populated by Heroku Connect.
+In this workshop you will learn how to run a [Spring Boot](http://projects.spring.io/spring-boot/) with PostgreSQL JDBC driver which connects to the database populated by Heroku Connect.
 
 <img src="images/heroku-connect-spring-boot-flow.png" width="70%" height="70%">
 
@@ -47,6 +47,17 @@ This app has four rest endpoints
 * `@app.route('/createcontactform')` shows the Create Contact Form
 * `@app.route('/createcontact')` Called by the Create Contact Form to insert form data into PostgreSQL `salesforce.contact`
 
+## Prerequisites
+
+This workshop assumes you have following setup
+
+* [Heroku Login](https://signup.heroku.com/)
+* [Heroku CLI] (https://devcenter.heroku.com/articles/heroku-command-line#download-and-install)
+* [Java 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) or above
+* [Maven 3.3.9](https://maven.apache.org/download.cgi) or above
+* [git-bash](https://github.com/msysgit/msysgit/releases/tag/Git-1.9.5-preview20141217) (For Windows Only)
+* PostgreSQL client (Optional)
+
 ## Clone the Source Code 
 
 Clone the source code using `git clone` and change into the cloned project directory `heroku-connect-spring-boot`
@@ -59,7 +70,7 @@ Clone the source code using `git clone` and change into the cloned project direc
   ```
 ### Code
 
-###### Note : For information only
+##### Note : For information only
 
 This is a basic Spring-boot app which uses PostgrSQL JDBC driver to connect to the PostgreSQL database and return the list of contacts. It uses Thymeleaf to render the HTML template.
 
@@ -119,7 +130,7 @@ We are using Thymeleaf templates for rendering the Contacts sent by the controll
 
 ### Controller
 
-###### Note : For information only
+##### Note : For information only
 
 Main Controller of the App is `HerokuConnectApplication` class which provides implementation of four rest Endpoints.
 
@@ -173,7 +184,7 @@ In Heroku dynos running on Heroku this environment variable is setup automatical
 
 ## Get Contacts Implementation
 
-###### Note : For information only
+##### Note : For information only
 
 In the implementation of `contacts(Model model)` method following steps are followed:
 
@@ -231,9 +242,11 @@ In the implementation of `contacts(Model model)` method following steps are foll
   
   Thymeleaf template `contact.html` below uses variable set in Model to retrieve and display list of contacts.
 
-    ``` html
+  ``` html
+
     <table>
-      <th><td>Id</td><td>SFID</td><td>First</td><td>Last</td><td>Email</td></th>
+      <th><td>Id</td><td>SFID</td><td>First</td><td>Last</td>
+          <td>Email</td></th>
       <tr th:each="contact : ${contacts}">
         <td></td>
         <td th:text="${contact.id}" ></td>
@@ -243,11 +256,12 @@ In the implementation of `contacts(Model model)` method following steps are foll
         <td th:text="${contact.email}" ></td>
         </tr>
     </table>
-    ```
+
+  ```
 
 ## Create Contact Form
 
-###### Note : For information only
+##### Note : For information only
 
 This implementation returns the `createcontact.html` Thymeleaf template Listed below.
 
@@ -304,7 +318,7 @@ Create Contact Form html
   
 ### Create Contact Rest Endpoint
 
-###### Note : For information only
+##### Note : For information only
 
 Listing below inserts the Contact data in the Database using JDBC.
 
@@ -323,13 +337,15 @@ Listing below inserts the Contact data in the Database using JDBC.
      Connection connection = getConnection();
      Statement stmt = connection.createStatement();
      String sql;
-     sql = "insert into salesforce.contact(firstname, lastname, email) values " +
-           "('" + first  + "', '" + last + " ',' " + email +  "');";
+     sql = 
+        "insert into salesforce.contact(firstname, lastname, email) values " +
+        "('" + first  + "', '" + last + " ',' " + email +  "');";
      int result = stmt.executeUpdate(sql);
   ```
   ``` java 
         @RequestMapping(value="/createcontact", method= RequestMethod.POST)
-        public String createContact(@ModelAttribute Contact contact, Model model) {
+        public String createContact(@ModelAttribute Contact contact, 
+          Model model) {
         model.addAttribute("contact", contact);
         int id = contact.getId();
         String first = contact.getFirst();
@@ -340,8 +356,10 @@ Listing below inserts the Contact data in the Database using JDBC.
             Connection connection = getConnection();
             Statement stmt = connection.createStatement();
             String sql;
-            sql = "insert into salesforce.contact(firstname, lastname, email) values " +
-                    "('" + first  + "', '" + last + " ',' " + email +  "');";
+            sql = 
+              "insert into salesforce.contact(firstname, lastname, email) " + 
+              "values " +
+              "('" + first  + "', '" + last + " ',' " + email +  "');";
             System.out.println(sql);
             int result = stmt.executeUpdate(sql);
             System.out.println("execute update returned: " + result);
@@ -375,7 +393,7 @@ Your app should now be running on [localhost:8080](https://localhost:8080)
 
 ### Procfile
 
-###### Note : For information only
+##### Note : For information only
 
 There is already a Procfile which tells the Heroku what kind of Dyno is required and the source for the application.
 
