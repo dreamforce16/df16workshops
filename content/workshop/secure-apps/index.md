@@ -396,6 +396,26 @@ We installed the Force.com ESAPI package in the Kingdom Management developer org
 
 You should see that the encoding functions neutralized that attack payloads but kept the rest of the data bolded as desired. All functionality is maintained even with the addition of security!
 
-## Take Away XSS Challenge ##
+## Take Home XSS Challenge
 
-Place holder. More details later.
+To wrap up everything that we have learned, we have created a special vulnerable app for you to practice spotting and mitigating XSS all on your own. To enable the app in your Kingdom Management developer org:
+
+1. Click on the **Setup** link
+2. Click *Manage Users -> Profiles -> System Administrator*
+3. Click the **Edit** button
+4. Click the checkbox next to **DF16 Workshop Challenge** to make our custom app visible
+5. Click the **Save** button
+6. Select the **DF16 Workshop Challenge** from the app selector in the top right corner
+
+You should see the following app on your screen:
+
+<img src="images/10.png" width="70%" height="70%">
+
+This is an app that is used to display the personnel in your kingdoms in a graph format. However this app was developed using insecure practices and is filled with spots where the application is vulnerable to XSS. 
+
+Your goal is to find **atleast 5** places where the app is vulnerable and mitigate them using the techniques learned in our workshop today. Remember to look for places where user input is being reflected in HTML/Style/JavaScript context without any encoding and/or places where the application is bypassing the default platform encoding.
+
+**Hint:** Take a look at the user Peter Dering in the graph.
+
+Good Luck!
+
