@@ -233,7 +233,7 @@ Now let’s learn how to fix a JavaScript-based XSS vulnerabilities using JSENCO
 1. Click the **XSS Visualforce Mitigations** tab.
 2. Click the **Click here to view the JavaScript-based XSS** button to demo the vulnerability.
 
-    You should see a alert box pop up on your screen.
+    You should see an image defacing the bottom left corner of your screen. Remember: defacement is also a valid impact of XSS.
 
 3. Click the **Visualforce Page** and **Apex** links at the bottom of the page to find the vulnerable code.
   
@@ -241,7 +241,8 @@ Now let’s learn how to fix a JavaScript-based XSS vulnerabilities using JSENCO
 
     ``` java 
     public pageReference JSXSS(){
-        title = 'Test title\'; alert(\'This is a Javascript based XSS!\');//';
+        title = 'THEME VIOLATION!!!!\';var newHTML = document.createElement(\'div\');newHTML.innerHTML = \'<img src="https://developer.salesforce.com/resource/images/astro.png" />\';document.body.appendChild (newHTML);var x =\'x';
+    
         return null;
     }
     ```
@@ -257,7 +258,7 @@ Now let’s learn how to fix a JavaScript-based XSS vulnerabilities using JSENCO
     <apex:commandButton value="Click here to view the JavaScript-based XSS!" action="{!JSXSS}"/>
     ```
     
-    You’ll notice that when the button is clicked it calla the JSXSS function in Apex. This function sets the title to a XSS payload which is then rendered in Visualforce. 
+    You’ll notice that when the button is clicked it calls the JSXSS function in Apex. This function sets the title to a XSS payload which is then rendered in Visualforce. 
 
     We’ll need to put some encoding around this output in visualforce to prevent this attack!
 
