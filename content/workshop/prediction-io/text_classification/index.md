@@ -5,5 +5,5 @@ title = "Text Classification : Spam Detection Engine using Logistical Regression
 
 +++
 
-* [Text Classification with Prediction IO Locally](index_local)
-* [Text Classification with Prediction IO on Heroku](index_heroku)
+* [Text Classification with PredictionIO Locally](index_local)
+* [Text Classification with PredictionIO on Heroku](index_heroku)

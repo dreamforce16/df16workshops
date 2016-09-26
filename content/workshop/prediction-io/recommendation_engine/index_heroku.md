@@ -1,7 +1,7 @@
 +++
 date = "2016-07-29T16:18:23+05:30"
 draft = true
-title = "Build a Recommendation Engine with Prediction IO : Heroku"
+title = "Build a Recommendation Engine with PredictionIO : Heroku"
 
 +++
 
@@ -22,7 +22,7 @@ title = "Build a Recommendation Engine with Prediction IO : Heroku"
 
 ## Introduction
 
-In this workshop you will learn how to use Prediction IO Machine Learning library to build a recommendation engine based on Alternative Least Square Algorithm. Prediction IO uses Spark MLlib's implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.
+In this workshop you will learn how to use PredictionIO Machine Learning library to build a recommendation engine based on Alternative Least Square Algorithm. PredictionIO uses Spark MLlib's implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.
 
 <img src="/workshop/prediction-io/recommendation_engine/images/recommendation_engine_local.png" width="80%" height="80%">
 
@@ -140,7 +140,7 @@ DATABASE_URL: postgres://rdatjvbvdwqvyq:nNL9b1cnjoQt8hCcQumEMahrmL@ec2-54-243-20
 
 ## Step 4 Create a new app 
 
-Prediction IO tracks events, ML engine based on App ID. We will create a new app and tie events to this ID as well the ML engine which will be trained later
+PredictionIO tracks events, ML engine based on App ID. We will create a new app and tie events to this ID as well the ML engine which will be trained later
 
 ``` bash
 
@@ -310,7 +310,7 @@ $ heroku config:set JAVA_OPTS="-Xmx512m"
 ```
 ## Step 9 Train the Engine
 
-In this step we will train the Recommendation Engine based on the Events inserted above. Code listed below is the core training method called inside Prediction IO Servier
+In this step we will train the Recommendation Engine based on the Events inserted above. Code listed below is the core training method called inside PredictionIO Servier
 
 ``` scala
 

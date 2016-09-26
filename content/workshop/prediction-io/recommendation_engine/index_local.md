@@ -1,7 +1,7 @@
 +++
 date = "2016-07-29T16:18:23+05:30"
 draft = true
-title = "Build a Recommendation Engine with Prediction IO : Local"
+title = "Build a Recommendation Engine with PredictionIO : Local"
 
 +++
 
@@ -19,7 +19,7 @@ title = "Build a Recommendation Engine with Prediction IO : Local"
 
 ## Introduction
 
-In this workshop you will learn how to use Prediction IO Machine Learning library to build a recommendation engine based on Alternative Least Square Algorithm. Prediction IO uses Spark MLlib's implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.
+In this workshop you will learn how to use PredictionIO Machine Learning library to build a recommendation engine based on Alternative Least Square Algorithm. PredictionIO uses Spark MLlib's implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.
 
 <img src="/workshop/prediction-io/recommendation_engine/images/recommendation_engine_local.png" width="80%" height="80%">
 

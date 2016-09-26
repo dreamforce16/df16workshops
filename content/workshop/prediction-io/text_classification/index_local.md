@@ -7,7 +7,7 @@ title = "Text Classification : Spam Detection Engine using Logistical Regression
 
 ## Introduction
 
-In this workshop you will learn how to use Prediction IO Machine Learning library to build a Spam Detection Engine using Classification Technique of Logisitical Regression. Prediction IO uses Spark MLlib's implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.
+In this workshop you will learn how to use PredictionIO Machine Learning library to build a Spam Detection Engine using Classification Technique of Logisitical Regression. PredictionIO uses Spark MLlib's implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.
 
 ## Pre-requisities
 
