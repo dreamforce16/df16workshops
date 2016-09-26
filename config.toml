@@ -3,6 +3,7 @@ languageCode = "en-us"
 title = "Salesforce Developers 2016"
 PygmentsCodeFences=true
 pygmentsStyle="friendly"
+googleAnalytics="UA-84811307-1"
 
 [params]
   # Shown in the home page
