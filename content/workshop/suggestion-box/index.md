@@ -1,7 +1,7 @@
 +++
 date = "2016-07-29T16:18:23+05:30"
 draft = true
-title = "Build a Suggestion Box App with Lightning Experience"
+title = "Build a Suggestion Box App with Lightning Components"
 
 +++
 
@@ -23,18 +23,19 @@ In this project, you learn how to build a Lightning Application on App Cloud fro
 You will build a Suggestion Box Lightning Application that allows employees to submit suggestions, search for existing suggestions and vote for them.All of this with the following steps:
 
 * Install the pre-created building blocks of the Suggestion Box App by clicking [here](http://bit.ly/df16_sb_package)
-  This package includes the app definition, data model, validation rules, process and reports and dashboard which together form the basic Suggestion box Application.You can install this app for Admins only for now.Go [here](https://help.salesforce.com/apex/HTViewHelpDoc?id=distribution_installing_packages.htm) for detailed steps to install an unmanaged package.
+  This package includes the app definition, data model, validation rules, process and reports and dashboard which together form the basic Suggestion box Application.
+  If you already have the basic app ready, go [here](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t28000000PZ0Q) to download the components we will use to extend the app using Ligthning.
+  Steps to install an unmanaged package are detailed [here](https://help.salesforce.com/apex/HTViewHelpDoc?id=distribution_installing_packages.htm). You can install this app for Admins only for now.
 * Extend this application using Lightning components to design a stand-alone Suggestion Box Application which will look something like this:
  
 ![alt text](images/SB_app.png)
 
 Each rectangle in this image represents a lightning component:
-
-* Red box: Displays the "add suggestion" functionality
-* Yellow box: Displays the "search suggestion" functionality
-* Green box: Displays the "results" of the search functionality
-* Blue box: Displays the "details of the selected record" in the search functionality
-* Purple box: "encampasses all the above functionalities into a single component" which then sits inside a Lightning Application
+* 1: Displays the "add suggestion" functionality
+* 2: Displays the "search suggestion" functionality
+* 3: Displays the "results" of the search functionality
+* 4: Displays the "details of the selected record" in the search functionality
+* 5: "encampasses all the above functionalities into a single component" which then sits inside a Lightning Application
 
 Let's begin with exploring our prebuilt Suggestion Box App which was installed using the package.
 
