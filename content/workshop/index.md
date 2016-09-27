@@ -10,6 +10,4 @@ title = "Salesforce Developer Workshops 2016"
 * [Build a Heroku Connect App to sync Heroku with Salesforce](/workshop/heroku-connect)
 * [PredictionIO : Recommendation Engine](/workshop/prediction-io)
 * [Secure Apps : Understand Cross Site Scripting](/workshop/secure-apps)
-
-
-
+* [Rapid Prototyping with the Lightning Design System](/workshop/rapid-prototyping-with-slds)
