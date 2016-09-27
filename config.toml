@@ -1,12 +1,13 @@
 baseurl = "http://www.sfdcworkshop.com/"
 languageCode = "en-us"
-title = "Dreamforce 2016"
+title = "Salesforce Developers 2016"
 PygmentsCodeFences=true
 pygmentsStyle="friendly"
+googleAnalytics="UA-84811307-1"
 
 [params]
   # Shown in the home page
-  brand = "<div><img src='/workshop/dreamforce.png' height='90'></div>"
+  brand = "<div><img src='/workshop/2015sf_Developers_logo_RGB_KO.png' height='70'></div>"
 
 [menu]
     [[menu.main]]
@@ -42,10 +43,10 @@ pygmentsStyle="friendly"
 
     [[menu.main]]
 
-        name = "Prediction IO"
+        name = "PredictionIO"
         pre = "<i class=''></i>"
         weight = 5
-        identifier = "Prediction IO"
+        identifier = "PredictionIO"
         url = "/workshop/prediction-io"
 
     [[menu.main]]
