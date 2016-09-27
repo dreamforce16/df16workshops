@@ -17,5 +17,5 @@
 
         $ hugo server -v --theme=blackburn --buildDrafts
 
-4. Open http://localhost:1313/
+4. Open <http://localhost:1313/>
 
