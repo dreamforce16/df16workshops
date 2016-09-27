@@ -28,7 +28,7 @@ You will build a Suggestion Box Lightning Application that allows employees to s
   Steps to install an unmanaged package are detailed [here](https://help.salesforce.com/apex/HTViewHelpDoc?id=distribution_installing_packages.htm). You can install this app for Admins only for now.
 * Extend this application using Lightning components to design a stand-alone Suggestion Box Application which will look something like this:
  
-![alt text](images/SB_app.png)
+<img src="images/SB_app.png" width="90%" height="90%"/>
 
 Each rectangle in this image represents a lightning component:
 * 1: Displays the "add suggestion" functionality
@@ -139,7 +139,7 @@ public class SuggestionController {
 ### Create the SuggestionBoxCreate Component
 This component will implement the *Add Suggestion* functionality.
 
-![alt text](images/Addsuggestion.png)
+<img src="images/Addsuggestion.png" width="90%" height="90%"/>
 
 A lightning component is a combination of markup, JavaScript, and CSS. You first create a component bundle.
 
@@ -369,7 +369,7 @@ We are creating two components namely the SearchBar and SuggestionList which nee
 
 This component will implement the *Search Suggestion* functionality.
 
-![alt text](images/Searchbar.png)
+<img src="images/Searchbar.png" width="90%" height="90%"/>
 
 1. In the **Developer Console**, select **File | New | Lightning Component**
 2. For the component name, enter **SearchBar** and then click **Submit**
@@ -421,7 +421,7 @@ This component will implement the *Search Suggestion* functionality.
 ## Create the SuggestionList Component
 This component will display the list of Suggestions based on the searchKey.
 
-![alt text](images/Searchbar_searchlist.png)
+<img src="images/Searchbar_searchlist.png" width="90%" height="90%"/>
 
 1. In the **Developer Console**, select **File | New | Lightning Component**
 2. For the component name, enter **SuggestionList** and then click **Submit**
@@ -494,8 +494,7 @@ This component will display the list of Suggestions based on the searchKey.
 ## Create the SuggestionDetails Component
 This component will display the details of the suggestion selected by the employee from the Suggestionlist Component.
 
-![alt text](images/Searchdetail.png)
-
+<img src="images/Searchdetail.png" width="90%" height="90%"/>
 
 1. In the **Developer Console**, select **File | New | Lightning Component**
 2. For the component name, enter **SuggestionDetails** and then click **Submit**
