@@ -8,21 +8,22 @@ title = "Heroku Connect : Sync Heroku app with Salesforce using Java Spring and 
 1. [Introduction](#introduction)
 2. [Prerequisites](#prerequisites)
 3. [Clone the Source Code](#clone-the-source-code)
-4. [About the Application](#about-the-application)
-5. [Get Contacts Implementation](#get-contacts-implementation)
-6. [Create Contact Form](#create-contact-form)
-7. [Complete code Listing for the Controller](#complete-code-listing-for-the-controller)
-8. [Compile the App Locally](#compile-the-app-locally)
+4. [Heroku Login](#heroku-login)
+5. [About the Application](#about-the-application)
+6. [Get Contacts Implementation](#get-contacts-implementation)
+7. [Create Contact Form](#create-contact-form)
+8. [Complete code Listing for the Controller](#complete-code-listing-for-the-controller)
+9. [Compile the App Locally](#compile-the-app-locally)
   * [Procfile](#procfile)  
-9. [Deploying to Heroku](#deploying-to-heroku)
+10. [Deploying to Heroku](#deploying-to-heroku)
   * [Add PostgreSQL Add-On](#add-postgresql-add-on)
   * [Add Heroku Connect Add-On](#add-heroku-connect-add-on)
   * [Configure Heroku Connect Add-On](configure-heroku-connect-add-on)
-10. [Connect to PostgreSQL from Local Instance](#connect-to-postgresql-from-local-instance)
+11. [Connect to PostgreSQL from Local Instance](#connect-to-postgresql-from-local-instance)
   * [Open the Remote App in Heroku](#open-the-remote-app-in-heroku)
   * [Show Contacts](#show-contacts)
   * [Create Contact](#create-contact)
-11. [Summary](#summary)
+12. [Summary](#summary)
 
 ## Introduction
 
@@ -51,12 +52,12 @@ This app has four rest endpoints
 
 This workshop assumes you have following setup
 
-* [Heroku Login](https://signup.heroku.com/)
+* [Heroku Account](https://signup.heroku.com/)
 * [Heroku CLI] (https://devcenter.heroku.com/articles/heroku-command-line#download-and-install)
 * [Java 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) or above
 * [Maven 3.3.9](https://maven.apache.org/download.cgi) or above
-* [git-bash](https://github.com/msysgit/msysgit/releases/tag/Git-1.9.5-preview20141217) (For Windows Only)
-* PostgreSQL client (Optional)
+* [git](https://git-scm.com/downloads)
+* [Salesforce Developer Edition Account](http://developer.salesforce.com/signup)
 
 ## Clone the Source Code 
 
@@ -68,6 +69,14 @@ Clone the source code using `git clone` and change into the cloned project direc
     $ cd heroku-connect-spring-boot-jdbc-rw
 
   ```
+## Heroku Login
+
+``` bash
+
+   $ heroku login
+
+```
+
 ### Code
 
 ##### Note : For information only

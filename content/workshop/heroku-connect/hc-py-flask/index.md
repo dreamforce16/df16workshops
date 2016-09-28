@@ -9,22 +9,22 @@ title = "Heroku Connect : Sync Heroku app with Salesforce using Python Flask"
 1. [Introduction](#introduction)
 2. [Prerequisites](#prerequisites)
 3. [Clone the Source Code](#clone-the-source-code)
-4. [Install Virtual Environment](#install-virtual-environment)
+4. [Heroku Login](#heroku-login)
 5. [Requirements File](#requirements-file)
 6. [Procfile](#procfile)
 7. [DB Initialization](#db-initialization)
-8. [Flask Controller](#flask-controller)
+9. [Flask Controller](#flask-controller)
   * [List Contacts](#list-contacts) 
   * [Create Contacts](#create-contacts)
-9. [Deploying to Heroku](#deploying-to-heroku)
-10. [Add PostgreSQL Add-On](#add-postgresql-add-on)
-11. [Add Heroku Connect Add-On](#add-heroku-connect-add-on)
-12. [Configure Heroku Connect Add-On](#configure-heroku-connect-add-on)
-13. [Home Page](#home-page)
-14. [Contact List](#contact-list)
-15. [Create a New Contact](#create-a-new-contact)
-16. [Show Contacts Locally](#show-contacts-locally)
-17. [Summary](#summary)
+10. [Deploying to Heroku](#deploying-to-heroku)
+11. [Add PostgreSQL Add-On](#add-postgresql-add-on)
+12. [Add Heroku Connect Add-On](#add-heroku-connect-add-on)
+13. [Configure Heroku Connect Add-On](#configure-heroku-connect-add-on)
+14. [Home Page](#home-page)
+15. [Contact List](#contact-list)
+16. [Create a New Contact](#create-a-new-contact)
+17. [Optional Step Show Contacts Locally](#optional-step-show-contacts-locally) 
+18. [Summary](#summary)
   
 ## Introduction
 
@@ -50,11 +50,9 @@ This workshop assumes you have following setup
 
 * [Heroku Login](https://signup.heroku.com/)
 * [Heroku CLI] (https://devcenter.heroku.com/articles/heroku-command-line#download-and-install)
-* Python 2.7
-* [pip](https://pip.pypa.io/en/stable/installing/) 
-* [virtualenv](https://virtualenv.pypa.io/en/stable/)
-* [git-bash](https://github.com/msysgit/msysgit/releases/tag/Git-1.9.5-preview20141217) (For Windows Only)
-* PostgreSQL client (Optional)
+* [git](https://git-scm.com/downloads)
+* [Salesforce Developer Edition Account](http://developer.salesforce.com/signup)
+
 
 ## Clone the Source Code 
 
@@ -64,35 +62,15 @@ $ git clone https://github.com/rajdeepd/flask-psycopg2-v2
 
 ```
 
-## Install Virtual Environment
+## Heroku Login
 
-Locally, create a folder `flask-psycopg2-sample` and install a virtual environment in it.
+First download CLI, install it and run the following command. 
 
 ``` bash
 
-$ cd flask-psycopg2-v2
-$ virtualenv venv
-$ source venv/bin/activate
+$ heroku login
 
 ```
-Install Dependencies
-
-``` bash
-
-$ pip install flask gunicorn psycopg2
-
-```
-
-
-Run the app using the following command
-
-``` bash
-
-$ python app.py
-
- ```
-
-Your app should now be running on [localhost:5000](http://localhost:5000)
 
 ## Requirements File
 
@@ -288,26 +266,58 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
 
   <img src="images/create-contacts.png" width="50%" height="50%"> 
 
-## Show Contacts Locally
+## Optional Step Show Contacts Locally 
 
-  Configure the DATABASE_URL in the local environment
+### Prerequisites
 
-  ``` bash
-    $ heroku config
+* Python 2.7
+* [pip](https://pip.pypa.io/en/stable/installing/) 
+* [virtualenv](https://virtualenv.pypa.io/en/stable/)
+* PostgreSQL client (Optional if you want to run the application locally)
 
-    === fast-sands-40695 Config Vars
-    DATABASE_URL:      postgres://<user_name>:<password>@<ipaddress>.compute-1.amazonaws.com:5432/<database_name>
-    HEROKUCONNECT_URL: DATABASE_URL:salesforce
-  ```
+1. Install Virtual Environment
 
-  Export DATABASE_URL
+    Go to the application Folder `flask-psycopg2-sample` and install a virtual environment in it.
 
-  ``` bash
-    $ export DATABASE_URL=postgres://<user_name>:<password>@<ipaddress>.compute-1.amazonaws.com:5432/<database_name>
-  ```
+    ``` bash
+    $ cd flask-psycopg2-v2
+    $ virtualenv venv
+    $ source venv/bin/activate
+    ```
+2. Install Dependencies
 
-  Open the following URL :code:`http://localhost:5000/contacts` you should be able see the contacts.
+     ``` bash
+     $ pip install flask gunicorn psycopg2
+     ```
+ 
+3. Configure the DATABASE_URL in the local environment
 
+
+     ``` bash
+      $ heroku config
+
+      === fast-sands-40695 Config Vars
+      DATABASE_URL:      postgres://<user_name>:<password>@<ipaddress>.compute-1.amazonaws.com:5432/<database_name>
+      HEROKUCONNECT_URL: DATABASE_URL:salesforce
+
+     ```
+4. Export DATABASE_URL
+
+     ``` bash
+    
+     $ export DATABASE_URL=postgres://<user_name>:<password>@<ipaddress>.compute-1.amazonaws.com:5432/db
+     ```
+
+    Open the following URL `http://localhost:5000/contacts` you should be able see the contacts.
+
+
+5. Run the app using the following command
+
+     ``` bash
+     $ python app.py
+     ```
+
+   Your app should now be running on [localhost:5000](http://localhost:5000)
 
 
 ## Summary
