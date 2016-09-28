@@ -93,7 +93,7 @@ Come to the Mini Hack Basin to have your results verified by a tech staffer.
 #### MICROSOFT CHALLENGE  : Adaptive Layout with Windows 10 UWP Apps
 Windows Store applications run on a wide range of devices with different screen sizes and resolutions. In this challenge, using the Windows 10 UWP, you will be building an application that utilizes Adaptive layouts to make the app look good on wide devices such as slates as well as narrow devices such as phones.
 
-#### Requirements
+#### REQUIREMENTS:
 The requirements and steps are listed at https://aka.ms/tkm057 
 
 Attendees at the very least will need:
@@ -102,7 +102,7 @@ Attendees at the very least will need:
 2. Visual  Studio 2015 with the Universal Windows App Development Tools selected from the optional features list. You may want to preinstall the free, Visual Studio Community Edition from this link: https://aka.ms/lf6stw
 3. Developer mode enabled on their device. You can see how to do this using this link: https://aka.ms/bjcmqp
 
-#### Demo your solution
+#### DEMO YOUR SOLUTION:
 At the Microsoft booth in the Trailhead area.
 
 
