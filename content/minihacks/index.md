@@ -75,7 +75,7 @@ Clue: You can refer to the trailhead Heroku Connect Module for help: https://sfd
 Come to the Mini Hack Basin to have your results verified by a tech staffer. 
 
 
-####CHALLENGE 6 : ALL ABOUT APIs 
+#### CHALLENGE 6 : ALL ABOUT APIs 
 An API is an interface through which one application communicates with other. Salesforce can be integrated with third party applications through a REST API. You need to create a REST Resource in your org such that you can use Salesforce REST APIs to update Salesforce data from outside the system.
 
 #### REQUIREMENTS:
