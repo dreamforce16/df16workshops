@@ -136,7 +136,7 @@ public class SuggestionController {
 @AuraEnabled enables client and server-side access to the controller method. Select **File | Save**.
 
 
-### Create the SuggestionBoxCreate Component
+## Create the SuggestionBoxCreate Component
 This component will implement the *Add Suggestion* functionality.
 
 <img src="images/Addsuggestion.png" width="90%" height="90%"/>
