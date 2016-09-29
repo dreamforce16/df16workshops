@@ -7,26 +7,26 @@ title = "Heroku Connect : Sync Heroku app with Salesforce using Python Flask"
 +++
 
 1. [Introduction](#introduction)
-2. [Clone the Source Code](#clone-the-source-code)
-3. [Install Virtual Environment](#install-virtual-environment)
-4. [Requirements File](#requirements-file)
-5. [Procfile](#procfile)
-6. [DB Initialization](#db-initialization)
-7. [Flask Controller](#flask-controller)
+2. [Prerequisites](#prerequisites)
+3. [Clone the Source Code](#clone-the-source-code)
+4. [Heroku Login](#heroku-login)
+5. [Requirements File](#requirements-file)
+6. [Procfile](#procfile)
+7. [DB Initialization](#db-initialization)
+9. [Flask Controller](#flask-controller)
   * [List Contacts](#list-contacts) 
   * [Create Contacts](#create-contacts)
-8. [Deploying to Heroku](#deploying-to-heroku)
-9. [Add PostgreSQL Add-On](#add-postgresql-add-on)
-10. [Add Heroku Connect Add-On](#add-heroku-connect-add-on)
-11. [Configure Heroku Connect Add-On](#configure-heroku-connect-add-on)
-12. [Home Page](#home-page)
-13. [Contact List](#contact-list)
-14. [Create a New Contact](#create-a-new-contact)
-15. [Show Contacts Locally](#show-contacts-locally)
-16. [Executing using PyCharm](#executing-using-pycharm)
-17. [Summary](#summary)
+10. [Deploying to Heroku](#deploying-to-heroku)
+11. [Add PostgreSQL Add-On](#add-postgresql-add-on)
+12. [Add Heroku Connect Add-On](#add-heroku-connect-add-on)
+13. [Configure Heroku Connect Add-On](#configure-heroku-connect-add-on)
+14. [Home Page](#home-page)
+15. [Contact List](#contact-list)
+16. [Create a New Contact](#create-a-new-contact)
+17. [Optional Step Show Contacts Locally](#optional-step-show-contacts-locally) 
+18. [Summary](#summary)
   
-# Introduction
+## Introduction
 
 This workshop shows how to **Create** and **Run** a Python app with psycopg2 which uses PostgreSQL based Heroku Connect
 
@@ -44,6 +44,16 @@ This app has four rest endpoints
     @app.route('/create_contact', methods=['POST','GET']) which creates a new contact
     @app.route('/contactform') which serves an HTML Form for entering new contact details
 
+## Prerequisites
+
+This workshop assumes you have following setup
+
+* [Heroku Login](https://signup.heroku.com/)
+* [Heroku CLI] (https://devcenter.heroku.com/articles/heroku-command-line#download-and-install)
+* [git](https://git-scm.com/downloads)
+* [Salesforce Developer Edition Account](http://developer.salesforce.com/signup)
+
+
 ## Clone the Source Code 
 
 ``` bash
@@ -52,35 +62,15 @@ $ git clone https://github.com/rajdeepd/flask-psycopg2-v2
 
 ```
 
-## Install Virtual Environment
+## Heroku Login
 
-Locally, create a folder `flask-psycopg2-sample` and install a virtual environment in it.
+First download CLI, install it and run the following command. 
 
 ``` bash
 
-$ cd flask-psycopg2-v2
-$ virtualenv venv
-$ source venv/bin/activate
+$ heroku login
 
 ```
-Install Dependencies
-
-``` bash
-
-$ pip install flask gunicorn psycopg2
-
-```
-
-
-Run the app using the following command
-
-``` bash
-
-$ python app.py
-
- ```
-
-Your app should now be running on [localhost:5000](http://localhost:5000)
 
 ## Requirements File
 
@@ -276,47 +266,67 @@ Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On t
 
   <img src="images/create-contacts.png" width="50%" height="50%"> 
 
-## Show Contacts Locally
+## Optional Step Show Contacts Locally 
 
-  Configure the DATABASE_URL in the local environment
+### Prerequisites
 
-  ``` bash
-    $ heroku config
+* Python 2.7
+* [pip](https://pip.pypa.io/en/stable/installing/) 
+* [virtualenv](https://virtualenv.pypa.io/en/stable/)
+* PostgreSQL client (Optional if you want to run the application locally)
 
-    === fast-sands-40695 Config Vars
-    DATABASE_URL:      postgres://<user_name>:<password>@<ipaddress>.compute-1.amazonaws.com:5432/<database_name>
-    HEROKUCONNECT_URL: DATABASE_URL:salesforce
-  ```
+1. Install Virtual Environment
 
-  Export DATABASE_URL
+    Go to the application Folder `flask-psycopg2-sample` and install a virtual environment in it.
 
-  ``` bash
-    $ export DATABASE_URL=postgres://<user_name>:<password>@<ipaddress>.compute-1.amazonaws.com:5432/<database_name>
-  ```
+    ``` bash
+    $ cd flask-psycopg2-v2
+    $ virtualenv venv
+    $ source venv/bin/activate
+    ```
+2. Install Dependencies
 
-  Open the following URL :code:`http://localhost:5000/contacts` you should be able see the contacts.
+     ``` bash
+     $ pip install flask gunicorn psycopg2
+     ```
+ 
+3. Configure the DATABASE_URL in the local environment
 
-## Executing using PyCharm
 
-* Install the [Pycharm](https://www.jetbrains.com/pycharm/download/). And add your directory as a project to PyCharm.
+     ``` bash
+      $ heroku config
 
-  <img src="images/pycharm1.png" width="90%" height="80%">
+      === fast-sands-40695 Config Vars
+      DATABASE_URL:      postgres://<user_name>:<password>@<ipaddress>.compute-1.amazonaws.com:5432/<database_name>
+      HEROKUCONNECT_URL: DATABASE_URL:salesforce
 
-* Set the Environment variable as `DATABASE_URL=postgres://<user_name>:<password>@<ipaddress>.compute-1.amazonaws.com:5432/<database_name>` by following the path File > Default Settings
-  
-  <img src="images/pycharm3.png" width="90%" height="80%">
-  
-* Click on `app.py` and run the app.
+     ```
+4. Export DATABASE_URL
 
-  <img src="images/pycharm2.png" width="90%" height="80%">
+     ``` bash
+    
+     $ export DATABASE_URL=postgres://<user_name>:<password>@<ipaddress>.compute-1.amazonaws.com:5432/db
+     ```
 
-  Open the following URL `http://localhost:5000/contacts` you should be able see the contacts.
+    Open the following URL `http://localhost:5000/contacts` you should be able see the contacts.
+
+
+5. Run the app using the following command
+
+     ``` bash
+     $ python app.py
+     ```
+
+   Your app should now be running on [localhost:5000](http://localhost:5000)
+
 
 ## Summary
 
   In this workshop we learnt how to configure a Python Flask Application to work with Heroku Connect. We used Psycopg2 driver for talking to the PostgreSQL database deployed on Heroku.
 
-  
+## Appendix
+
+[Execute using PyCharm](execute_using_pycharm)
 
   
   

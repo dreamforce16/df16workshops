@@ -1,13 +1,25 @@
 +++
 date = "2016-07-29T16:18:23+05:30"
 draft = true
-title = "Build a Recommendation Engine with Prediction IO : Local"
+title = "Build a Recommendation Engine with PredictionIO : Local"
 
 +++
 
+1. [Introduction](#introduction)
+2. [Pre-requisities](#pre-requisities)
+3. [Source Code](#source-code)
+ * [Clone the Source code](#clone-the-source-code)
+ * [Start the PostgreSQL 9.6 server](#start-the-postgresql-9-6-server)
+ * [Run the Event Server](#run-the-event-server)
+ * [Create an Event Application](#create-an-event-application)
+ * [Add Demo Data using curl](#add-demo-data-using-curl)
+ * [Train the Model](#train-the-model)
+ * [Predict Recommended Items](#predict-recommended-items)
+
+
 ## Introduction
 
-In this workshop you will learn how to use Prediction IO Machine Learning library to build a recommendation engine based on Alternative Least Square Algorithm. Prediction IO uses Spark MLlib's implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.
+In this workshop you will learn how to use PredictionIO Machine Learning library to build a recommendation engine based on Alternative Least Square Algorithm. PredictionIO uses Spark MLlib's implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.
 
 <img src="/workshop/prediction-io/recommendation_engine/images/recommendation_engine_local.png" width="80%" height="80%">
 
@@ -129,7 +141,7 @@ pio=> select * from pio_meta_apps;
 
 ```
 
-## Step 4 : Add Demo Data using curl
+## Step 5 : Add Demo Data using curl
 
 ``` bash
 export ACCESS_KEY=<YOUR ACCESS KEY>
@@ -149,7 +161,7 @@ http://localhost:7070/events.json?accessKey=&limit=-1
 
 <img src="/workshop/prediction-io/recommendation_engine/images/localhost_events.png" width="100%" height="100%">
 
-## Step 5 : Train the Model
+## Step 6 : Train the Model
 
 1. Set your PredictionIO app's access key and app name in your env vars:
    
@@ -183,7 +195,7 @@ http://localhost:7070/events.json?accessKey=&limit=-1
 
     <img src="/workshop/prediction-io/recommendation_engine/images/pio-engine-recommendation-local.png" width="100%" height="100%">
 
-## Step 6 : Predict Recommended Items
+## Step 7 : Predict Recommended Items
 
 Let us look at recommendation for other items based on a  item already bought by the user. Make sure by looking at the events in the event server that this item was bought, else recommended items will be empty list.
 
@@ -199,16 +211,16 @@ Response
    ``` json 
 
 {
-	"itemScores":
-	[
-		{
-			"item":"i44","score":0.2805472425881496
-		},
-		
-		{
-			"item":"i41","score":0.14458527026450552
-		}
-	]
+  "itemScores":
+  [
+    {
+      "item":"i44","score":0.2805472425881496
+    },
+    
+    {
+      "item":"i41","score":0.14458527026450552
+    }
+  ]
 }
 
    ```

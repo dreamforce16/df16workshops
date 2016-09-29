@@ -5,6 +5,24 @@ title = "Secure Apps - Understand Cross Site Scripting "
 
 +++
 
+1. [Introduction](#introduction)
+2. [Learning Application Security with a Developer Edition Org](#learning-application-security-with-a-developer-edition-org)
+3. [What is Cross-Site Scripting?](#what-is-cross-site-scripting?)
+4. [How Does an XSS Attack Work?](#how-does-an-xss-attack-work?)
+5. [Try Another Cross-Site Scripting Attack](#try-another-cross-site-scripting-attack)
+6. [Force.com XSS Protections](#force-com-xss-protections)
+7. [Automatic HTML Encoding](#automatic-html-encoding)
+8. [Disabling Automatic HTML Encoding](#disabling-automatic-html-encoding)
+9. [Salesforce Default Protections in Different Execution Contexts](#salesforce-default-protections-in-different-execution-contexts)
+ * [HTML Context](#html-context)
+ * [Script Context](#script-context)
+ * [Style Context](#style-context)
+10. [Identify potential cross-site scripting vectors](#identify-potential-cross-site-scripting-vectors)
+11. [Prevent XSS in Force.com Applications](#prevent-xss-in-force-com-applications)
+12. [Platform Encoding in Apex](#platform-encoding-in-apex)
+13. [The Force.com ESAPI in Action!](#the-force.com-esapi-in-action!)
+14. [Final Challenge](#final-challenge)
+
 ## Introduction
 
 Salesforce is constantly striving to make our platform as secure as possible. As a result Force.com has many built in security functions to protect end users: some enabeld by default while others require the developers to enable them within their code. While we aim to bake-in as much security constraints as possible because of the flexibility and extensibility of the platform it is completely possible for developers to write insecure code. 
@@ -204,7 +222,9 @@ Let see what a vulnerable app would look like in your developer org!
 
     <img src="images/9.png" width="70%" height="70%">
   
+
 So as you can see, the default automatic HTML encoding doesn’t apply here and the application is vulnerable to XSS. Again be very careful about any use of merge fields in style context as it will leave your applications vulnerable to XSS attacks.
+
   
 # Prevent XSS in Force.com Applications
 
@@ -240,11 +260,13 @@ Now let’s learn how to fix a JavaScript-based XSS vulnerabilities using JSENCO
     **Apex**:
 
     ``` java 
+    
     public pageReference JSXSS(){
         title = 'THEME VIOLATION!!!!\';var newHTML = document.createElement(\'div\');newHTML.innerHTML = \'<img src="https://developer.salesforce.com/resource/images/astro.png" />\';document.body.appendChild (newHTML);var x =\'x';
     
         return null;
     }
+
     ```
     
     **Visualforce**:

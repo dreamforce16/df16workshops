@@ -1,7 +1,7 @@
 +++
 date = "2016-07-29T16:18:23+05:30"
 draft = true
-title = "Build a Recommendation Engine with Prediction IO : Heroku"
+title = "Build a Recommendation Engine with PredictionIO : Heroku"
 
 +++
 
@@ -20,19 +20,18 @@ title = "Build a Recommendation Engine with Prediction IO : Heroku"
 13. [Step 10 Predict](#step-10-predict)
 
 
-
 ## Introduction
 
-In this workshop you will learn how to use Prediction IO Machine Learning library to build a recommendation engine based on Alternative Least Square Algorithm. Prediction IO uses Spark MLlib's implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.
+In this workshop you will learn how to use PredictionIO Machine Learning library to build a recommendation engine based on Alternative Least Square Algorithm. PredictionIO uses Spark MLlib's implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.
 
 <img src="/workshop/prediction-io/recommendation_engine/images/recommendation_engine_local.png" width="80%" height="80%">
 
 ## Prerequisites
 
-* git command line
-* JDK 1.8.x or above
-* Heroku Account with Credit Card Information (even though we will only use free dynos)
-* Heroku CLI
+* Heroku Account
+* Heroku CLI (git is part of Heroku CLI)
+* curl
+* [git-bash](https://github.com/msysgit/msysgit/releases/tag/Git-1.9.5-preview20141217) 
 
 Heroku account with Credit Card is required for two Dynos to run simultaneously
 
@@ -88,10 +87,10 @@ $ git remote -v
 
 ```
 ```
-heroku	https://git.heroku.com/rd-pio-eventserver-1.git (fetch)
-heroku	https://git.heroku.com/rd-pio-eventserver-1.git (push)
-origin	https://github.com/rajdeepd/pio-eventserver-heroku (fetch)
-origin	https://github.com/rajdeepd/pio-eventserver-heroku (push)
+heroku  https://git.heroku.com/rd-pio-eventserver-1.git (fetch)
+heroku  https://git.heroku.com/rd-pio-eventserver-1.git (push)
+origin  https://github.com/rajdeepd/pio-eventserver-heroku (fetch)
+origin  https://github.com/rajdeepd/pio-eventserver-heroku (push)
 
 ```
 
@@ -99,7 +98,7 @@ origin	https://github.com/rajdeepd/pio-eventserver-heroku (push)
 
 ``` bash
 
-$ get push heroku master
+$ git push heroku master
 
 ```
 
@@ -141,7 +140,7 @@ DATABASE_URL: postgres://rdatjvbvdwqvyq:nNL9b1cnjoQt8hCcQumEMahrmL@ec2-54-243-20
 
 ## Step 4 Create a new app 
 
-Prediction IO tracks events, ML engine based on App ID. We will create a new app and tie events to this ID as well the ML engine which will be trained later
+PredictionIO tracks events, ML engine based on App ID. We will create a new app and tie events to this ID as well the ML engine which will be trained later
 
 ``` bash
 
@@ -157,7 +156,9 @@ Running `console app new MyApp1` attached to terminal... up, run.5174
 [INFO] [App$] Access Key: 2Evbo5hiUiXXXCu_uB-gK1Q3EiT2N8nGd1-AGY5hjrsQ3PonJCdwP1YZ5WN5519O
 
 ```
-Set Environment variable
+### Set Environment variable
+
+#### Linux, Mac OS X
 
 ``` bash
 
@@ -165,9 +166,19 @@ $ export ACCESS_KEY=2Evbo5hiUiXXXCu_uB-gK1Q3EiT2N8nGd1-AGY5hjrsQ3PonJCdwP1YZ5WN5
 
 ```
 
+##### Windows
+
+``` bash
+
+$ set ACCESS_KEY=2Evbo5hiUiXXXCu_uB-gK1Q3EiT2N8nGd1-AGY5hjrsQ3PonJCdwP1YZ5WN5519O
+
+```
+
 ## Step 5 Populate Event Server with Events
 
 Please change heroku app name from CHANGEME to the actual value you gave earier in the URL for all the commands listed below. 
+
+#### Linux, Mac OS X
 
 ``` bash
 
@@ -179,9 +190,29 @@ for i in {1..5}; do curl -i -X POST http://CHANGEME.herokuapp.com/events.json?ac
 
 ```
 
+#### Windows 
+
+``` bash
+
+for /L %a IN (1,1,5) DO (
+  curl -i -X POST http://rd-pio-eventserver-t1.herokuapp.com/events.json?accessKey=%ACCESS_KEY% -H "Content-Type: application/json" -d "{ \"event\" : \"\$set\", \"entityType\" : \"user\", \"entityId\" : \"u%a\" }"
+)
+
+
+for /L %a IN (1,1,50) DO (
+  curl -i -X POST http://rd-pio-eventserver-t1.herokuapp.com/events.json?accessKey=%ACCESS_KEY% -H "Content-Type: application/json" -d "{ \"event\" : \"\$set\", \"entityType\" : \"item\", \"entityId\" : \"i%a\", \"properties\" : { \"categories\" : [\"c1\", \"c2\"] } }"
+)
+
+for /L %a IN (1,1,5) DO (
+     curl -i -X POST http://rd-pio-eventserver-t1.herokuapp.com/events.json?accessKey=%ACCESS_KEY% -H "Content-Type: application/json" -d "{ \"event\" : \"view\", \"entityType\" : \"user\", \"entityId\" : \"u1\",  \"targetEntityType\" : \"item\", \"targetEntityId\" : \"i%a\" }"
+)
+
+```
+
 ### Step 5.1 Check the Events Inserted in a Browser
 
 ``` bash
+
 http://rd-pio-eventserver-1.herokuapp.com/events.json?accessKey=2Evbo5hiUiXXXCu_uB-gK1Q3EiT2N8nGd1-AGY5hjrsQ3PonJCdwP1YZ5WN5519O&limit=100
 
 ```
@@ -243,7 +274,9 @@ $ heroku config:set DATABASE_URL=postgres://rdatjvbvdwqvyq:nNL9b1cnjoQt8hCcQumEM
 
 ```
 
+
 ## Step 7 Configure the Heroku app
+
 
 ``` bash 
 heroku config:set ACCESS_KEY=<YOUR APP ACCESS KEY> APP_NAME=<APP NAME> EVENT_SERVER_IP=<YOUR EVENT SERVER HOSTNAME> EVENT_SERVER_PORT=80
@@ -277,7 +310,7 @@ $ heroku config:set JAVA_OPTS="-Xmx512m"
 ```
 ## Step 9 Train the Engine
 
-In this step we will train the Recommendation Engine based on the Events inserted above. Code listed below is the core training method called inside Prediction IO Servier
+In this step we will train the Recommendation Engine based on the Events inserted above. Code listed below is the core training method called inside PredictionIO Servier
 
 ``` scala
 
@@ -296,7 +329,18 @@ val m = ALS.trainImplicit(
       items = items
     )
 
+**Optional Step**
+
 ```
+If you are running free dynos makes sure you scale down the web dynos before training
+
+``` bash
+
+$ heroku ps:scale web=0 train=0
+
+```
+
+Now run the training command
 
 ``` bash
 
@@ -317,6 +361,16 @@ Output
 
 ```
 
+Bring back the Web dyno (for setups using free dynos)
+
+``` bash
+
+heroku ps:scale web=1 train=0
+
+
+```
+
+
 Check the Recommendation Engine running in the browser
 
 <img src="/workshop/prediction-io/recommendation_engine/images/pio-engine-screenshot.png" width="100%" height="100%">
@@ -325,25 +379,35 @@ Check the Recommendation Engine running in the browser
 
 Items similar to i3
 
+####  Linux, Mac OSX
+
 ``` bash
 $ curl -H "Content-Type: application/json" -d '{ "items": ["i3"], "num": 4 }' \
    -k http://rd-pio-engine-1.herokuapp.com/queries.json
 
+```
+#### Windows
+
+``` bash
+curl -H "Content-Type: application/json" ^
+    -d "{\"items\": [\"i3\"], \"num\": 4 }" ^
+    -k http://rd-pio-engine-1.herokuapp.com/queries.json
 
 ```
+Response will be similar to the listing below
 
 ``` json
 
 {"itemScores":
-	[
-		{
-			"item":"i44","score":0.2805472425881496
-		},
-		
-		{
-			"item":"i41","score":0.14458527026450552
-		}
-	]
+  [
+    {
+      "item":"i44","score":0.2805472425881496
+    },
+    
+    {
+      "item":"i41","score":0.14458527026450552
+    }
+  ]
 }
 
 ```
