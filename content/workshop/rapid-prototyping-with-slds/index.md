@@ -185,7 +185,7 @@ Go to “Manage App” › “Deploy” › “GitHub” › “Connect to GitHu
 
 This means that every time you push a change, your application will be deployed.
 
-So if you edit something and it gets committed and pushed to the master state, a deploy hook will get triggered on Heroku and after a few minutes your application should be updated!
+So if you edit something and it gets committed and pushed to the master branch, a deploy hook will get triggered on Heroku and after a few minutes your application will automatically update!
 
 Refresh and check!
 
