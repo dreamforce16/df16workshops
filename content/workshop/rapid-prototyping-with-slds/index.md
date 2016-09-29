@@ -17,7 +17,7 @@ In a nutshell: getting high definition concepts in front of stakeholders and cus
 
 ## Why Rapid Prototyping?
 
-Our tools and techniques influence the results, and rapid prototyping is a very effective technique for testing new ideas and iterating on them. Experimenting and refining concepts lead to a better user experience for your customers and force.com users.
+Rapid prototyping is a very effective technique for testing new ideas and iterating on them. Experimenting and refining concepts lead to a better user experience for your customers and force.com users.
 
 The closer to reality and the more interactive a prototype is, the better. But developing a whole web solution "just for research" can be costly. That's where rapid prototyping comes into play! Both the [Design System UI Kit](https://github.com/salesforce-ux/design-system-ui-kit) and the [Design System Starter Kit](https://github.com/salesforce-ux/design-system-starter-kit) are tools that help reducing that cost while allowing you to build high quality prototypes that look and feel like the Lightning Experience.
 
