@@ -105,7 +105,7 @@ Let's copy-paste a related list component into `blank.html`:
 1. Search for "Related List With Table"
 1. Follow the first search result
 1. Copy the code (below the component itself)
-1. Paste it into `blank.html`, between `{% block content %}` and `{% endblock %}
+1. Paste it into `blank.html`, between `{% block content %}` and `{% endblock %}`
 
 Your browser should display this at <http://localhost:3000/blank.html>:
 
