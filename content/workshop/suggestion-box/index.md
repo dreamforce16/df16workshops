@@ -243,6 +243,7 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
 4. Select **File | Save**
 5. In the button panel on the right, click **Controller**
 6. Replace the code with the following:
+
   ```js
   ({
    addNew: function(component, event, helper) 
@@ -389,11 +390,15 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
 
 13. Open the ** SuggestionBoxApp Application ** and replace the below 
 
- ```html  <!-- <c:SuggestionBoxCreate /> to be uncommented after component creation -->   ```
+ ```html  
+ <!-- <c:SuggestionBoxCreate /> to be uncommented after component creation -->  
+ ```
   
   with 
 
-    ```html                   <c:SuggestionBoxCreate />       ```
+    ```html                   
+    <c:SuggestionBoxCreate />       
+    ```
 
 You can see how the application looks by clicking on the **Preview** button, the first button in the application bundle. 
 
@@ -473,11 +478,15 @@ This component will implement the *Search Suggestion* functionality.
 10. Select **File | Save**
 11. Open the ** SuggestionBoxApp Application ** and replace the below 
 
- ```html  <!-- <c:SearchBar /> to be uncommented after component creation --> ```
+ ```html  
+ <!-- <c:SearchBar /> to be uncommented after component creation -->  
+ ```
   
   with 
 
-    ```html                 <c:SearchBar />       ```
+    ```html               
+    <c:SearchBar />      
+    ```
     
     
 You can see how the application looks by clicking on the **Preview** button, the first button in the application bundle. 
@@ -559,11 +568,15 @@ This component will display the list of Suggestions based on the searchKey.
 
 7. Open the ** SuggestionBoxApp Application ** and replace the below 
 
- ```html   <!-- <c:SuggestionList /> to be uncommented after component creation -->  ```
+ ```html   
+ <!-- <c:SuggestionList /> to be uncommented after component creation -->  
+ ```
   
   with 
 
-    ```html                 <c:SuggestionList />      ```
+  ```html                 
+  <c:SuggestionList />     
+  ```
     
     
 You can see how the application looks by clicking on the **Preview** button, the first button in the application bundle. 
@@ -582,7 +595,7 @@ This component will display the details of the suggestion selected by the employ
 2. For the component name, enter **SuggestionDetails** and then click **Submit**
 3. Replace the code with the following:
 
- ```html
+```html
 <aura:component controller="SuggestionController" implements="flexipage:availableForAllPageTypes">
    <ltng:require styles="{!$Resource.slds}" />
    <aura:attribute name="suggestion" type="Suggestion__c"/>
@@ -639,7 +652,7 @@ This component will display the details of the suggestion selected by the employ
 4. Select **File | Save**
 5. In the button panel on the right, click **Controller**
 6. Replace the code with the following:
-
+ 
  ```js
 ({
     locationChange: function(component, event, helper) {
@@ -682,11 +695,15 @@ This component will display the details of the suggestion selected by the employ
 7. Select **File | Save**
 8. Open the ** SuggestionBoxApp Application ** and replace the below 
 
- ```html   <!-- <c:SuggestionDetails /> to be uncommented after component creation -->  ```
+ ```html 
+ <!-- <c:SuggestionDetails /> to be uncommented after component creation -->  
+  ```
   
   with 
 
-    ```html                 <c:SuggestionDetails />     ```
+    ```html 
+    <c:SuggestionDetails />     
+    ```
     
     
 You can see how the **FINAL** application looks by clicking on the **Preview** button, the first button in the application bundle. 
