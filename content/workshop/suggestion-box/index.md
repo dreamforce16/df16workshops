@@ -4,6 +4,7 @@ draft = true
 title = "Build a Suggestion Box App with Lightning Components"
 +++
 
+## Table of Content
 
 1. [Introduction](#introduction)
 2. [Add a Custom Domain to Your Org with My Domain](#add-a-custom-domain-to-your-org-with-my-domain)
@@ -13,10 +14,9 @@ title = "Build a Suggestion Box App with Lightning Components"
 6. [Create the SKChange Event and SearchBar Component](#create-the-skchange-event-and-searchbar-component)
 7. [Create the SuggestionList Component](#create-the-suggestionlist-component)
 8. [Create the SuggestionDetails Component](#create-the-suggestiondetails-component)
-9. [Create the SuggestionBox Component](#create-the-suggestionbox-component) 
-10. [Summary](#summary)
+9. [Summary](#summary)
 
-## 1. Introduction
+## Introduction
 In this project, you learn how to build a Lightning Application on App Cloud from start to finish.If you're new to App Cloud, the goal is to introduce you to the basics of app building together with introduction to the new lightning platform and basics to develop application using lightning components.
 If you're familiar with the App Cloud Admin features—managing users and security, customizing standard objects, and so on—the goal is to apply those skills to developing new application and learn how to extend the functionality of these applications using lightning. 
 
@@ -47,7 +47,7 @@ All eyes on the screen!
 Now, that we know and understand how we can build a basic application using point-and-click, let us now extend this app using lightning components.The UI of the Application we will create will resemble the Lightning Experience UI as we will make use of Salesforce Lightning Design System.
 
 
-## 2. Add a Custom Domain to Your Org with My Domain
+## Add a Custom Domain to Your Org with My Domain
 
 To use Lightning Components, your organization needs to have a custom domain configured using My Domain.
 
@@ -74,16 +74,16 @@ After you set up your domain name, test it and then roll it out to your org. Eve
 2. Test the new domain name by clicking tabs and links. All pages now show your new domain name. 
 3. To roll out the new domain name to your organization, from **Setup**, go to **My Domain** , Click on **Deploy to Users** then select **OK**
 
-## 3. Create a Server-side Apex Controller Class
+## Create a Server-side Apex Controller Class
 
 Create a class to access data from Suggestion custom object:
 
 1. In your DE environment, click Your **Name | Developer Console**
 2. Select **File | New | Apex Class**
 3. For the class name, enter **SuggestionController** and then click **OK**
-4. In the body of the class (i.e. between the {} braces), enter the following code
+4. Replace the code with the following:
 
-```java
+ ```java
 public class SuggestionController {
 
   	@AuraEnabled
@@ -131,14 +131,14 @@ public class SuggestionController {
 @AuraEnabled enables client and server-side access to the controller method. Select **File | Save**.
 
 
-## 4. Create the SuggestionBoxApp Application
+## Create the SuggestionBoxApp Application
 This application holds all the components we will create in th next steps together to make it a stand-alone application.
 
 1. In the **Developer Console**, select **File | New | Lightning Application**
 2. For the component name, enter **SuggestionBoxApp** and then click **Submit**
-3. Copy and paste the below code in the application :
+3. Replace the code with the following:
 
-```html
+ ```html
 <aura:application>
     <ltng:require styles="/resource/slds/assets/styles/salesforce-lightning-design-system-ltng.css" />
     <div class="salesforce slds">
@@ -174,6 +174,7 @@ This application holds all the components we will create in th next steps togeth
         </div>
     </div>
 </aura:application>
+
 ```
 You can see how the application looks by clicking on the **Preview** button, the first button in the application bundle. 
 
@@ -181,7 +182,7 @@ You can see how the application looks by clicking on the **Preview** button, the
 * This application uses lightning design system guidelines to create the UI as explained [here](https://www.lightningdesignsystem.com/components/utilities/grid/)
 
 
-## 5. Create the SuggestionBoxCreate Component
+## Create the SuggestionBoxCreate Component
 This component will implement the *Add Suggestion* functionality.
 
 <img src="images/Addsuggestion.png" width="90%" height="90%"/>
@@ -190,9 +191,9 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
 
 1. In the **Developer Console**, select **File | New | Lightning Component**
 2. For the component name, enter **SuggestionBoxCreate** and then click **Submit**
-3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
+3. Replace the code with the following:
 
-```html
+ ```html
 <aura:component controller="SuggestionController" implements="flexipage:availableForAllPageTypes">
    <ltng:require styles="{!$Resource.slds + 'assets/styles/salesforce-lightning-design-system-vf.css'}" />
    <aura:attribute name="suggestions" type="Suggestion__c[]" />
@@ -238,15 +239,13 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
       </form>
    </div>
 </aura:component>
-
-```
+ ```
 
 4. Select **File | Save**
 5. In the button panel on the right, click **Controller**
-6. In place of the myAction JavaScript function, add the following code:
-
-```js
-({
+6. Replace the code with the following:
+  ```js
+  ({
    addNew: function(component, event, helper) 
     			{
                 var el = component.find('formbox');
@@ -264,14 +263,14 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
                 var newSuggestion = component.get("v.newSuggestion");
                 helper.createSuggestion(component, newSuggestion);
 				}
-})
-```
+}) 
+ ```
 
 7. Select **File | Save**
 8. In the button panel on the right, click **Helper**
-9. In place of the helpermethod JavaScript function, add the following code:
+9. Replace the code with the following:
 
-```js
+ ```js
 ({
     showInput: function(component) {
         var el = component.find('formbox');
@@ -304,13 +303,13 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
     }
 
 })
-```
+ ```
 
 10. Select **File | Save**
 11. In the button panel on the right, click **Style**
-12. In place of .THIS {}, add the following code:
+12. Replace the code with the following:
 
-```css
+ ```css
 .THIS h3 {
 	margin: 0px;
 }
@@ -387,7 +386,7 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
   transition-property: transform, height;
   transition-duration: 1s, 1.2s;
 }
-```
+ ```
 
 13. Open the ** SuggestionBoxApp Application ** and replace the below 
 
@@ -408,18 +407,18 @@ You can see how the application looks by clicking on the **Preview** button, the
 *  *.THIS* in the CSS symbolises that the css written in the component bundle only applies to this specific component UI
 
 
-## 6. Create the SKChange Event and SearchBar Component
+## Create the SKChange Event and SearchBar Component
 We are creating two components namely the SearchBar and SuggestionList which need to communicate with each other to implement the search functionality.When employee types the searchkey in the searchbar, the Suggestionlist component should be updated with relevant suggestions.This communication will happen using the Lightning Event.
 
 1. In the **Developer Console**, select **File | New | Lightning Event**
 2. For the event name, enter **SKChange** and then click **Submit**
-3. Edit the code as shown below:
+3. Replace the code with the following:
 
-```html
+ ```html
 <aura:event type="APPLICATION">
     <aura:attribute name="searchKey" type="String"/>
 </aura:event>
-```
+ ```
 
 #### Code highlights:
 * This event holds a single attribute named searchkey
@@ -432,9 +431,9 @@ This component will implement the *Search Suggestion* functionality.
 
 1. In the **Developer Console**, select **File | New | Lightning Component**
 2. For the component name, enter **SearchBar** and then click **Submit**
-3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
+3. Replace the code with the following:
 
-```html
+ ```html
 <aura:component implements="flexipage:availableForAllPageTypes" >
    <ltng:require styles="{!$Resource.slds + 'assets/styles/salesforce-lightning-design-system-vf.css'}" />
    <aura:registerEvent name="SKChange" type="c:SKChange"/>
@@ -445,13 +444,13 @@ This component will implement the *Search Suggestion* functionality.
    </div>
 </aura:component>
 
-```
+ ```
 
 4. Select **File | Save**
 5. In the button panel on the right, click **Controller**
-6. In place of the myAction JavaScript function, add the following code:
+6. Replace the code with the following:
 
-```js
+ ```js
 ({
     searchKeyChange: function(component, event, helper) {
         var myEvent = $A.get("e.c:SKChange");
@@ -459,18 +458,18 @@ This component will implement the *Search Suggestion* functionality.
         myEvent.fire();
     }
 })
-```
+ ```
 
 7. Select **File | Save**
 8. In the button panel on the right, click **Style**
-9. In place of .THIS {}, add the following code:
+9. Replace the code with the following:
 
-```css
+ ```css
 .THIS .textfont{
     font-family:'Salesforce Sans', Arial, sans-serif;   
     font-size: 15pt;
 }
-```
+ ```
 
 10. Select **File | Save**
 11. Open the ** SuggestionBoxApp Application ** and replace the below 
@@ -497,9 +496,9 @@ This component will display the list of Suggestions based on the searchKey.
 
 1. In the **Developer Console**, select **File | New | Lightning Component**
 2. For the component name, enter **SuggestionList** and then click **Submit**
-3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
+3. Replace the code with the following:
 
-```html
+ ```html
 <aura:component controller="SuggestionController" implements="flexipage:availableForAllPageTypes">
    <ltng:require styles="{!$Resource.slds +'assets/styles/salesforce-lightning-design-system-vf.css'}" />
    <aura:attribute name="suggestions" type="Suggestion__c[]"/>
@@ -520,7 +519,7 @@ This component will display the list of Suggestions based on the searchKey.
       </ul>
    </div>
 </aura:component>
-```
+ ```
 
 #### Code highlights:
 * The controller assigned to the component refers to the server-side controller SuggestionController 
@@ -532,9 +531,9 @@ This component will display the list of Suggestions based on the searchKey.
 
 4. Select **File | Save**
 5. In the button panel on the right, click **Controller**
-6. In place of the myAction JavaScript function, add the following code:
+6. Replace the code with the following:
 
-```js
+ ```js
 ({
     doInit : function(component, event) {
         var action = component.get("c.findAll");
@@ -557,7 +556,7 @@ This component will display the list of Suggestions based on the searchKey.
 	}
     
 })
-```
+ ```
 
 7. Open the ** SuggestionBoxApp Application ** and replace the below 
 
@@ -582,9 +581,9 @@ This component will display the details of the suggestion selected by the employ
 
 1. In the **Developer Console**, select **File | New | Lightning Component**
 2. For the component name, enter **SuggestionDetails** and then click **Submit**
-3. Edit the aura:component tag, and specify the controller to use.Edit the code as shown below:
+3. Replace the code with the following:
 
-```html
+ ```html
 <aura:component controller="SuggestionController" implements="flexipage:availableForAllPageTypes">
    <ltng:require styles="{!$Resource.slds}" />
    <aura:attribute name="suggestion" type="Suggestion__c"/>
@@ -632,7 +631,7 @@ This component will display the details of the suggestion selected by the employ
       </div>
    </aura:if>
 </aura:component>
-```
+ ```
 #### Code Highlights:
 
 * In the SuggestionList component we created, we wrapped each suggestion in the list with a ``` <a href="{! '#suggestion/' + suggestion.Id }"> ``` anchor tag that sets the page hashtag to #suggestion/ followed by the suggestion id of the clicked suggestion. In this component, the locationChange handler is defined to listen to hashtag changes, and execute the controller's locationChange() when it happens. The locationChange() function implemented in the next step retrieves and displays the selected suggestion
@@ -640,9 +639,9 @@ This component will display the details of the suggestion selected by the employ
 
 4. Select **File | Save**
 5. In the button panel on the right, click **Controller**
-6. In place of the myAction JavaScript function, add the following code:
+6. Replace the code with the following:
 
-```js
+ ```js
 ({
     locationChange: function(component, event, helper) {
         var token = event.getParam("token");
@@ -679,7 +678,7 @@ This component will display the details of the suggestion selected by the employ
         $A.enqueueAction(action);
     }
 })
-```
+ ```
 
 7. Select **File | Save**
 8. Open the ** SuggestionBoxApp Application ** and replace the below 
