@@ -5,7 +5,7 @@ title = "Dreamforce 2016 MiniHacks"
 
 +++
 
-#### CHALLENGE 1 : SAVE SOME CLICKS
+#### CHALLENGE 1 : Save Some Clicks
 
 Business Travel needs planning and approvals.
 Let’s help our frequent travellers by creating an App that can ease the task of raising travel requests.
@@ -22,7 +22,7 @@ Let’s help our frequent travellers by creating an App that can ease the task o
 Come to the Mini Hack Basin to have your results verified by a tech staffer.
 
 
-#### CHALLENGE 2 : ALL-IN-ONE SYSTEM
+#### CHALLENGE 2 : All-in-one System
 
 You wish to have Salesforce serve as a frontend to all your backend systems. You begin with data from your Healthcare legacy system which you wish to access in Salesforce. No code is the way to go!
 
@@ -36,7 +36,7 @@ You wish to have Salesforce serve as a frontend to all your backend systems. You
 Come to the Mini Hack Basin to have your results verified by a tech staffer. 
 
 
-#### CHALLENGE 3 : REDESIGN VF 
+#### CHALLENGE 3 : Redesign VF
 
 Lightning Experience UI is the new talk of the town and you wish to redesign your Visualforce page in Salesforce to have the look and feel of Lightning Experience.
 
@@ -49,7 +49,7 @@ Lightning Experience UI is the new talk of the town and you wish to redesign you
 Come to the Mini Hack Basin to have your results verified by a tech staffer. 
 
 
-#### CHALLENGE 4 : LIGHTNING CONTACTS 
+#### CHALLENGE 4 : Lightning Contacts 
 Make contact search easier using Lightning Components.
 
 #### REQUIREMENTS:
@@ -61,7 +61,7 @@ Make contact search easier using Lightning Components.
 #### DEMO YOUR SOLUTION: 
 Come to the Mini Hack Basin to have your results verified by a tech staffer.
 
-#### CHALLENGE 5: HEROKU APP IN ACTION
+#### CHALLENGE 5: Heroku App in Action
 Deploy an app on Heroku that uses Heroku Connect to show the accounts from Salesforce in your application.
 
 #### REQUIREMENTS:
@@ -75,7 +75,7 @@ Clue: You can refer to the trailhead Heroku Connect Module for help: https://sfd
 Come to the Mini Hack Basin to have your results verified by a tech staffer. 
 
 
-#### CHALLENGE 6 : ALL ABOUT APIs 
+#### CHALLENGE 6 : All About APIs 
 An API is an interface through which one application communicates with other. Salesforce can be integrated with third party applications through a REST API. You need to create a REST Resource in your org such that you can use Salesforce REST APIs to update Salesforce data from outside the system.
 
 #### REQUIREMENTS:
