@@ -174,8 +174,7 @@ This application holds all the components we will create in th next steps togeth
         </div>
     </div>
 </aura:application>
-
-```
+ ```
 You can see how the application looks by clicking on the **Preview** button, the first button in the application bundle. 
 
 #### Code Highlights:
