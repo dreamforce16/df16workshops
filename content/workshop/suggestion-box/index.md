@@ -388,7 +388,7 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
 }
  ```
 
-13. Open the ** SuggestionBoxApp Application ** and replace the below 
+13. Open the **SuggestionBoxApp** Application and replace the below 
 
  ```html  
  <!-- <c:SuggestionBoxCreate /> to be uncommented after component creation -->  
@@ -476,7 +476,7 @@ This component will implement the *Search Suggestion* functionality.
  ```
 
 10. Select **File | Save**
-11. Open the ** SuggestionBoxApp Application ** and replace the below 
+11. Open the **SuggestionBoxApp** Application  and replace the below:
 
  ```html  
  <!-- <c:SearchBar /> to be uncommented after component creation -->  
@@ -527,16 +527,7 @@ This component will display the list of Suggestions based on the searchKey.
       </ul>
    </div>
 </aura:component>
- ```
-
-#### Code highlights:
-* The controller assigned to the component refers to the server-side controller SuggestionController 
-* This component catches the SKChange Event and handles it with the ``` <aura:handler> ``` tag triggering the client-side controller function *searchKeyChange*
-* The suggestions attribute is defined to hold the list of suggestion objects returned from the server
-* The init handler is defined to execute some code when the component is initialized
-* ```<aura:iteration>``` is used to iterate through the list of suggestions and create an ``` <li> ``` for each suggestion
-* The ``` <a href="{! '#suggestion/' + suggestion.Id }"> ``` anchor tag around the suggestion data is defined to set the page hashtag to #suggestion/ followed by the suggestion id. The SuggestionDetails component will use this hashtag to display suggestion details every time an employee selects a suggestion from the list
-
+  ```
 4. Select **File | Save**
 5. In the button panel on the right, click **Controller**
 6. Replace the code with the following:
@@ -566,7 +557,7 @@ This component will display the list of Suggestions based on the searchKey.
 })
  ```
 
-7. Open the ** SuggestionBoxApp Application ** and replace the below 
+7. Open the **SuggestionBoxApp** Application and replace the below 
 
  ```html   
  <!-- <c:SuggestionList /> to be uncommented after component creation -->  
@@ -577,11 +568,16 @@ This component will display the list of Suggestions based on the searchKey.
   ```html                 
   <c:SuggestionList />     
   ```
-    
-    
+        
 You can see how the application looks by clicking on the **Preview** button, the first button in the application bundle. 
 
 #### Code highlights:
+* The controller assigned to the component refers to the server-side controller SuggestionController 
+* This component catches the SKChange Event and handles it with the ``` <aura:handler> ``` tag triggering the client-side controller function *searchKeyChange*
+* The suggestions attribute is defined to hold the list of suggestion objects returned from the server
+* The init handler is defined to execute some code when the component is initialized
+* ```<aura:iteration>``` is used to iterate through the list of suggestions and create an ``` <li> ``` for each suggestion
+* The ``` <a href="{! '#suggestion/' + suggestion.Id }"> ``` anchor tag around the suggestion data is defined to set the page hashtag to #suggestion/ followed by the suggestion id. The SuggestionDetails component will use this hashtag to display suggestion details every time an employee selects a suggestion from the list
 * We get the value of the searchKey and then invoke findByName() method in the SuggestionController Apex class
 * A callback is used here as the call to the server is an asynchronous call. When this call returns some value, we assign the list of suggestions returned by findByName() to the component's suggestions attribute.
  
@@ -595,7 +591,7 @@ This component will display the details of the suggestion selected by the employ
 2. For the component name, enter **SuggestionDetails** and then click **Submit**
 3. Replace the code with the following:
 
-```html
+ ```html
 <aura:component controller="SuggestionController" implements="flexipage:availableForAllPageTypes">
    <ltng:require styles="{!$Resource.slds}" />
    <aura:attribute name="suggestion" type="Suggestion__c"/>
@@ -644,11 +640,7 @@ This component will display the details of the suggestion selected by the employ
    </aura:if>
 </aura:component>
  ```
-#### Code Highlights:
-
-* In the SuggestionList component we created, we wrapped each suggestion in the list with a ``` <a href="{! '#suggestion/' + suggestion.Id }"> ``` anchor tag that sets the page hashtag to #suggestion/ followed by the suggestion id of the clicked suggestion. In this component, the locationChange handler is defined to listen to hashtag changes, and execute the controller's locationChange() when it happens. The locationChange() function implemented in the next step retrieves and displays the selected suggestion
-* The button labeled as *Vote Up* is used by employees to vote up a suggestion.The button when clicked triggers the voteup function in the client-side controller
-
+ 
 4. Select **File | Save**
 5. In the button panel on the right, click **Controller**
 6. Replace the code with the following:
@@ -693,7 +685,7 @@ This component will display the details of the suggestion selected by the employ
  ```
 
 7. Select **File | Save**
-8. Open the ** SuggestionBoxApp Application ** and replace the below 
+8. Open the **SuggestionBoxApp** Application  and replace the below 
 
  ```html 
  <!-- <c:SuggestionDetails /> to be uncommented after component creation -->  
@@ -704,12 +696,14 @@ This component will display the details of the suggestion selected by the employ
     ```html 
     <c:SuggestionDetails />     
     ```
-    
-    
+       
 You can see how the **FINAL** application looks by clicking on the **Preview** button, the first button in the application bundle. 
 
 
 #### Code Highlights:
+
+* In the SuggestionList component we created, we wrapped each suggestion in the list with a ``` <a href="{! '#suggestion/' + suggestion.Id }"> ``` anchor tag that sets the page hashtag to #suggestion/ followed by the suggestion id of the clicked suggestion. In this component, the locationChange handler is defined to listen to hashtag changes, and execute the controller's locationChange() when it happens. The locationChange() function implemented in the next step retrieves and displays the selected suggestion
+* The button labeled as *Vote Up* is used by employees to vote up a suggestion.The button when clicked triggers the voteup function in the client-side controller
 * The *locationChange* function gets the new value of the hashtag which it then parses to extract the suggestion id and invokes the findById() method in the Apex controller SuggestionController. When the asynchronous call returns, it assigns the suggestion returned by findById() to the component's suggestion attribute.
 * The *voteup* function calls the voteSuggestion method in the server-side controller and passes the suggestion id as the method parameter.When the asynchronous call returns, it assigns the suggestion returned by voteupSuggestion() to the component's suggestion attribute thus updating the vote count
 
