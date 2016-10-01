@@ -26,7 +26,7 @@ The closer to reality and the more interactive a prototype is, the better. But d
 ## Prerequisites
 
 - A recent browser (Chrome or Firefox recommended)
-- [Node.js](https://nodejs.org/en/) 6+
+- [Node.js](https://nodejs.org/en/) 4.2 or up
 
 ### Nice to have
 
@@ -37,7 +37,7 @@ The closer to reality and the more interactive a prototype is, the better. But d
 ### Optional
 
 - An [Heroku](https://www.heroku.com/) account (free)
-- [Sketch](https://www.sketchapp.com/) 39+
+- [Sketch](https://www.sketchapp.com/) 39 or up
 - [Salesforce Sans fonts](https://github.com/salesforce-ux/design-system-ui-kit#salesforce-sans-fonts)
 
 ****
