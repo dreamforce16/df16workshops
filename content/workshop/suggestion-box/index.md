@@ -390,15 +390,15 @@ A lightning component is a combination of markup, JavaScript, and CSS. You first
 
 13. Open the **SuggestionBoxApp** Application and replace the below 
 
- ```html  
- <!-- <c:SuggestionBoxCreate /> to be uncommented after component creation -->  
+  ```html   
+<!-- <c:SuggestionBoxCreate /> to be uncommented after component creation -->   
  ```
   
   with 
 
-    ```html                   
-    <c:SuggestionBoxCreate />       
-    ```
+  ```html                 
+ <c:SuggestionBoxCreate />     
+  ```
 
 You can see how the application looks by clicking on the **Preview** button, the first button in the application bundle. 
 
@@ -478,15 +478,17 @@ This component will implement the *Search Suggestion* functionality.
 10. Select **File | Save**
 11. Open the **SuggestionBoxApp** Application  and replace the below:
 
- ```html  
+  ```html   
  <!-- <c:SearchBar /> to be uncommented after component creation -->  
  ```
   
   with 
 
-    ```html               
-    <c:SearchBar />      
-    ```
+  ```html                 
+  <c:SearchBar />     
+  ```
+          
+    
     
     
 You can see how the application looks by clicking on the **Preview** button, the first button in the application bundle. 
@@ -687,16 +689,16 @@ This component will display the details of the suggestion selected by the employ
 7. Select **File | Save**
 8. Open the **SuggestionBoxApp** Application  and replace the below 
 
- ```html 
+ ```html   
  <!-- <c:SuggestionDetails /> to be uncommented after component creation -->  
-  ```
+ ```
   
   with 
 
-    ```html 
-    <c:SuggestionDetails />     
-    ```
-       
+  ```html                 
+  <c:SuggestionDetails />     
+  ```
+ 
 You can see how the **FINAL** application looks by clicking on the **Preview** button, the first button in the application bundle. 
 
 
