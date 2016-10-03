@@ -26,7 +26,7 @@ The closer to reality and the more interactive a prototype is, the better. But d
 ## Prerequisites
 
 - A recent browser (Chrome or Firefox recommended)
-- [Node.js](https://nodejs.org/en/) 6+
+- [Node.js](https://nodejs.org/en/) 4.2 or up
 
 ### Nice to have
 
@@ -37,7 +37,7 @@ The closer to reality and the more interactive a prototype is, the better. But d
 ### Optional
 
 - An [Heroku](https://www.heroku.com/) account (free)
-- [Sketch](https://www.sketchapp.com/) 39+
+- [Sketch](https://www.sketchapp.com/) 39 or up
 - [Salesforce Sans fonts](https://github.com/salesforce-ux/design-system-ui-kit#salesforce-sans-fonts)
 
 ****
@@ -96,6 +96,8 @@ Included in the starter kit:
 - `index.html`: the welcome screen
 - `example.html`: an example that showcases the possibilities offered by the starter kit
 - `blank.html`: a blank template ready to host _your_ prototype!
+- `workshop.html`: a blank template ready to host _your_ prototype!
+- `workshop-done.html`: what your prototype should look like when you've completed this workshop!
 
 The easiest way to throw a quick prototype together is to copy and paste ready-made components from the Lightning Design System website into `blank.html`.
 
@@ -111,9 +113,9 @@ Your browser should display this at <http://localhost:3000/blank.html>:
 
 {{% fluid_img "images/first-component-in.png" %}}
 
-## Designing in the browser
+## Designing in the Browser
 
-### 1. Live reload
+### 1. Live Reload
 
 You may have seen it when you were adding a component to the markup: any change made to your prototype will display in the browser automatically, without you having to hit the "reload" button!
 
@@ -144,21 +146,35 @@ Congrats, you now have access to your directory structure from within Chrome!
 
 Let's see what you can do:
 
-#### Editing pages in the browser
+#### Editing Pages in the Browser
 
 {{% fluid_img "images/edit-in-browser.gif" %}}
 
-#### Editing styles in the browser
+#### Editing Styles in the Browser
 
 {{% fluid_img "images/edit-scss-in-browser.gif" %}}
 
-## From Sketch to the browser (section title TBD)
+## From Sketch to the Browser
 
-Let's do some copy and pasting! Errr… some coding!
+The static design you got in Sketch is in a pretty good shape and you know how to modify our prototype directly in the browser.
 
-In the `src/views` directory, there's a file called **`workshop.html`**. That's where we're going to make the magic happen.
+Now is the moment you do some copy and pasting! Errr… some coding!
 
-TODO: More instructions to copy - paste some components into a view.
+In the `src/views` directory, there's a file called [**`workshop.html`**](https://github.com/salesforce-ux/design-system-starter-kit/blob/master/src/views/workshop.html). That's where you're going to make the magic happen.
+
+Open `workshop.html` in your browser, both in the developer tools and in <http://localhost:3000/workshop.html>.
+
+In the HTML, you'll see comments such as:
+
+``` html
+    <!-- PAGE HEADER: https://www.lightningdesignsystem.com/components/page-headers/#flavor-record-home -->
+
+    <!-- /PAGE HEADER -->
+```
+
+For every set of comments, head to the mentioned URL, copy the component's code, and paste it in the page!
+
+After a while, your page should look pretty close to the static mockup, and you should have a solid prototype to show around!
 
 ## Deploying on Heroku
 
@@ -217,15 +233,15 @@ A "Permission denied" error means that the server rejected your connection. Ther
 - [Follow these instructions to set up your SSH keys](https://help.github.com/articles/generating-an-ssh-key/)
 - [Error: Permission denied (publickey)](https://help.github.com/articles/error-permission-denied-publickey/) on GitHub's help pages
 
-### Issues with Node and npm
+### Issues with Node.js and npm
 
-If you're encountering issues with Node modules, perform those actions in this order:
+If you're encountering issues with Node.js modules, perform those actions in this order:
 
-Verify that you're running Node 6 or up.
+Verify that you're running Node.js 4 or up.
 
 ```
 node --version
-# v6.x.x
+# v4.x.x
 ```
 
 Update npm:
