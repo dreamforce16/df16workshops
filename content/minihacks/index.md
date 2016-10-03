@@ -5,7 +5,7 @@ title = "Dreamforce 2016 MiniHacks"
 
 +++
 
-#### CHALLENGE 1 : SAVE SOME CLICKS
+#### CHALLENGE 1 : Save Some Clicks
 
 Business Travel needs planning and approvals.
 Let’s help our frequent travellers by creating an App that can ease the task of raising travel requests.
@@ -22,7 +22,7 @@ Let’s help our frequent travellers by creating an App that can ease the task o
 Come to the Mini Hack Basin to have your results verified by a tech staffer.
 
 
-#### CHALLENGE 2 : ALL-IN-ONE SYSTEM
+#### CHALLENGE 2 : All-in-one System
 
 You wish to have Salesforce serve as a frontend to all your backend systems. You begin with data from your Healthcare legacy system which you wish to access in Salesforce. No code is the way to go!
 
@@ -36,7 +36,7 @@ You wish to have Salesforce serve as a frontend to all your backend systems. You
 Come to the Mini Hack Basin to have your results verified by a tech staffer. 
 
 
-#### CHALLENGE 3 : REDESIGN VF 
+#### CHALLENGE 3 : Redesign VF
 
 Lightning Experience UI is the new talk of the town and you wish to redesign your Visualforce page in Salesforce to have the look and feel of Lightning Experience.
 
@@ -49,7 +49,7 @@ Lightning Experience UI is the new talk of the town and you wish to redesign you
 Come to the Mini Hack Basin to have your results verified by a tech staffer. 
 
 
-#### CHALLENGE 4 : LIGHTNING CONTACTS 
+#### CHALLENGE 4 : Lightning Contacts 
 Make contact search easier using Lightning Components.
 
 #### REQUIREMENTS:
@@ -61,7 +61,7 @@ Make contact search easier using Lightning Components.
 #### DEMO YOUR SOLUTION: 
 Come to the Mini Hack Basin to have your results verified by a tech staffer.
 
-#### CHALLENGE 5: HEROKU APP IN ACTION
+#### CHALLENGE 5: Heroku App in Action
 Deploy an app on Heroku that uses Heroku Connect to show the accounts from Salesforce in your application.
 
 #### REQUIREMENTS:
@@ -75,7 +75,7 @@ Clue: You can refer to the trailhead Heroku Connect Module for help: https://sfd
 Come to the Mini Hack Basin to have your results verified by a tech staffer. 
 
 
-####CHALLENGE 6 : ALL ABOUT APIs 
+#### CHALLENGE 6 : All About APIs 
 An API is an interface through which one application communicates with other. Salesforce can be integrated with third party applications through a REST API. You need to create a REST Resource in your org such that you can use Salesforce REST APIs to update Salesforce data from outside the system.
 
 #### REQUIREMENTS:
@@ -93,7 +93,7 @@ Come to the Mini Hack Basin to have your results verified by a tech staffer.
 #### MICROSOFT CHALLENGE  : Adaptive Layout with Windows 10 UWP Apps
 Windows Store applications run on a wide range of devices with different screen sizes and resolutions. In this challenge, using the Windows 10 UWP, you will be building an application that utilizes Adaptive layouts to make the app look good on wide devices such as slates as well as narrow devices such as phones.
 
-#### Requirements
+#### REQUIREMENTS:
 The requirements and steps are listed at https://aka.ms/tkm057 
 
 Attendees at the very least will need:
@@ -102,7 +102,7 @@ Attendees at the very least will need:
 2. Visual  Studio 2015 with the Universal Windows App Development Tools selected from the optional features list. You may want to preinstall the free, Visual Studio Community Edition from this link: https://aka.ms/lf6stw
 3. Developer mode enabled on their device. You can see how to do this using this link: https://aka.ms/bjcmqp
 
-#### Demo your solution
+#### DEMO YOUR SOLUTION:
 At the Microsoft booth in the Trailhead area.
 
 
