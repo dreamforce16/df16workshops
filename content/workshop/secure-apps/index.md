@@ -221,7 +221,7 @@ When inserting merge fields into JavaScript, watch out for XSS vulnerabilities. 
     We’ve got a user controllable variable userInput being included directly in script context. Is this vulnerable? Let’s find out.
 
 3. Navigate back to the **XSS in Script Context** tab
-4. Try typing in the following string for the userInput URL parameter ` ‘;alert(‘XSS’);//` 
+4. Try typing in the following string for the userInput URL parameter ` ';alert('XSS');//` 
 
     HINT: The URL in a your address bar should look something like this
     
