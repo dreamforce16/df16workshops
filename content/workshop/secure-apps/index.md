@@ -27,9 +27,9 @@ title = "Secure Apps - Understand Cross Site Scripting "
 
 ## Introduction
 
-Salesforce is constantly striving to make our platform as secure as possible. As a result Force.com has many built in security functions to protect end users: some enabeld by default while others require the developers to enable them within their code. While we aim to bake-in as much security constraints as possible because of the flexibility and extensibility of the platform it is completely possible for developers to write insecure code. 
+Salesforce is constantly striving to make our platform as secure as possible. As a result Force.com has many built in security functions to protect end users: some enabled by default while others require the developers to enable them within their code. While we aim to bake-in as many security constraints as possible because of the flexibility and extensibility of the platform it is completely possible for developers to write insecure code. 
 
-Of all the issues we commonly see developer introduce into their apps, Cross-Site Scripting (XSS) is one of the most widely seen web application vulnerabilities. As a result we’ve chosen this vulnerability to be the focus of our workshop. Our goal is that by the end of this class you should be able to explain XSS, know how to identify it in your code and remediate the issues. To support that we will have numerous demos, where you’ll get to “be the attacker” spotting and exploiting vulnerabilities as well as “being the defender” remediating them.
+Of all the issues we commonly see developers introduce into their apps, Cross-Site Scripting (XSS) is one of the most widely seen web application vulnerabilities. As a result we’ve chosen this vulnerability to be the focus of our workshop. Our goal is that by the end of this class you should be able to explain XSS, know how to identify it in your code and remediate the issues. To support that we will have numerous demos, where you’ll get to “be the attacker” spotting and exploiting vulnerabilities as well as “being the defender” remediating them.
 
 ## Learning Application Security with a Developer Edition Org
 
@@ -74,7 +74,7 @@ Cross-Site Scripting (XSS) is an injection vulnerability that occurs when an att
 In the simplest form, XSS attacks occur **when user-supplied input is reflected in the HTML of a web page**. Due to poor separation between code context and user data, the user input is executed as code. 
 In the Kingdom Management app, there is a page to create a scroll that can be used in the Kingdom to post announcements. Let’s test it out for XSS vulnerabilities!
 
-**Note**: For each of the demos in this class please **Firefox** as your web browser
+**Note**: For each of the demos in this class please use **Firefox** as your web browser
 
 1. In your Kingdom Management developer org select the **XSS Basics** tab.
 2. In the message text field, enter a basic message like: *Hear ye, hear ye, come one, come all!* and click the **Create Scroll** button.
