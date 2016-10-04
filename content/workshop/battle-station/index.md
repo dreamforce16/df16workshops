@@ -19,7 +19,10 @@ Once we are done with creating the App, it will look like this:
 6. `StationRelatedLists` component
 7. standard *Report Chart* component
 
-You will use your Salesforce Developer Edition org for this workshop. If you don't have a Developer Edition account, please <a href="https://developer.salesforce.com/signup" target="_blank">Signup</a>
+#### Prerequisites:
+
+* You will use your Salesforce Developer Edition org for this workshop. If you don’t have a Developer Edition account, please <a href="https://developer.salesforce.com/signup" target="_blank">Signup</a>.
+* You should have <a href="https://help.salesforce.com/apex/HTViewHelpDoc?id=domain_name_setup.htm" target="_blank">My Domain</a> enabled in your org and setup a domain to develop Lightning Components
 
 #### Here are the steps involved in creating our app:
 
@@ -242,7 +245,7 @@ You will create another Lightning component which shows a a single Battle Statio
 #### What you'll do
 You will create a lightning component which displays the details of a Battle Station record and lets you edit and delete the record, or create a new record.
 
-1. In the developer console, click *File > New > Lightning Component*, give it a name `BattleStationItem`, select Component Configuration checkbox for *Lightning Page*, and click Submit to see the newly created skeletal component bundle. For navigation help, refer to screenshots from Step 3.
+1. In the developer console, click *File > New > Lightning Component*, give it a name `BattleStationDetail`, select Component Configuration checkbox for *Lightning Page*, and click Submit to see the newly created skeletal component bundle. For navigation help, refer to screenshots from Step 3.
 
 2. Clear the default markup code and replace with below code, and click *File > Save*:
 	```html
