@@ -24,8 +24,8 @@ You need a Developer Edition org to complete this project. If you don't have one
 
 You will build a Suggestion Box Lightning Application that allows employees to submit suggestions, search for existing suggestions and vote for them. All of this with the following steps:
 
-1. Install the pre-created building blocks of the Suggestion Box App by clicking [here](http://bit.ly/df16_sb_package)
-This package includes the app definition, data model, validation rules, process and reports and dashboard which together form the basic Suggestion box Application.
+1. Install the pre-created building blocks of the Suggestion Box App by clicking [here](http://bit.ly/df16_sb_package) and [here](http://sforce.co/2dH9lZJ)
+These packages include the app definition, data model, validation rules, process and reports and dashboard which together form the basic Suggestion box Application.
 Steps to install an unmanaged package are detailed [here](https://help.salesforce.com/apex/HTViewHelpDoc?id=distribution_installing_packages.htm). You can install this app for **Admins only** for now.
 
 2. Extend this application using Lightning components to design a stand-alone Suggestion Box Application which will look something like this:
