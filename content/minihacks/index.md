@@ -24,13 +24,13 @@ Come to the Mini Hack Basin to have your results verified by a tech staffer.
 
 #### CHALLENGE 2 : All-in-one System
 
-You wish to have Salesforce serve as a frontend to all your backend systems. You begin with data from your Healthcare legacy system which you wish to access in Salesforce. No code is the way to go!
+You wish to have Salesforce serve as a frontend to all your backend systems. You begin with data from your Payment legacy system which you wish to access in Salesforce. No code is the way to go!
 
 #### REQUIREMENTS: 
 1. This challenge requires a Force.com Developer Edition: https://sfdc.co/df16devsignup
 2. No code allowed, including of the programmatic features such as Apex, Visualforce, custom JavaScript buttons, or integration with external systems. 
-3. Use this as your external Database system: http://bit.ly/externaldb
-4. You should link the Healthcare policy record to child customer records using object relationships as defined in the help doc available here: https://sfdc.co/df16helpdoc
+3. Use this as your external Database system: http://bit.ly/externaldatabase
+4. You should link the parent PaymentMechanisms record to child Account records using object relationships as defined in the help doc available here: https://sfdc.co/df16helpdoc
 
 #### DEMO YOUR SOLUTION: 
 Come to the Mini Hack Basin to have your results verified by a tech staffer. 
