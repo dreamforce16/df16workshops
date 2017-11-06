@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.16" />
+
+  <title>Wave : Learn how to use Wave External APIs to upload a Data Set &middot; Salesforce Developers 2017</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+
+  <link rel="shortcut icon" href="http://www.sfdcworkshop.com/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/"><div><img src='/workshop/2015sf_Developers_logo_RGB_KO.png' height='70'></div></a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/minihacks/"><i class='fa fa-list fa-fw'></i>MINIHACKS</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small style="color: #ffffff">© Copyright 2000-2016 salesforce.com, inc. All rights reserved. Various trademarks held by their respective owners. </small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Wave : Learn how to use Wave External APIs to upload a Data Set</h1>
+  <h2></h2>
+</div>
+<div class="content">
+  
+
+<p>In this workshop we will learn how to use Wave REST APIs to upload a data set and its associated meta-data and create a DataSet.
+We will be using Python as the Language to create the scripts which interact with the REST Endpoints</p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Wave is the analytics offering of Salesforce which allows Data Analysts as well users to upload and explore data in a new view. When we are dealing with data which is changing reapidly or there is a need to automate creating wave dashboards Wave APIs come in handy.</p>
+
+<p>Diagram below shows High Level flow diagram on how Wave External Data APIs can be used to upload a csv file.</p>
+
+<p><img src="images/wave-diagram-overview.png" width="70%" height="70%"></p>
+
+<h2 id="pre-requisites">Pre-Requisites</h2>
+
+<ol>
+<li>Python 3.x</li>
+<li>git client</li>
+<li>Wave Enabled Salesforce Developer Account</li>
+</ol>
+
+<h2 id="source-code">Source Code</h2>
+
+<p>Before we start explaining how to use Python to build the app, let us clone the source code from github into appropriate directory of your machine</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>git clone https://github.com/rajdeepd/force-rest-python/
+</pre></div>
+
+<p>Structure of the source code can be seen below</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">|-- data
+|   |-- test_file_v1.csv
+|   <span style="color: #4070a0">`</span>-- test_metadata_v1.json
+|-- org
+|   |-- __init__.py
+|   <span style="color: #4070a0">`</span>-- salesforce
+|       |-- account
+|       |-- __init__.py
+|       |-- list_rest_api_versions.py
+|       |-- util
+|       |   |-- config_sample.yml
+|       |   |-- config.yml
+|       |   |-- __init__.py
+|       |   <span style="color: #4070a0">`</span>-- util.py
+|       <span style="color: #4070a0">`</span>-- wave
+|           |-- delete_insights_external_data_part.py
+|           |-- describe_resources.py
+|           |-- get_insights_external_data_detail.py
+|           |-- __init__.py
+|           |-- insights_complete_upload_and_process.py
+|           |-- insights_external_data_get_list.py
+|           |-- insights_external_data_part_get_list.py
+|           |-- insights_external_data.py
+|           |-- insights_external_describe.py
+|           |-- insights_upload_metadata.py
+|           |-- insights_upload_part.py
+|           |-- insights_upload_patch_process.py
+|           |-- resources.py
+|           <span style="color: #4070a0">`</span>-- wave_util.py
+|-- __pycache__
+<span style="color: #4070a0">`</span>-- README.md
+</pre></div>
+
+<h2 id="use-case">Use Case</h2>
+
+<p>We will take a Simple DataSet with three colums : Username, Organization and Badges and upload to Wave. You can browse the dataset at <code>force-rest-python/data/test_file_v1.csv</code>.</p>
+
+<h2 id="metadata-file">MetaData File</h2>
+
+<p>Wave External data API needs a meta data file which defines the structure of the data. This file has to be written in a JSON format. In our case it is a simple file with a format similar to listing below. You can fine the complete listing at <a href="https://github.com/rajdeepd/force-rest-python/blob/master/data/test_metadata_v1.json">link to test_metadata_v1.json</a>.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">{
+	<span style="color: #062873; font-weight: bold">&quot;fileFormat&quot;</span>: {
+		<span style="color: #062873; font-weight: bold">&quot;charsetName&quot;</span>: <span style="color: #4070a0">&quot;UTF-8&quot;</span>,
+		<span style="color: #062873; font-weight: bold">&quot;fieldsEnclosedBy&quot;</span>: <span style="color: #4070a0">&quot;&quot;</span>,
+		<span style="color: #062873; font-weight: bold">&quot;fieldsDelimitedBy&quot;</span>: <span style="color: #4070a0">&quot;,&quot;</span>,
+		<span style="color: #062873; font-weight: bold">&quot;numberOfLinesToIgnore&quot;</span>: <span style="color: #40a070">1</span>
+	},
+	<span style="color: #062873; font-weight: bold">&quot;objects&quot;</span>: [{
+		<span style="color: #062873; font-weight: bold">&quot;connector&quot;</span>: <span style="color: #4070a0">&quot;CSVConnector&quot;</span>,
+		<span style="color: #062873; font-weight: bold">&quot;description&quot;</span>: <span style="color: #4070a0">&quot;&quot;</span>,
+		<span style="color: #062873; font-weight: bold">&quot;fullyQualifiedName&quot;</span>: <span style="color: #4070a0">&quot;trailhead badge count&quot;</span>,
+		<span style="color: #062873; font-weight: bold">&quot;label&quot;</span>: <span style="color: #4070a0">&quot;badges&quot;</span>,
+		<span style="color: #062873; font-weight: bold">&quot;name&quot;</span>: <span style="color: #4070a0">&quot;badges&quot;</span>,
+		<span style="color: #062873; font-weight: bold">&quot;fields&quot;</span>: [{
+			<span style="color: #062873; font-weight: bold">&quot;description&quot;</span>: <span style="color: #4070a0">&quot;&quot;</span>,
+			<span style="color: #062873; font-weight: bold">&quot;fullyQualifiedName&quot;</span>: <span style="color: #4070a0">&quot;UserName&quot;</span>,
+			<span style="color: #062873; font-weight: bold">&quot;label&quot;</span>: <span style="color: #4070a0">&quot;UserName&quot;</span>,
+			<span style="color: #062873; font-weight: bold">&quot;name&quot;</span>: <span style="color: #4070a0">&quot;Name&quot;</span>,
+			<span style="color: #062873; font-weight: bold">&quot;isSystemField&quot;</span>: <span style="color: #007020; font-weight: bold">false</span>,
+			<span style="color: #062873; font-weight: bold">&quot;isUniqueId&quot;</span>: <span style="color: #007020; font-weight: bold">true</span>,
+			<span style="color: #062873; font-weight: bold">&quot;isMultiValue&quot;</span>: <span style="color: #007020; font-weight: bold">false</span>,
+			<span style="color: #062873; font-weight: bold">&quot;type&quot;</span>: <span style="color: #4070a0">&quot;Text&quot;</span>
+		}, 
+		<span style="border: 1px solid #FF0000">....</span>
+		<span style="border: 1px solid #FF0000">....</span>
+		]
+	}]
+}
+</pre></div>
+
+<h2 id="steps-involved">Steps involved</h2>
+
+<p>We will implement the following Steps</p>
+
+<ol>
+<li>Get OAuth Access token from Force.com OAuth Endpoint</li>
+<li>Upload metadata JSON to <code>/services/data/v36.0/sobjects/InsightsExternalData</code> using a HTTP POST</li>
+<li>Upload Data file in parts to <code>/services/data/v36.0/sobjects/InsightsExternalDataPart</code> using a HTTP POST</li>
+<li>Process the data file to be converted into a DataSet by making a HTTP PATCH request to <code>/services//services/data/v36.0/sobjects/InsightsExternalData/&lt;id&gt;</code></li>
+</ol>
+
+<h2 id="generic-classes-to-get-oauth-token">Generic Classes to get OAuth token</h2>
+
+<h2 id="setup">Setup</h2>
+
+<p>Create a <code>util/config.yml</code> file from <code>util/config_sample.yml</code> file and fill in the values appropriately from salesforce.com developer account. These values of client_id, client_secret, username and password will be required to get OAuth request token.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span><span style="color: #007020">cd </span>org/salesforce/util
+<span style="color: #bb60d5">$ </span>cp config_sample.yml config.yml
+<span style="color: #bb60d5">$ </span>cat config_sample.yml 
+</pre></div>
+
+<p>Update the <code>TODO</code> with appropriate values for <code>client_id</code>, <code>client_secret</code>, <code>username</code> and <code>password</code>.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">credentials:
+    client_id: TODO
+    client_secret: TODO
+    username: TODO
+    password: TODO
+    host: ap2.salesforce.com
+    wave_base_url: /services/data/v36.0/wave/
+    base_url: /services/data/v36.0/sobjects/
+    login_url: https://login.salesforce.com
+    base_soql_url: /services/data/v36.0/query/?q<span style="color: #666666">=</span>
+    grant_service: /services/oauth2/token?grant_type<span style="color: #666666">=</span>password
+</pre></div>
+
+<h2 id="common-methods">Common Methods</h2>
+
+<p>File <code>org/salesforce/util.py</code> provides common methods for getting access token. Getting access token consists of following steps. We define a class Util in this file and add common methods as static in this file</p>
+
+<h3 id="get-access-token">Get Access Token</h3>
+
+<ul>
+<li><p>Load Credentials from <code>config.yml</code> into appropriate variables</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">with</span> <span style="color: #007020">open</span>(<span style="color: #4070a0">&quot;util/config.yml&quot;</span>, <span style="color: #4070a0">&#39;r&#39;</span>) <span style="color: #007020; font-weight: bold">as</span> ymlfile:
+    cfg <span style="color: #666666">=</span> yaml<span style="color: #666666">.</span>load(ymlfile)
+
+    cred <span style="color: #666666">=</span> cfg[<span style="color: #4070a0">&#39;credentials&#39;</span>]
+    client_id <span style="color: #666666">=</span> cred[<span style="color: #4070a0">&#39;client_id&#39;</span>]
+    client_secret <span style="color: #666666">=</span> cred[<span style="color: #4070a0">&#39;client_secret&#39;</span>]
+    username <span style="color: #666666">=</span> cred[<span style="color: #4070a0">&#39;username&#39;</span>]
+    password <span style="color: #666666">=</span> cred[<span style="color: #4070a0">&#39;password&#39;</span>]
+</pre></div></li>
+
+<li><p>Connect to the OAuth2 token url <code>/services/oauth2/token</code></p></li>
+
+<li><p>Create a new HTTP Connection Object</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">get_login_connection</span>():
+  conn <span style="color: #666666">=</span> http<span style="color: #666666">.</span>client<span style="color: #666666">.</span>HTTPSConnection(<span style="color: #4070a0">&quot;login.salesforce.com&quot;</span>)
+  <span style="color: #007020; font-weight: bold">return</span> conn
+</pre></div></li>
+
+<li><p>Do a secure HTTP Post to the url with the credentials</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">conn<span style="color: #666666">.</span>request(<span style="color: #4070a0">&quot;POST&quot;</span>, <span style="color: #4070a0">&quot;/services/oauth2/token&quot;</span>, params, headers)
+</pre></div></li>
+
+<li><p>Get the result body and Parse the json</p></li>
+
+<li><p>Extract the access_token and return it</p></li>
+</ul>
+
+<p>Full code Listing shown below</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">get_access_token</span>():
+	conn <span style="color: #666666">=</span> get_login_connection()
+	conn<span style="color: #666666">.</span>request(<span style="color: #4070a0">&quot;POST&quot;</span>, <span style="color: #4070a0">&quot;/services/oauth2/token&quot;</span>, params, headers)
+	response <span style="color: #666666">=</span> conn<span style="color: #666666">.</span>getresponse()
+	<span style="color: #007020; font-weight: bold">print</span>(response<span style="color: #666666">.</span>status, response<span style="color: #666666">.</span>reason)
+	data <span style="color: #666666">=</span> response<span style="color: #666666">.</span>read()<span style="color: #666666">.</span>decode(<span style="color: #4070a0">&#39;ascii&#39;</span>)
+	data_json <span style="color: #666666">=</span> json<span style="color: #666666">.</span>loads(data)
+	<span style="color: #007020; font-weight: bold">print</span>(<span style="color: #4070a0">&#39;access_token: &#39;</span> <span style="color: #666666">+</span> data_json[<span style="color: #4070a0">&#39;access_token&#39;</span>])
+	<span style="color: #007020; font-weight: bold">return</span> data_json
+</pre></div>
+
+<p><strong>Test OAuth Functionality</strong></p>
+
+<p>Try following test script to make sure your OAuth 2.0 handshake is working properly. You can find the test code in the path <code>force-rest-python/org/salesforce/test/test_oauth_access_token.py</code></p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">org.salesforce.util</span> <span style="color: #007020; font-weight: bold">import</span> util
+
+<span style="color: #007020; font-weight: bold">if</span> __name__ <span style="color: #666666">==</span> <span style="color: #4070a0">&quot;__main__&quot;</span>:
+    access_token <span style="color: #666666">=</span> util<span style="color: #666666">.</span>get_access_token()[<span style="color: #4070a0">&#39;access_token&#39;</span>]
+    <span style="color: #007020; font-weight: bold">print</span>(<span style="color: #4070a0">&quot;access_token: &quot;</span> <span style="color: #666666">+</span> access_token)
+</pre></div>
+
+<p>Output of the test code is listed below, shows the access token received from the server</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">access_token: 00D280000013APV!ARkAQMDEtho5ExW...2qI_rm0HM.HFIHwp9Z_cShzb
+</pre></div>
+
+<h2 id="class-insightsexternaldata">Class InsightsExternalData</h2>
+
+<p>We have created a class <code>InsightsExternalData</code> where all the lifecycle functions are listed. You can browse the source code <a href="https://github.com/rajdeepd/force-rest-python/blob/master/org/salesforce/wave/insights_external_data.py">here</a></p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">class</span> <span style="color: #0e84b5; font-weight: bold">InsightsExternalData</span>:
+
+    <span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">__init__</span>(<span style="color: #007020">self</span>):
+
+    <span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">upload_metadata</span>(<span style="color: #007020">self</span>, metadata):
+
+    <span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">upload_part</span>(<span style="color: #007020">self</span>,  data):
+
+    <span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">delete_external_data</span>(<span style="color: #007020">self</span>, <span style="color: #007020">id</span>):
+
+    <span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">delete_external_data_part</span>(<span style="color: #007020">self</span>, <span style="color: #007020">id</span>):
+
+    <span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">patch</span>(<span style="color: #007020">self</span>, <span style="color: #007020">id</span>,  data):
+
+    <span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">describe</span>(<span style="color: #007020">self</span>):
+
+    <span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">get_detail</span>(<span style="color: #007020">self</span>, <span style="color: #007020">id</span>):
+</pre></div>
+
+<h2 id="upload-metadata-file">Upload Metadata File</h2>
+
+<p>First we will convert the Metadata file into a base64 encoded string and then do a Http POST. Following Steps are implemented in <a href="https://github.com/rajdeepd/force-rest-python/blob/master/org/salesforce/wave/insights_upload_metadata.py">insights_upload_metadata</a>.</p>
+
+<ol>
+<li>Create a InsightsExternalData class</li>
+
+<li><p>Read Metadata file and create a JSON</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">read_file</span>(path):
+    local_file <span style="color: #666666">=</span> <span style="color: #007020">open</span>(path, <span style="color: #4070a0">&#39;r&#39;</span>)
+    file_content <span style="color: #666666">=</span> local_file<span style="color: #666666">.</span>read()
+    <span style="color: #007020; font-weight: bold">return</span> file_content
+
+input_str <span style="color: #666666">=</span> read_file(_path)
+</pre></div></li>
+
+<li><p>Encode metadata file contents to base 64</p></li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">   encoded_metadata <span style="color: #666666">=</span> encode(input_str)
+</pre></div>
+
+<ol>
+<li><p>Create a dictionary with appropriate key and values, this will be the JSON body of HTTP request</p></li>
+
+<li><p>Make the HTTP Request call</p></li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">   insights_external_data<span style="color: #666666">.</span>upload_metadata(metadata)
+</pre></div>
+
+<p>Where source for function<code>upload_metadata(metadata)</code> can be found in the file <a href="https://github.com/rajdeepd/force-rest-python/blob/master/org/salesforce/wave/insights_upload_metadata.py">insights_upload_metadata.py</a>.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    <span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">upload_metadata</span>(<span style="color: #007020">self</span>, metadata):
+        data <span style="color: #666666">=</span> util<span style="color: #666666">.</span>create_sobject(<span style="color: #4070a0">&#39;InsightsExternalData&#39;</span>, metadata)
+        <span style="color: #007020; font-weight: bold">print</span>(data)
+        <span style="color: #007020; font-weight: bold">return</span> data
+</pre></div>
+
+<ol>
+<li>Return the id from the returned JSON</li>
+</ol>
+
+<p>Complete listing</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">upload_metadata</span>(_path, edge_mart_alias, _format, _operation, _action):
+    insights_external_data <span style="color: #666666">=</span> InsightsExternalData()
+    input_str <span style="color: #666666">=</span> read_file(_path)
+    encoded_metadata <span style="color: #666666">=</span> encode(input_str)
+    metadata <span style="color: #666666">=</span> {}
+    metadata[<span style="color: #4070a0">&quot;Format&quot;</span>] <span style="color: #666666">=</span> _format
+    metadata[<span style="color: #4070a0">&quot;Operation&quot;</span>] <span style="color: #666666">=</span> _operation
+    metadata[<span style="color: #4070a0">&quot;Action&quot;</span>] <span style="color: #666666">=</span> _action
+    metadata[<span style="color: #4070a0">&quot;EdgemartAlias&quot;</span>] <span style="color: #666666">=</span> edge_mart_alias
+    metadata[<span style="color: #4070a0">&quot;MetadataJson&quot;</span>] <span style="color: #666666">=</span> encoded_metadata<span style="color: #666666">.</span>decode(<span style="color: #4070a0">&#39;utf-8&#39;</span>)
+    response_local <span style="color: #666666">=</span> insights_external_data<span style="color: #666666">.</span>upload_metadata(metadata)
+    json_data <span style="color: #666666">=</span> json<span style="color: #666666">.</span>loads(<span style="color: #007020">str</span>(response_local))
+    <span style="color: #007020; font-weight: bold">return</span> json_data[<span style="color: #4070a0">&#39;id&#39;</span>]
+
+<span style="color: #007020; font-weight: bold">if</span> __name__ <span style="color: #666666">==</span> <span style="color: #4070a0">&quot;__main__&quot;</span>:
+
+    path <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;/home/ubuntu/work/force-rest-python/data/test_metadata.json&#39;</span>
+    format <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;csv&#39;</span>
+    operation <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;Overwrite&#39;</span>
+    action <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;None&#39;</span>
+    edge_mart_alias <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;OppExtData1&#39;</span>
+    response <span style="color: #666666">=</span> upload_metadata(path, edge_mart_alias, 
+    	format, operation, action)
+    <span style="color: #007020; font-weight: bold">print</span>(response)
+</pre></div>
+
+<p>Try running the program as shown below</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>python3 org/salesforce/wave/insights_upload_metadata.py 
+
+<span style="color: #666666">{</span><span style="color: #4070a0">&quot;id&quot;</span>:<span style="color: #4070a0">&quot;06V280000008tLMEAY&quot;</span>,<span style="color: #4070a0">&quot;success&quot;</span>:true,<span style="color: #4070a0">&quot;errors&quot;</span>:<span style="color: #666666">[]}</span>
+06V280000008tLMEAY
+</pre></div>
+
+<p>The id received here will be used in next two steps</p>
+
+<h2 id="upload-data-file">Upload Data File</h2>
+
+<p>In this section we will learn how to upload a Part of Data File. Functionality is implemented in <a href="https://github.com/rajdeepd/force-rest-python/blob/master/org/salesforce/wave/insights_upload_part.py">https://github.com/rajdeepd/force-rest-python/blob/master/org/salesforce/wave/insights_upload_part.py</a></p>
+
+<p>Complete Code Listing:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">upload_part</span>(path, data_id, part_number):
+    insights_external_data <span style="color: #666666">=</span> InsightsExternalData()
+    input_str <span style="color: #666666">=</span> read_file(path)
+    encoded_data <span style="color: #666666">=</span> encode(input_str)
+    data <span style="color: #666666">=</span> {}
+    data[<span style="color: #4070a0">&#39;InsightsExternalDataId&#39;</span>] <span style="color: #666666">=</span> data_id
+    data[<span style="color: #4070a0">&#39;PartNumber&#39;</span>] <span style="color: #666666">=</span> part_number
+    data[<span style="color: #4070a0">&#39;DataFile&#39;</span>] <span style="color: #666666">=</span> encoded_data<span style="color: #666666">.</span>decode(<span style="color: #4070a0">&#39;utf-8&#39;</span>)
+    _response <span style="color: #666666">=</span> insights_external_data<span style="color: #666666">.</span>upload_part(data)
+    <span style="color: #007020; font-weight: bold">return</span> _response
+
+<span style="color: #007020; font-weight: bold">if</span> __name__ <span style="color: #666666">==</span> <span style="color: #4070a0">&quot;__main__&quot;</span>:
+    path <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;/home/ubuntu/work/force-rest-python/data/test_file.csv&#39;</span>
+    <span style="color: #007020">id</span> <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;&#39;</span>
+    part_number <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;1&#39;</span>
+    response <span style="color: #666666">=</span> upload_part(path, <span style="color: #007020">id</span>, part_number)
+    <span style="color: #007020; font-weight: bold">print</span>(response)
+</pre></div>
+
+<p>Make sure you replace string in id with the id received in upload metadata step (06V280000008tLMEAY).</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>python3 org/salesforce/wave/insights_upload_part.py
+</pre></div>
+
+<p>If the upload is successful, you will see an output similar to the listing below:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #666666">{</span><span style="color: #4070a0">&quot;id&quot;</span>:<span style="color: #4070a0">&quot;06W280000008sxNEAQ&quot;</span>,<span style="color: #4070a0">&quot;success&quot;</span>:true,<span style="color: #4070a0">&quot;errors&quot;</span>:<span style="color: #666666">[]}</span>
+</pre></div>
+
+<h2 id="process-data-file">Process Data File</h2>
+
+<p>Last step is to process the upload data and meta data file. Here we need to pass the id of metadata return call as well as the json shown below.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">{
+    <span style="color: #062873; font-weight: bold">&quot;Action&quot;</span>: <span style="color: #4070a0">&quot;Process&quot;</span>
+}
+</pre></div>
+
+<p>Then we call <code>insights_external_data.patch(data_id, data)</code> function where a HTTP PATCH call is made.</p>
+
+<p>Complete Code listing</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">if</span> __name__ <span style="color: #666666">==</span> <span style="color: #4070a0">&quot;__main__&quot;</span>:
+    insights_external_data <span style="color: #666666">=</span> InsightsExternalData()
+    data_id <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;06V280000008tLMEAY&quot;</span>
+    data <span style="color: #666666">=</span> {
+        <span style="color: #4070a0">&quot;Action&quot;</span>: <span style="color: #4070a0">&quot;Process&quot;</span>
+    }
+    response <span style="color: #666666">=</span> insights_external_data<span style="color: #666666">.</span>patch(data_id, data)
+    <span style="color: #007020; font-weight: bold">print</span>(response)
+</pre></div>
+
+<p>Executing the code</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>python3 org/salesforce/wave/insights_upload_patch_process.py
+</pre></div>
+
+<p>Once the patch process is complete you can check that Data Set is created in Wave Dashboardand check for the dataset name, which is <code>OpExData1</code> in our case.</p>
+
+<p><img src="images/dataset_uploaded.png" width="100%" height="100%"></p>
+
+<h2 id="complete-example">Complete Example</h2>
+
+<p>Finally we might want to put all the three steps in a single script. Here we are executing the following steps</p>
+
+<ol>
+<li>Upload metadata</li>
+<li>Upload data</li>
+<li>Process uploaded data and metadata</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">org.salesforce.wave.insights_upload_metadata</span> <span style="color: #007020; font-weight: bold">import</span> upload_metadata
+<span style="color: #007020; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">org.salesforce.wave.insights_upload_part</span> <span style="color: #007020; font-weight: bold">import</span> upload_part
+<span style="color: #007020; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">org.salesforce.wave.insights_external_data</span> <span style="color: #007020; font-weight: bold">import</span> InsightsExternalData
+
+
+<span style="color: #007020; font-weight: bold">if</span> __name__ <span style="color: #666666">==</span> <span style="color: #4070a0">&quot;__main__&quot;</span>:
+    meta_path <span style="color: #666666">=</span> 
+      <span style="color: #4070a0">&#39;/home/ubuntu/work/force-rest-python/data/test_metadata_v1.json&#39;</span>
+    format <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;csv&#39;</span>
+    operation <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;Overwrite&#39;</span>
+    action <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;None&#39;</span>
+    edge_mart_alias <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;BadgeAnalysis_v1&#39;</span>
+    <span style="color: #007020">id</span> <span style="color: #666666">=</span> upload_metadata(meta_path, edge_mart_alias, format, operation, action)
+    <span style="color: #007020; font-weight: bold">print</span>(<span style="color: #4070a0">&#39;id:&#39;</span> <span style="color: #666666">+</span> <span style="color: #007020">id</span>)
+
+    path <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;/home/ubuntu/work/force-rest-python/data/test_file_v1.csv&#39;</span>
+    part_number <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;1&#39;</span>
+    response <span style="color: #666666">=</span> upload_part(path, <span style="color: #007020">id</span>, part_number)
+    <span style="color: #007020; font-weight: bold">print</span>(<span style="color: #4070a0">&quot;Part Upload Response:&quot;</span> <span style="color: #666666">+</span> response)
+
+    insights_external_data <span style="color: #666666">=</span> InsightsExternalData()
+    data <span style="color: #666666">=</span> {
+        <span style="color: #4070a0">&quot;Action&quot;</span>: <span style="color: #4070a0">&quot;Process&quot;</span>
+    }
+    response <span style="color: #666666">=</span> insights_external_data<span style="color: #666666">.</span>patch(<span style="color: #007020">id</span>, data)
+    <span style="color: #007020; font-weight: bold">print</span>(<span style="color: #4070a0">&quot;Completed Processing&quot;</span>)
+</pre></div>
+
+<p>Execute using the following command</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>python3 org/salesforce/wave/insights_complete_upload_and_process.py
+</pre></div>
+
+<p>Output</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #666666">{</span><span style="color: #4070a0">&quot;id&quot;</span>:<span style="color: #4070a0">&quot;06V280000008tJJEAY&quot;</span>,<span style="color: #4070a0">&quot;success&quot;</span>:true,<span style="color: #4070a0">&quot;errors&quot;</span>:<span style="color: #666666">[]}</span>
+id:06V280000008tJJEAY
+Part Upload Response:<span style="color: #666666">{</span><span style="color: #4070a0">&quot;id&quot;</span>:<span style="color: #4070a0">&quot;06W280000008suPEAQ&quot;</span>,<span style="color: #4070a0">&quot;success&quot;</span>:true,<span style="color: #4070a0">&quot;errors&quot;</span>:<span style="color: #666666">[]}</span>
+Completed Processing
+</pre></div>
+
+<h2 id="summary">Summary</h2>
+
+<p>In this workshop we learnt how to Use Wave External Data APIs with Python 3 and uploaded a DataSet along with its metadata.</p>
+
+</div>
+
+</div>
+</div>
+<script src="http://www.sfdcworkshop.com/js/ui.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84811307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
+

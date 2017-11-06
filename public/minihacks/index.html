@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.16" />
+
+  <title>Dreamforce 2017 MiniHacks &middot; Salesforce Developers 2017</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+
+  <link rel="shortcut icon" href="http://www.sfdcworkshop.com/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/"><div><img src='/workshop/2015sf_Developers_logo_RGB_KO.png' height='70'></div></a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/minihacks/"><i class='fa fa-list fa-fw'></i>MINIHACKS</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small style="color: #ffffff">© Copyright 2000-2016 salesforce.com, inc. All rights reserved. Various trademarks held by their respective owners. </small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Dreamforce 2017 MiniHacks</h1>
+  <h2></h2>
+</div>
+<div class="content">
+  
+
+<h3 id="challenges">Challenges</h3>
+
+<ul>
+<li><a href="#challenge-1-point-and-click-app">CHALLENGE 1 : Point and Click App</a></li>
+<li><a href="#challenge-2-lightning-app-builder-and-dreamhouse">CHALLENGE 2: Lightning App Builder and Dreamhouse</a></li>
+<li><a href="#challenge-3-voting-survey-with-no-code">CHALLENGE 3: Voting Survey with no Code</a></li>
+<li><a href="#challenge-4-lightning-bmi-calculator">CHALLENGE 4: Lightning BMI Calculator</a></li>
+<li><a href="#challenge-5-lightning-data-service-no-apex">CHALLENGE 5: Lightning Data Service, No Apex</a></li>
+<li><a href="#challenge-6-heroku-app-in-action">CHALLENGE 6: Heroku App in Action</a></li>
+<li><a href="#challenge-7-hello-einstein-search-visually">CHALLENGE 7: Hello Einstein, Search Visually</a></li>
+<li><a href="#challenge-8-searchable-contact-list">CHALLENGE 8: Searchable Contact List</a></li>
+<li><a href="#challenge-9-slds-component">CHALLENGE 9: SLDS Component</a></li>
+<li><a href="#challenge-10-deploy-docusign-for-salesforce-to-get-agreements-sent-out-and-signed-faster">CHALLENGE 10: Deploy DocuSign for Salesforce to get agreements sent out and signed faster</a></li>
+</ul>
+
+<h4 id="challenge-1-point-and-click-app">CHALLENGE 1 : Point and Click App</h4>
+
+<p>We need to help an amusement park manage its rides, shows, customers and discounts. Help them by creating a Resort application with automated approval processes, using configuration only.</p>
+
+<h5 id="requirements">REQUIREMENTS</h5>
+
+<ol>
+<li>This challenge is for the Lightning Experience and requires a Force.com Developer Edition: <a href="https://sforce.co/2tnM5a7">https://sforce.co/2tnM5a7</a>.</li>
+<li>No code is allowed. This includes Apex, Visualforce, Lightning Components, custom JavaScript buttons, or integration with external systems.</li>
+<li>Show object should contain Name, Date, Price, Total Seats and Booked Seats. Each show or ride is limited by number of seats (total seats).</li>
+<li>Ticket object should capture Customer Name, Number of Adult seats, Number of Child seats and Discount. Price must be derived from the Show object. The Total Cost should be automatically calculated. If the seats are filled, no additional bookings are to be allowed.</li>
+<li>Discounts are permitted for the following scenarios:
+
+<ol>
+<li>Child seat has a default discount of 25%.</li>
+<li>Special discount is permitted through the discount field. If this discount is more than 30%, approval from the manager is required. Record should be locked while under approval process</li>
+</ol></li>
+</ol>
+
+<h5 id="demo-your-solution">Demo Your Solution:</h5>
+
+<p>Visit the Mini Hack Basin to verify your results with a tech staffer.</p>
+
+<h4 id="challenge-2-lightning-app-builder-and-dreamhouse">CHALLENGE 2: Lightning App Builder and Dreamhouse</h4>
+
+<p>Lightning App Builder lets admins build with components. You can combine existing standard and custom components to create a single Lightning page.</p>
+
+<h5 id="requirements-1">Requirements:</h5>
+
+<ol>
+<li>This challenge is for the Lightning Experience UI and requires a Force.com Developer Edition: <a href="https://sforce.co/2tnM5a7">https://sforce.co/2tnM5a7</a></li>
+<li>Install the Dreamhouse Sample app (Refer to the instructions at <a href="http://www.dreamhouseapp.io">http://www.dreamhouseapp.io</a></li>
+<li>Create a Lightning Page called Property View using Lightning App Builder, and add it to the Dreamhouse App.</li>
+<li>Property View Page should contain Property Tile List, Price Range, Property Summary, Map, Smart Price Calculator and Days on Market Components.</li>
+<li>Add Path Component to Property Detail page and configure process with key fields for each stage of the Deal.</li>
+</ol>
+
+<h5 id="demo-your-solution-1">Demo Your Solution:</h5>
+
+<p>Visit the Mini Hack Basin to verify your results with a tech staffer.</p>
+
+<h4 id="challenge-3-voting-survey-with-no-code">CHALLENGE 3: Voting Survey with no Code</h4>
+
+<p>Help a social organization conduct a Survey to choose their leader based on certain qualities. Create a visual flow of the survey using Cloud Flow Designer.</p>
+
+<h5 id="requirements-2">Requirements:</h5>
+
+<ol>
+<li>This challenge is for Lightning Experience and requires a Force.com Developer Edition: <a href="https://sforce.co/2tnM5a7">https://sforce.co/2tnM5a7</a></li>
+<li>No code is allowed. This includes Apex, Visualforce, Lightning Components, custom JavaScript buttons, or integration with external systems.</li>
+<li>Contestant object should contain Name, rollup field for Vote Count and Score which is a rollup summary of ratings from all the votes.</li>
+<li>Vote object which is child of Contestant object should capture rating(1 to 10) for each of the qualities e.g. Honesty, Delegation, Commitment and Leadership etc. A field called score should automatically calculate the score of all qualities.</li>
+<li>Voting has to be done through a survey[o] via a tab in Lightning Experience using visual flow. This flow should have the Lightning look and feel.</li>
+</ol>
+
+<h5 id="demo-your-solution-2">Demo Your Solution:</h5>
+
+<p>Visit the Mini Hack Basin to verify your results with a tech staffer.</p>
+
+<h4 id="challenge-4-lightning-bmi-calculator">CHALLENGE 4: Lightning BMI Calculator</h4>
+
+<p>Implement a BMI Calculator Lightning Component using Base Lightning Components.</p>
+
+<h5 id="requirements-3">Requirements:</h5>
+
+<ol>
+<li>This challenge is for Lightning Experience and requires a Force.com Developer Edition: <a href="https://sforce.co/2tnM5a7">https://sforce.co/2tnM5a7</a></li>
+<li>Create a simple component using Base Lightning Components to accept Height and Weight. It should Calculate and display BMI on click of a button.</li>
+<li>You may refer to <a href="http://sforce.co/2stOMud">http://sforce.co/2stOMud</a> for help on Base Lightning Components.</li>
+<li>Show this component working in Lightning Experience.</li>
+</ol>
+
+<h5 id="demo-your-solution-3">Demo Your Solution:</h5>
+
+<p>Visit the Mini Hack Basin to verify your results with a tech staffer.</p>
+
+<h4 id="challenge-5-lightning-data-service-no-apex">CHALLENGE 5: Lightning Data Service, No Apex</h4>
+
+<p>Make it simple with Lightning Data Service. Avoid using a custom server side Apex controller to load, create, edit, or delete a record in your Lightning component.</p>
+
+<h5 id="requirements-4">Requirements:</h5>
+
+<ol>
+<li>This challenge is for Lightning Experience and requires a Force.com Developer Edition: <a href="https://sforce.co/2tnM5a7">https://sforce.co/2tnM5a7</a></li>
+<li>Use Lightning Component code. No Apex Code is allowed.</li>
+<li>Implement a Component and add it to Contact detail page. The Component should display Contact Name, Phone and Email Values of the record.</li>
+<li>Refer to the documentation and examples at <a href="http://sforce.co/2sBWZML">http://sforce.co/2sBWZML</a></li>
+</ol>
+
+<h5 id="demo-your-solution-4">Demo Your Solution:</h5>
+
+<p>Visit the Mini Hack Basin to verify your results with a tech staffer.</p>
+
+<h4 id="challenge-6-heroku-app-in-action">CHALLENGE 6: Heroku App in Action</h4>
+
+<p>Deploy an app on Heroku that uses Heroku Connect to display the accounts from Salesforce in your application.</p>
+
+<h5 id="requirements-5">Requirements:</h5>
+
+<ol>
+<li>This challenge requires a Force.com Developer Edition: <a href="http://sforce.co/2tnM5a7">http://sforce.co/2tnM5a7</a>.</li>
+<li>Refer to the blog: <a href="http://bit.ly/HerokuHack">http://bit.ly/HerokuHack</a> for instructions on installing, running the app locally and deploying to Heroku.</li>
+<li>Modify the app such that it can display Accounts from Salesforce</li>
+<li>Redeploy the changes on Heroku.</li>
+<li>You can refer to the trailhead Heroku Connect Module for help: <a href="http://sforce.co/2sbVsud">http://sforce.co/2sbVsud</a>.</li>
+</ol>
+
+<h5 id="demo-your-solution-5">Demo Your Solution:</h5>
+
+<p>Visit the Mini Hack Basin to verify your results with a tech staffer.</p>
+
+<h4 id="challenge-7-hello-einstein-search-visually">CHALLENGE 7: Hello Einstein, Search Visually</h4>
+
+<p>A picture is worth a thousand words. Search with images using Einstein Vision and Lightning bots. Configure the Dreamhouse app for your customers to support searches for similar properties by uploading images of their choice.</p>
+
+<h5 id="requirements-6">Requirements:</h5>
+
+<ol>
+<li>This challenge is for Lightning Experience and requires a Force.com Developer Edition: <a href="https://sforce.co/2tnM5a7">https://sforce.co/2tnM5a7</a>.</li>
+<li>This challenge requires a Einstein Vision Account. You can sign up at bit.ly/2s2xbsd.</li>
+<li>Install the Dreamhouse sample app (Refer to instructions at <a href="http://bit.ly/2stG4fB">http://bit.ly/2stG4fB</a>).</li>
+<li>Configure the image based search component and bot to search for a house by typing the command ‘search houses like this’ and upload any house image of your choice. You may refer to <a href="http://sforce.co/2sc5j2Z">http://sforce.co/2sc5j2Z</a> for help.</li>
+</ol>
+
+<h5 id="demo-your-solution-6">Demo Your Solution:</h5>
+
+<p>Visit the Mini Hack Basin to verify your results with a tech staffer.</p>
+
+<h4 id="challenge-8-searchable-contact-list">CHALLENGE 8: Searchable Contact List</h4>
+
+<p>A Searchable Contact List Component for each Account record is required for an Organization. Help the organization by creating a Lightning Component.</p>
+
+<h5 id="requirements-7">Requirements:</h5>
+
+<ol>
+<li>This challenge is for Lightning Experience and requires a Force.com Developer Edition: <a href="http://sforce.co/2tnM5a7">http://sforce.co/2tnM5a7</a>.</li>
+<li>Create a Searchable Contact List Component which has to be added to the Account Detail Page.</li>
+<li>The Component should display all the Contacts of the Account. It should contain a Search Filter to search for a specific Contact by name.</li>
+</ol>
+
+<h5 id="demo-your-solution-7">Demo Your Solution:</h5>
+
+<p>Visit the Mini Hack Basin to verify your results with a tech staffer.</p>
+
+<h4 id="challenge-9-slds-component">CHALLENGE 9: SLDS Component</h4>
+
+<p>Enrich Visualforce pages with Lightning Experience by creating Visualforce Components using Salesforce Lightning Design System (SLDS).</p>
+
+<h5 id="requirements-8">Requirements:</h5>
+
+<ol>
+<li>This challenge requires a Force.com Developer Edition: sforce.co/2tnM5a7.</li>
+<li>Install this package which contains the VisualForce Page with more instructions: <a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04tf4000001MFb5">https://login.salesforce.com/packaging/installPackage.apexp?p0=04tf4000001MFb5</a></li>
+<li>Implement a Visualforce component with SLDS and replace the standard component in the Visualforce page.</li>
+<li>Your new SLDS visualforce component should work like standard component.</li>
+<li>You may refer to <a href="https://trailhead.salesforce.com/trails/lex_dev/modules/lex_dev_visualforce">https://trailhead.salesforce.com/trails/lex_dev/modules/lex_dev_visualforce</a> for help.</li>
+</ol>
+
+<h5 id="demo-your-solution-8">Demo Your Solution:</h5>
+
+<p>Visit the Mini Hack Basin to verify your results with a tech staffer.</p>
+
+<h4 id="challenge-10-deploy-docusign-for-salesforce-to-get-agreements-sent-out-and-signed-faster">CHALLENGE 10: Deploy DocuSign for Salesforce to get agreements sent out and signed faster.</h4>
+
+<p>Difficuly : Intermediate</p>
+
+<h5 id="requirements-9">Requirements:</h5>
+
+<ol>
+<li>This challenge is for Lightning Experience and requires a Force.com Developer Edition</li>
+<li>Install and configure the DocuSign for Salesforce managed package from AppExchange: <a href="http://bit.ly/2xFgzLt">http://bit.ly/2xFgzLt</a></li>
+<li>Add the DocuSign Sending Lightning component to your Lightning Page: <a href="http://bit.ly/2yg0lrH">http://bit.ly/2yg0lrH</a></li>
+<li>Send and sign a document with “Send with DocuSign” Lightning component: <a href="http://sforce.co/2xEwt3C">http://sforce.co/2xEwt3C</a></li>
+</ol>
+
+<p>Refer to additional information at <a href="http://bit.ly/2xFqq3W">http://bit.ly/2xFqq3W</a></p>
+
+<h5 id="features-to-be-used">Features to be used:</h5>
+
+<ul>
+<li>Lightning App Builder</li>
+<li>DocuSign for Salesforce</li>
+</ul>
+
+<h5 id="demo-your-solution-9">Demo Your Solution:</h5>
+
+<p>Visit the DocuSign Booth in the Developer Forest to verify your results with a DocuSign team member</p>
+
+</div>
+
+</div>
+</div>
+<script src="http://www.sfdcworkshop.com/js/ui.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84811307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
+

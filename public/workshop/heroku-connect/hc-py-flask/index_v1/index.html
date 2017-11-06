@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.16" />
+
+  <title>Heroku Connect : Sync Heroku app with Salesforce using Python Flask &middot; Salesforce Developers 2017</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+
+  <link rel="shortcut icon" href="http://www.sfdcworkshop.com/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/"><div><img src='/workshop/2015sf_Developers_logo_RGB_KO.png' height='70'></div></a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/minihacks/"><i class='fa fa-list fa-fw'></i>MINIHACKS</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small style="color: #ffffff">© Copyright 2000-2016 salesforce.com, inc. All rights reserved. Various trademarks held by their respective owners. </small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Heroku Connect : Sync Heroku app with Salesforce using Python Flask</h1>
+  <h2></h2>
+</div>
+<div class="content">
+  
+
+<ol>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#install-virtual-environment">Install Virtual Environment</a></li>
+<li><a href="#creating-a-simple-flask-app">Creating a Simple Flask App</a></li>
+<li><a href="#initialize-git">Initialize Git</a></li>
+<li><a href="#create-a-requirements-file">Create a Requirements File</a></li>
+<li><a href="#create-a-procfile">Create a Procfile</a></li>
+<li><a href="#deploying-to-heroku">Deploying to Heroku</a></li>
+<li><a href="#add-postgresql-add-on">Add PostgreSQL Add-On</a></li>
+<li><a href="#add-heroku-connect-add-on">Add Heroku Connect Add-On</a></li>
+<li><a href="#configure-heroku-connect-add-on">Configure Heroku Connect Add-On</a></li>
+<li><a href="#add-code-for-contacts-endpoint">Add Code for contacts endpoint</a></li>
+<li><a href="#add-jinja-template">Add Jinja Template</a></li>
+<li><a href="#update-python-packages">Update python packages</a></li>
+<li><a href="#add-requirements-file">Add Requirements file</a></li>
+<li><a href="#update-changes-in-heroku">Update Changes in Heroku</a></li>
+<li><a href="#show-contacts">Show Contacts</a></li>
+<li><a href="#show-contacts-locally">Show Contacts Locally</a></li>
+<li><a href="#executing-using-pycharm">Executing using PyCharm</a></li>
+<li><a href="#summary">Summary</a>
+<br /></li>
+</ol>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>This workshop shows how to <strong>Create</strong> and <strong>Run</strong> a Python app with psycopg2 which uses PostgreSQL based Heroku Connect</p>
+
+<p><img src="images/heroku-connect-flow-flask-psycopg2.png" width="70%" height="70%"></p>
+
+<p>Figure 1 show how the HerokuConnect Add-On interacts with Heroku Postgres and force.com behind the scenes.
+Make sure you have <a href="https://www.python.org/downloads/">Python</a> installed.  Also, install the <a href="https://toolbelt.heroku.com/">Heroku Toolbelt</a></p>
+
+<h2 id="install-virtual-environment">Install Virtual Environment</h2>
+
+<p>Locally, create a folder <code>flask-psycopg2-sample</code> and install a virtual environment in it.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    <span style="color: #bb60d5">$ </span>mkdir flask-psycopg2-sample
+    <span style="color: #bb60d5">$ </span><span style="color: #007020">cd </span>flask-psycopg2-sample
+    <span style="color: #bb60d5">$ </span>virtualenv venv
+    <span style="color: #bb60d5">$ </span><span style="color: #007020">source </span>venv/bin/activate
+</pre></div>
+
+<p>Install Dependencies</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #bb60d5">$ </span>pip install flask gunicorn
+</pre></div>
+
+<h2 id="creating-a-simple-flask-app">Creating a Simple Flask App</h2>
+
+<ol>
+<li><p>First create a base Flask app with simple REST endpoint/ in a file and name it as <code>app.py</code> in the folder created above.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">      
+<span style="color: #007020; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">flask</span> <span style="color: #007020; font-weight: bold">import</span> Flask
+app <span style="color: #666666">=</span> Flask(__name__)
+
+<span style="color: #555555; font-weight: bold">@app.route</span>(<span style="color: #4070a0">&#39;/&#39;</span>)
+<span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">hello_world</span>():
+  <span style="color: #007020; font-weight: bold">return</span> <span style="color: #4070a0">&#39;Hello World!&#39;</span>
+
+<span style="color: #007020; font-weight: bold">if</span> __name__ <span style="color: #666666">==</span> <span style="color: #4070a0">&#39;__main__&#39;</span>:
+  app<span style="color: #666666">.</span>run()
+      
+</pre></div></li>
+
+<li><p>Run the app using the following command</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>python app.py
+</pre></div></li>
+</ol>
+
+<p>Your app should now be running on <a href="http://localhost:5000">localhost:5000</a></p>
+
+<h2 id="initialize-git">Initialize Git</h2>
+
+<p>Initialize the git repository as shown by commands below.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #bb60d5">$ </span>git init
+  <span style="color: #bb60d5">$ </span>git add .
+  <span style="color: #bb60d5">$ </span>git commit -m <span style="color: #4070a0">&quot;initial commit&quot;</span>
+</pre></div>
+
+<h2 id="create-a-requirements-file">Create a Requirements File</h2>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #bb60d5">$ </span>pip freeze &gt; requirements.txt
+</pre></div>
+
+<h2 id="create-a-procfile">Create a Procfile</h2>
+
+<p>Create a file name <code>Procfile</code> in the root of the app and add following content. This specifies that the app uses a <code>web</code> dyno with <code>gunicorn</code> as http server.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  web: gunicorn app:app --log-file -
+</pre></div>
+
+<h2 id="deploying-to-heroku">Deploying to Heroku</h2>
+
+<p>Before moving on, create a <a href="https://signup.heroku.com/">Heroku</a> account and run <code>$ heroku login</code> command to login to your created heroku account.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    <span style="color: #bb60d5">$ </span>heroku create
+    <span style="color: #bb60d5">$ </span>git push heroku master
+    <span style="color: #bb60d5">$ </span>heroku open
+</pre></div>
+
+<h2 id="add-postgresql-add-on">Add PostgreSQL Add-On</h2>
+
+<p>Add Postgress Add-On as shown below.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #bb60d5">$ </span>heroku addons:create heroku-postgresql:hobby-dev
+</pre></div>
+
+<h2 id="add-heroku-connect-add-on">Add Heroku Connect Add-On</h2>
+
+<p>Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On to the application.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #bb60d5">$ </span>heroku addons:create herokuconnect
+</pre></div>
+
+<h2 id="configure-heroku-connect-add-on">Configure Heroku Connect Add-On</h2>
+
+<ul>
+<li>Setup Connection</li>
+</ul>
+
+<p><img src="images/setup-connection.png" width="90%" height="80%"></p>
+
+<ul>
+<li>Enter Schema Name : This is the schema name underwhich database will be created.</li>
+</ul>
+
+<p><img src="images/enter-schemaname.png" width="90%" height="80%"></p>
+
+<ul>
+<li>Trigger OAuth</li>
+</ul>
+
+<p><img src="images/trigger-oauth.png" width="90%" height="80%"></p>
+
+<ul>
+<li>Enter Salesforce.com developer account credentials</li>
+</ul>
+
+<p><img src="images/sfaccountdetails.png" width="40%" height="50%"></p>
+
+<ul>
+<li>Create Mappings</li>
+</ul>
+
+<p><img src="images/create-mappings.png" width="90%" height="80%"></p>
+
+<ul>
+<li>Create Mappings Contacts : Choose the fields in Salesforce Schema which need to be mapped to Postgres Database in the application.</li>
+</ul>
+
+<p><img src="images/create-mapping-contacts.png" width="90%" height="80%"></p>
+
+<ul>
+<li>Explore Contacts in the Dashboard</li>
+</ul>
+
+<p><img src="images/contacts-explorer.png" width="90%" height="80%"></p>
+
+<h2 id="add-code-for-contacts-endpoint">Add Code for contacts endpoint</h2>
+
+<p>First Add following lines which configure Connection object conn to PostgreSQL Database.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    url <span style="color: #666666">=</span> urlparse<span style="color: #666666">.</span>urlparse(os<span style="color: #666666">.</span>environ<span style="color: #666666">.</span>get(<span style="color: #4070a0">&#39;DATABASE_URL&#39;</span>))
+    db <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;dbname=</span><span style="color: #70a0d0; font-style: italic">%s</span><span style="color: #4070a0"> user=</span><span style="color: #70a0d0; font-style: italic">%s</span><span style="color: #4070a0"> password=</span><span style="color: #70a0d0; font-style: italic">%s</span><span style="color: #4070a0"> host=</span><span style="color: #70a0d0; font-style: italic">%s</span><span style="color: #4070a0"> &quot;</span> <span style="color: #666666">%</span> (url<span style="color: #666666">.</span>path[<span style="color: #40a070">1</span>:], 
+          url<span style="color: #666666">.</span>username, url<span style="color: #666666">.</span>password, url<span style="color: #666666">.</span>hostname)
+    schema <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;schema.sql&quot;</span>
+    conn <span style="color: #666666">=</span> psycopg2<span style="color: #666666">.</span>connect(db)
+    cur <span style="color: #666666">=</span> conn<span style="color: #666666">.</span>cursor()
+</pre></div>
+
+<p>Add code for the Getting the Contacts.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    <span style="color: #555555; font-weight: bold">@app.route</span>(<span style="color: #4070a0">&#39;/contacts&#39;</span>)
+    <span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">contacts</span>():
+        <span style="color: #007020; font-weight: bold">try</span>:
+          cur<span style="color: #666666">.</span>execute(<span style="color: #4070a0">&quot;&quot;&quot;SELECT name from salesforce.contact&quot;&quot;&quot;</span>)
+          rows <span style="color: #666666">=</span> cur<span style="color: #666666">.</span>fetchall()
+          response <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;&#39;</span>
+          my_list <span style="color: #666666">=</span> []
+          <span style="color: #007020; font-weight: bold">for</span> row <span style="color: #007020; font-weight: bold">in</span> rows:
+              my_list<span style="color: #666666">.</span>append(row[<span style="color: #40a070">0</span>])
+          <span style="color: #007020; font-weight: bold">return</span> render_template(<span style="color: #4070a0">&#39;template.html&#39;</span>,  results<span style="color: #666666">=</span>my_list)
+        <span style="color: #007020; font-weight: bold">except</span> <span style="color: #007020">Exception</span> <span style="color: #007020; font-weight: bold">as</span> e:
+          <span style="color: #007020; font-weight: bold">print</span> e
+          <span style="color: #007020; font-weight: bold">return</span> []
+</pre></div>
+
+<p>Complete Code listing</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    <span style="color: #007020; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">os</span>
+    <span style="color: #007020; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">psycopg2</span>
+    <span style="color: #007020; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">flask</span> <span style="color: #007020; font-weight: bold">import</span> Flask, render_template
+    <span style="color: #007020; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">urlparse</span>
+    <span style="color: #007020; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">os.path</span> <span style="color: #007020; font-weight: bold">import</span> exists
+    <span style="color: #007020; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">os</span> <span style="color: #007020; font-weight: bold">import</span> makedirs
+    
+    url <span style="color: #666666">=</span> urlparse<span style="color: #666666">.</span>urlparse(os<span style="color: #666666">.</span>environ<span style="color: #666666">.</span>get(<span style="color: #4070a0">&#39;DATABASE_URL&#39;</span>))
+    db <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;dbname=</span><span style="color: #70a0d0; font-style: italic">%s</span><span style="color: #4070a0"> user=</span><span style="color: #70a0d0; font-style: italic">%s</span><span style="color: #4070a0"> password=</span><span style="color: #70a0d0; font-style: italic">%s</span><span style="color: #4070a0"> host=</span><span style="color: #70a0d0; font-style: italic">%s</span><span style="color: #4070a0"> &quot;</span> <span style="color: #666666">%</span> (url<span style="color: #666666">.</span>path[<span style="color: #40a070">1</span>:], 
+                       url<span style="color: #666666">.</span>username, url<span style="color: #666666">.</span>password, url<span style="color: #666666">.</span>hostname)
+    schema <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;schema.sql&quot;</span>
+    conn <span style="color: #666666">=</span> psycopg2<span style="color: #666666">.</span>connect(db)
+    
+    cur <span style="color: #666666">=</span> conn<span style="color: #666666">.</span>cursor()
+    
+    app <span style="color: #666666">=</span> Flask(__name__)
+    
+    <span style="color: #555555; font-weight: bold">@app.route</span>(<span style="color: #4070a0">&#39;/&#39;</span>)
+    <span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">hello</span>():
+        <span style="color: #007020; font-weight: bold">return</span> <span style="color: #4070a0">&#39;Hello World!&#39;</span>
+    
+    <span style="color: #555555; font-weight: bold">@app.route</span>(<span style="color: #4070a0">&#39;/contacts&#39;</span>)
+    <span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">contacts</span>():
+      <span style="color: #007020; font-weight: bold">try</span>:
+        cur<span style="color: #666666">.</span>execute(<span style="color: #4070a0">&quot;&quot;&quot;SELECT name from salesforce.contact&quot;&quot;&quot;</span>)
+        rows <span style="color: #666666">=</span> cur<span style="color: #666666">.</span>fetchall()
+        response <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;&#39;</span>
+        my_list <span style="color: #666666">=</span> []
+        <span style="color: #007020; font-weight: bold">for</span> row <span style="color: #007020; font-weight: bold">in</span> rows:
+          my_list<span style="color: #666666">.</span>append(row[<span style="color: #40a070">0</span>])
+        <span style="color: #007020; font-weight: bold">return</span> render_template(<span style="color: #4070a0">&#39;template.html&#39;</span>,  results<span style="color: #666666">=</span>my_list)
+      <span style="color: #007020; font-weight: bold">except</span> <span style="color: #007020">Exception</span> <span style="color: #007020; font-weight: bold">as</span> e:
+        <span style="color: #007020; font-weight: bold">print</span> e
+        <span style="color: #007020; font-weight: bold">return</span> []
+    <span style="color: #007020; font-weight: bold">if</span> __name__ <span style="color: #666666">==</span> <span style="color: #4070a0">&#39;__main__&#39;</span>:
+      app<span style="color: #666666">.</span>run()
+</pre></div>
+
+<h2 id="add-jinja-template">Add Jinja Template</h2>
+
+<p>The code shown in previous section uses template.html file which is a Jinja template. Add this file under folder templates</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    <span style="color: #062873; font-weight: bold">&lt;html&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;head&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;title&gt;</span>Flask Template Example<span style="color: #062873; font-weight: bold">&lt;/title&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;meta</span> <span style="color: #4070a0">name=&quot;viewport&quot;</span> <span style="color: #4070a0">content=&quot;width=device-width, initial-scale=1.0&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;link</span> <span style="color: #4070a0">href=&quot;http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css&quot;</span> 
+                    <span style="color: #4070a0">rel=&quot;stylesheet&quot;</span> <span style="color: #4070a0">media=&quot;screen&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;style </span><span style="color: #4070a0">type=&quot;text/css&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+          <span style="color: #0e84b5; font-weight: bold">.container</span> {
+            <span style="color: #007020; font-weight: bold">max-width</span><span style="color: #666666">:</span> <span style="color: #40a070">500px</span>;
+            <span style="color: #007020; font-weight: bold">padding-top</span><span style="color: #666666">:</span> <span style="color: #40a070">100px</span>;
+            }
+        <span style="color: #062873; font-weight: bold">&lt;/style&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;/head&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;body&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;container&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+          <span style="color: #062873; font-weight: bold">&lt;p&gt;</span>Contacts:<span style="color: #062873; font-weight: bold">&lt;/p&gt;</span>
+          <span style="color: #062873; font-weight: bold">&lt;ul&gt;</span>
+            {% for r in results %}
+            <span style="color: #062873; font-weight: bold">&lt;li&gt;</span>{{r}}<span style="color: #062873; font-weight: bold">&lt;/li&gt;</span>
+            {% endfor %}
+          <span style="color: #062873; font-weight: bold">&lt;/ul&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;script </span><span style="color: #4070a0">src=&quot;http://code.jquery.com/jquery-1.10.2.min.js&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;/script&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;script </span><span style="color: #4070a0">src=&quot;http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/script&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;/body&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/html&gt;</span>
+</pre></div>
+
+<h2 id="update-python-packages">Update python packages</h2>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">     <span style="color: #bb60d5">$ </span>pip install psycopg2
+</pre></div>
+
+<h2 id="add-requirements-file">Add Requirements file</h2>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">     <span style="color: #bb60d5">$ </span>pip freeze &gt; requirements.txt
+</pre></div>
+
+<h2 id="update-changes-in-heroku">Update Changes in Heroku</h2>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    <span style="color: #bb60d5">$ </span>git add .
+    <span style="color: #bb60d5">$ </span>git commit -m <span style="color: #4070a0">&quot;Added code for contacts&quot;</span>
+    <span style="color: #bb60d5">$ </span>git push heroku master
+</pre></div>
+
+<p>Open the App again in Heroku</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    <span style="color: #bb60d5">$ </span>heroku open
+</pre></div>
+
+<h2 id="show-contacts">Show Contacts</h2>
+
+<p>Browse to URL <code>http://{your-app-name}.herokuapp.com/contacts</code> to see the list of contact names.
+  <img src="images/show-contacts.png" width="80%" height="80%"></p>
+
+<h2 id="show-contacts-locally">Show Contacts Locally</h2>
+
+<p>Configure the DATABASE_URL in the local environment</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    <span style="color: #bb60d5">$ </span>heroku <span style="color: #bb60d5">config</span>
+
+    <span style="color: #666666">===</span> fast-sands-40695 Config Vars
+    DATABASE_URL:      postgres://&lt;user_name&gt;:&lt;password&gt;@&lt;ipaddress&gt;.compute-1.amazonaws.com:5432/&lt;database_name&gt;
+    HEROKUCONNECT_URL: DATABASE_URL:salesforce
+</pre></div>
+
+<p>Export DATABASE_URL</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    <span style="color: #bb60d5">$ </span><span style="color: #007020">export </span><span style="color: #bb60d5">DATABASE_URL</span><span style="color: #666666">=</span>postgres://&lt;user_name&gt;:&lt;password&gt;@&lt;ipaddress&gt;.compute-1.amazonaws.com:5432/&lt;database_name&gt;
+</pre></div>
+
+<p>Open the following URL :code:<code>http://localhost:5000/contacts</code> you should be able see the contacts.</p>
+
+<h2 id="executing-using-pycharm">Executing using PyCharm</h2>
+
+<ul>
+<li>Install the <a href="https://www.jetbrains.com/pycharm/download/">Pycharm</a>. And add your directory as a project to PyCharm.</li>
+</ul>
+
+<p><img src="images/pycharm1.png" width="90%" height="80%"></p>
+
+<ul>
+<li>Set the Environment variable as <code>DATABASE_URL=postgres://&lt;user_name&gt;:&lt;password&gt;@&lt;ipaddress&gt;.compute-1.amazonaws.com:5432/&lt;database_name&gt;</code> by following the path File &gt; Default Settings
+<br /></li>
+</ul>
+
+<p><img src="images/pycharm3.png" width="90%" height="80%"></p>
+
+<ul>
+<li>Click on <code>app.py</code> and run the app.</li>
+</ul>
+
+<p><img src="images/pycharm2.png" width="90%" height="80%"></p>
+
+<p>Open the following URL <code>http://localhost:5000/contacts</code> you should be able see the contacts.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>In this workshop we learnt how to configure a Python Flask Application to work with Heroku Connect. We used Psycopg2 driver for talking to the PostgreSQL database deployed on Heroku.</p>
+
+</div>
+
+</div>
+</div>
+<script src="http://www.sfdcworkshop.com/js/ui.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84811307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
+

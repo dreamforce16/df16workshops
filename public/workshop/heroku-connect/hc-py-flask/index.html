@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.16" />
+
+  <title>Heroku Connect : Sync Heroku app with Salesforce using Python Flask &middot; Salesforce Developers 2017</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+
+  <link rel="shortcut icon" href="http://www.sfdcworkshop.com/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/"><div><img src='/workshop/2015sf_Developers_logo_RGB_KO.png' height='70'></div></a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/minihacks/"><i class='fa fa-list fa-fw'></i>MINIHACKS</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small style="color: #ffffff">© Copyright 2000-2016 salesforce.com, inc. All rights reserved. Various trademarks held by their respective owners. </small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Heroku Connect : Sync Heroku app with Salesforce using Python Flask</h1>
+  <h2></h2>
+</div>
+<div class="content">
+  
+
+<ol>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#clone-the-source-code">Clone the Source Code</a></li>
+<li><a href="#heroku-login">Heroku Login</a></li>
+<li><a href="#requirements-file">Requirements File</a></li>
+<li><a href="#procfile">Procfile</a></li>
+<li><a href="#db-initialization">DB Initialization</a></li>
+<li><a href="#flask-controller">Flask Controller</a>
+
+<ul>
+<li><a href="#list-contacts">List Contacts</a></li>
+<li><a href="#create-contacts">Create Contacts</a></li>
+</ul></li>
+<li><a href="#deploying-to-heroku">Deploying to Heroku</a></li>
+<li><a href="#add-postgresql-add-on">Add PostgreSQL Add-On</a></li>
+<li><a href="#add-heroku-connect-add-on">Add Heroku Connect Add-On</a></li>
+<li><a href="#configure-heroku-connect-add-on">Configure Heroku Connect Add-On</a></li>
+<li><a href="#home-page">Home Page</a></li>
+<li><a href="#contact-list">Contact List</a></li>
+<li><a href="#create-a-new-contact">Create a New Contact</a></li>
+<li><a href="#optional-step-show-contacts-locally">Optional Step Show Contacts Locally</a></li>
+<li><a href="#summary">Summary</a>
+<br /></li>
+</ol>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>This workshop shows how to <strong>Create</strong> and <strong>Run</strong> a Python app with psycopg2 which uses PostgreSQL based Heroku Connect</p>
+
+<p><img src="images/heroku-connect-flow-flask-psycopg2.png" width="70%" height="70%"></p>
+
+<p>Figure 1 show how the HerokuConnect Add-On interacts with Heroku Postgres and force.com behind the scenes.
+Make sure you have <a href="https://www.python.org/downloads/">Python</a> installed.  Also, install the <a href="https://toolbelt.heroku.com/">Heroku Toolbelt</a></p>
+
+<p>We will be using a basic Flask app available at flask_psycopg2_v2</p>
+
+<p>This app has four rest endpoints</p>
+
+<pre><code>@app.route('/') which displays Hello world
+@app.route('/contacts') which fetches list of contacts from Postgres table salesforce.contact
+@app.route('/create_contact', methods=['POST','GET']) which creates a new contact
+@app.route('/contactform') which serves an HTML Form for entering new contact details
+</code></pre>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>This workshop assumes you have following setup</p>
+
+<ul>
+<li><a href="https://signup.heroku.com/">Heroku Login</a></li>
+<li><a href="https://devcenter.heroku.com/articles/heroku-command-line#download-and-install">Heroku CLI</a></li>
+<li><a href="https://git-scm.com/downloads">git</a></li>
+<li><a href="http://developer.salesforce.com/signup">Salesforce Developer Edition Account</a></li>
+</ul>
+
+<h2 id="clone-the-source-code">Clone the Source Code</h2>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>git clone https://github.com/rajdeepd/flask-psycopg2-v2
+</pre></div>
+
+<h2 id="heroku-login">Heroku Login</h2>
+
+<p>First download CLI, install it and run the following command.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>heroku login
+</pre></div>
+
+<h2 id="requirements-file">Requirements File</h2>
+
+<p><em>Note : This section is for information only</em></p>
+
+<p>Notice that the Requirements file already exists, this will be used by Heroku to setup the dynos</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    <span style="color: #bb60d5">$ </span>cat requirements.txt
+    <span style="color: #bb60d5">Flask</span><span style="color: #666666">==</span>0.10.1
+    <span style="color: #bb60d5">gunicorn</span><span style="color: #666666">==</span>19.3.0
+    <span style="color: #bb60d5">itsdangerous</span><span style="color: #666666">==</span>0.24
+    <span style="color: #bb60d5">Jinja2</span><span style="color: #666666">==</span>2.8
+    <span style="color: #bb60d5">MarkupSafe</span><span style="color: #666666">==</span>0.23
+    <span style="color: #bb60d5">psycopg2</span><span style="color: #666666">==</span>2.6.1
+    <span style="color: #bb60d5">Werkzeug</span><span style="color: #666666">==</span>0.11
+    <span style="color: #bb60d5">wheel</span><span style="color: #666666">==</span>0.24.0
+</pre></div>
+
+<h2 id="procfile">Procfile</h2>
+
+<p><em>Note : This section is for information only</em></p>
+
+<p>There is already a Procfile which tells the Heroku what kind of Dyno is required and the source for the application.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    web: gunicorn app:app --log-file -
+</pre></div>
+
+<h2 id="db-initialization">DB Initialization</h2>
+
+<p><em>Note : This section is for information only</em></p>
+
+<p>We will parsing the DATABASE_URL environment variable to connect to PostgreSQL database. The PostgreSQL Python driver is already configured in the requirements file.</p>
+
+<p>Steps are</p>
+
+<ol>
+<li>Parse DATABASE_URL into variable <code>url</code></li>
+<li>Create a connection string <code>db</code> from the parsed <code>url</code>.</li>
+<li>Create a Database connection <code>conn</code>.</li>
+<li>Open a Database cursor <code>cur</code>.</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">url <span style="color: #666666">=</span> urlparse<span style="color: #666666">.</span>urlparse(os<span style="color: #666666">.</span>environ<span style="color: #666666">.</span>get(<span style="color: #4070a0">&#39;DATABASE_URL&#39;</span>))
+db <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;dbname=</span><span style="color: #70a0d0; font-style: italic">%s</span><span style="color: #4070a0"> user=</span><span style="color: #70a0d0; font-style: italic">%s</span><span style="color: #4070a0"> password=</span><span style="color: #70a0d0; font-style: italic">%s</span><span style="color: #4070a0"> host=</span><span style="color: #70a0d0; font-style: italic">%s</span><span style="color: #4070a0"> &quot;</span> <span style="color: #666666">%</span> (url<span style="color: #666666">.</span>path[<span style="color: #40a070">1</span>:], 
+     url<span style="color: #666666">.</span>username, url<span style="color: #666666">.</span>password, url<span style="color: #666666">.</span>hostname)
+schema <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;schema.sql&quot;</span>
+conn <span style="color: #666666">=</span> psycopg2<span style="color: #666666">.</span>connect(db)
+cur <span style="color: #666666">=</span> conn<span style="color: #666666">.</span>cursor()
+</pre></div>
+
+<h2 id="flask-controller">Flask Controller</h2>
+
+<p><em>Note : This section is for information only</em></p>
+
+<p><code>app.py</code> is the main controller for our applications and code listing below shows the implementation of various use cases</p>
+
+<h3 id="list-contacts">List Contacts</h3>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #555555; font-weight: bold">@app.route</span>(<span style="color: #4070a0">&#39;/contacts&#39;</span>)
+<span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">contacts</span>():
+    <span style="color: #007020; font-weight: bold">try</span>:
+        cur<span style="color: #666666">.</span>execute(<span style="color: #4070a0">&quot;&quot;&quot;SELECT name from salesforce.contact&quot;&quot;&quot;</span>)
+        rows <span style="color: #666666">=</span> cur<span style="color: #666666">.</span>fetchall()
+        response <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;&#39;</span>
+        my_list <span style="color: #666666">=</span> []
+        <span style="color: #007020; font-weight: bold">for</span> row <span style="color: #007020; font-weight: bold">in</span> rows:
+            my_list<span style="color: #666666">.</span>append(row[<span style="color: #40a070">0</span>])
+
+        <span style="color: #007020; font-weight: bold">return</span> render_template(<span style="color: #4070a0">&#39;template.html&#39;</span>,  results<span style="color: #666666">=</span>my_list)
+    <span style="color: #007020; font-weight: bold">except</span> <span style="color: #007020">Exception</span> <span style="color: #007020; font-weight: bold">as</span> e:
+        <span style="color: #007020; font-weight: bold">print</span>(e)
+        <span style="color: #007020; font-weight: bold">return</span> []
+</pre></div>
+
+<h3 id="create-contacts">Create Contacts</h3>
+
+<h4 id="implementation-of-createcontactform-endpoint">Implementation of <code>/createcontactform</code> endpoint</h4>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #555555; font-weight: bold">@app.route</span>(<span style="color: #4070a0">&#39;/contactform&#39;</span>)
+<span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">contactform</span>():
+   <span style="color: #007020; font-weight: bold">return</span> render_template(<span style="color: #4070a0">&#39;contactform.html&#39;</span>)
+</pre></div>
+
+<h4 id="implementation-of-create-contact-endpoint">Implementation of <code>/create_contact</code> endpoint.</h4>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #555555; font-weight: bold">@app.route</span>(<span style="color: #4070a0">&#39;/create_contact&#39;</span>, methods<span style="color: #666666">=</span>[<span style="color: #4070a0">&#39;POST&#39;</span>,<span style="color: #4070a0">&#39;GET&#39;</span>])
+<span style="color: #007020; font-weight: bold">def</span> <span style="color: #06287e">create_contact</span>():
+
+    <span style="color: #007020; font-weight: bold">try</span>:
+        <span style="color: #007020; font-weight: bold">if</span> request<span style="color: #666666">.</span>method <span style="color: #666666">==</span> <span style="color: #4070a0">&quot;POST&quot;</span>:
+            first_name <span style="color: #666666">=</span> request<span style="color: #666666">.</span>form[<span style="color: #4070a0">&quot;first-name&quot;</span>]
+            last_name <span style="color: #666666">=</span> request<span style="color: #666666">.</span>form[<span style="color: #4070a0">&quot;last-name&quot;</span>]
+            email <span style="color: #666666">=</span> request<span style="color: #666666">.</span>form[<span style="color: #4070a0">&quot;email&quot;</span>]
+
+            app<span style="color: #666666">.</span>logger<span style="color: #666666">.</span>info(first_name)
+            statement <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;insert into salesforce.contact(firstname, </span>
+                        lastname, email) values (<span style="color: #4070a0">&#39;&quot; </span><span style="color: #4070a0; font-weight: bold">\</span>
+<span style="color: #4070a0">                + first_name + &quot;&#39;</span>,<span style="color: #4070a0">&#39;&quot; + last_name + &quot;&#39;</span>,<span style="color: #4070a0">&#39;&quot; + email + &quot;&#39;</span>);<span style="color: #4070a0">&quot;</span>
+            cur<span style="color: #666666">.</span>execute(statement)
+            conn<span style="color: #666666">.</span>commit()
+            errors <span style="color: #666666">=</span> []
+            <span style="color: #007020; font-weight: bold">return</span> render_template(<span style="color: #4070a0">&#39;result.html&#39;</span>, errors<span style="color: #666666">=</span>errors, 
+                                   firstname<span style="color: #666666">=</span>first_name,
+                                   lastname<span style="color: #666666">=</span>last_name)
+    <span style="color: #007020; font-weight: bold">except</span> <span style="color: #007020">Exception</span> <span style="color: #007020; font-weight: bold">as</span> e:
+        <span style="color: #007020; font-weight: bold">print</span>(e)
+        <span style="color: #007020; font-weight: bold">return</span> []
+</pre></div>
+
+<h2 id="deploying-to-heroku">Deploying to Heroku</h2>
+
+<p>Before moving on, create a <a href="https://signup.heroku.com/">Heroku</a> account and run <code>$ heroku login</code> command to login to your created heroku account.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>heroku create
+<span style="color: #bb60d5">$ </span>git push heroku master
+<span style="color: #bb60d5">$ </span>heroku open
+</pre></div>
+
+<h2 id="add-postgresql-add-on">Add PostgreSQL Add-On</h2>
+
+<p>Add Postgress Add-On as shown below.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #bb60d5">$ </span>heroku addons:create heroku-postgresql:hobby-dev
+</pre></div>
+
+<h2 id="add-heroku-connect-add-on">Add Heroku Connect Add-On</h2>
+
+<p>Configure Heroku Connect Add-On. Command below configures Herok-Connect Add-On to the application.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #bb60d5">$ </span>heroku addons:create herokuconnect
+</pre></div>
+
+<h2 id="configure-heroku-connect-add-on">Configure Heroku Connect Add-On</h2>
+
+<ul>
+<li>Setup Connection</li>
+</ul>
+
+<p><img src="images/setup-connection.png" width="90%" height="80%"></p>
+
+<ul>
+<li>Enter Schema Name : This is the schema name underwhich database will be created.</li>
+</ul>
+
+<p><img src="images/enter-schemaname.png" width="90%" height="80%"></p>
+
+<ul>
+<li>Trigger OAuth</li>
+</ul>
+
+<p><img src="images/trigger-oauth.png" width="90%" height="80%"></p>
+
+<ul>
+<li>Enter Salesforce.com developer account credentials</li>
+</ul>
+
+<p><img src="images/sfaccountdetails.png" width="40%" height="50%"></p>
+
+<ul>
+<li>Create Mappings</li>
+</ul>
+
+<p><img src="images/create-mappings.png" width="90%" height="80%"></p>
+
+<ul>
+<li>Create Mappings Contacts : Choose the fields in Salesforce Schema which need to be mapped to Postgres Database in the application.</li>
+</ul>
+
+<p><img src="images/create-mapping-contacts.png" width="90%" height="80%"></p>
+
+<ul>
+<li><p><strong>Write Enable</strong> : Make sure you enable <code>Write to Salesforce any updates to your database</code> check box</p></li>
+
+<li><p>Explore Contacts in the Dashboard</p></li>
+</ul>
+
+<p><img src="images/contacts-explorer.png" width="90%" height="80%"></p>
+
+<h2 id="home-page">Home Page</h2>
+
+<p><img src="images/contacts-home.png" width="50%" height="50%"></p>
+
+<h2 id="contact-list">Contact List</h2>
+
+<p>Browse to URL <code>http://{your-app-name}.herokuapp.com/contacts</code> to see the list of contact names.
+  <img src="images/contacts-list.png" width="50%" height="50%"></p>
+
+<h2 id="create-a-new-contact">Create a New Contact</h2>
+
+<p>Browse to URL <code>http://{your-app-name}.herokuapp.com/createcontactform</code> to see the list of contact names.</p>
+
+<p><img src="images/create-contacts.png" width="50%" height="50%"></p>
+
+<h2 id="optional-step-show-contacts-locally">Optional Step Show Contacts Locally</h2>
+
+<h3 id="prerequisites-1">Prerequisites</h3>
+
+<ul>
+<li>Python 2.7</li>
+<li><a href="https://pip.pypa.io/en/stable/installing/">pip</a></li>
+<li><a href="https://virtualenv.pypa.io/en/stable/">virtualenv</a></li>
+<li>PostgreSQL client (Optional if you want to run the application locally)</li>
+</ul>
+
+<ol>
+<li><p>Install Virtual Environment</p>
+
+<p>Go to the application Folder <code>flask-psycopg2-sample</code> and install a virtual environment in it.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span><span style="color: #007020">cd </span>flask-psycopg2-v2
+<span style="color: #bb60d5">$ </span>virtualenv venv
+<span style="color: #bb60d5">$ </span><span style="color: #007020">source </span>venv/bin/activate
+</pre></div></li>
+
+<li><p>Install Dependencies</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"> <span style="color: #bb60d5">$ </span>pip install flask gunicorn psycopg2
+</pre></div></li>
+
+<li><p>Configure the DATABASE_URL in the local environment</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #bb60d5">$ </span>heroku <span style="color: #bb60d5">config</span>
+
+  <span style="color: #666666">===</span> fast-sands-40695 Config Vars
+  DATABASE_URL:      postgres://&lt;user_name&gt;:&lt;password&gt;@&lt;ipaddress&gt;.compute-1.amazonaws.com:5432/&lt;database_name&gt;
+  HEROKUCONNECT_URL: DATABASE_URL:salesforce
+</pre></div></li>
+
+<li><p>Export DATABASE_URL</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    
+ <span style="color: #bb60d5">$ </span><span style="color: #007020">export </span><span style="color: #bb60d5">DATABASE_URL</span><span style="color: #666666">=</span>postgres://&lt;user_name&gt;:&lt;password&gt;@&lt;ipaddress&gt;.compute-1.amazonaws.com:5432/db
+</pre></div>
+
+<p>Open the following URL <code>http://localhost:5000/contacts</code> you should be able see the contacts.</p></li>
+
+<li><p>Run the app using the following command</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"> <span style="color: #bb60d5">$ </span>python app.py
+</pre></div></li>
+</ol>
+
+<p>Your app should now be running on <a href="http://localhost:5000">localhost:5000</a></p>
+
+<h2 id="summary">Summary</h2>
+
+<p>In this workshop we learnt how to configure a Python Flask Application to work with Heroku Connect. We used Psycopg2 driver for talking to the PostgreSQL database deployed on Heroku.</p>
+
+<h2 id="appendix">Appendix</h2>
+
+<p><a href="execute_using_pycharm">Execute using PyCharm</a></p>
+
+</div>
+
+</div>
+</div>
+<script src="http://www.sfdcworkshop.com/js/ui.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84811307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
+

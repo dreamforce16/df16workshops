@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.16" />
+
+  <title>Secure Apps - Understand Cross Site Scripting  &middot; Salesforce Developers 2017</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+
+  <link rel="shortcut icon" href="http://www.sfdcworkshop.com/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/"><div><img src='/workshop/2015sf_Developers_logo_RGB_KO.png' height='70'></div></a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/minihacks/"><i class='fa fa-list fa-fw'></i>MINIHACKS</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small style="color: #ffffff">© Copyright 2000-2016 salesforce.com, inc. All rights reserved. Various trademarks held by their respective owners. </small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Secure Apps - Understand Cross Site Scripting </h1>
+  <h2></h2>
+</div>
+<div class="content">
+  
+
+<ol>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#learning-application-security-with-a-developer-edition-org">Learning Application Security with a Developer Edition Org</a></li>
+<li><a href="#what-is-cross-site-scripting">What is Cross Site Scripting?</a></li>
+<li><a href="#how-does-an-xss-attack-work?">How Does an XSS Attack Work?</a></li>
+<li><a href="#force-com-xss-protections">Force.com XSS Protections</a></li>
+<li><a href="#automatic-html-encoding">Automatic HTML Encoding</a></li>
+<li><a href="#disabling-automatic-html-encoding">Disabling Automatic HTML Encoding</a></li>
+<li><a href="#platform-provided-encoding-functions">Platform Provided Encoding Functions</a></li>
+<li><a href="#mitigating-xss-in-html-context-with-htmlencode">Mitigate XSS in HTML Context with HTMLENCODE</a></li>
+<li><a href="#htmlencode-in-action">HTMLENCODE in Action!</a></li>
+<li><a href="#salesforce-default-protections-in-different-execution-contexts">Salesforce Default Protections in Different Execution Contexts</a></li>
+<li><a href="#xss-in-script-context">XSS in Script Context</a></li>
+<li><a href="#mitigate-xss-in-script-context-with-jsencode">Mitigate XSS in Script Context with JSENCODE</a></li>
+<li><a href="#jsencode-in-action!">JSENCODE in Action!</a></li>
+<li><a href="#xss-in-style-context">XSS in Style Context</a></li>
+<li><a href="#xss-in-mixed-contexts">XSS in Mixed Contexts</a></li>
+<li><a href="#mitigate-xss-in-mixed-contexts-with-jsinhtmlencode">Mitigate XSS in Mixed Contexts with JSINHTMLENCODE</a></li>
+<li><a href="#jsinhtmlencode-in-action">JSINHTMLENCODE in Action!</a></li>
+<li><a href="#take-home-xss-challenge">Take Home XSS Challenge</a></li>
+</ol>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Salesforce is constantly striving to make our platform as secure as possible. As a result Force.com has many built in security functions to protect end users: some enabled by default while others require the developers to enable them within their code. While we aim to bake-in as many security constraints as possible because of the flexibility and extensibility of the platform it is completely possible for developers to write insecure code.</p>
+
+<p>Of all the issues we commonly see developers introduce into their apps, Cross-Site Scripting (XSS) is one of the most widely seen web application vulnerabilities. As a result we’ve chosen this vulnerability to be the focus of our workshop. Our goal is that by the end of this class you should be able to explain XSS, know how to identify it in your code and remediate the issues. To support that we will have numerous demos, where you’ll get to “be the attacker” spotting and exploiting vulnerabilities as well as “being the defender” remediating them.</p>
+
+<h2 id="learning-application-security-with-a-developer-edition-org">Learning Application Security with a Developer Edition Org</h2>
+
+<p>Don’t worry in this workshop—we’re not going to teach you how to write vulnerable Force.com code. Instead, we’ve created a special org that has vulnerable applications already deployed for you to practice in. Your job will be to identify the vulnerabilities and to fix them!</p>
+
+<p>To get set up in the Kingdom Management developer org, you’ll need to sign up:</p>
+
+<ol>
+<li>Go to the custom sign-up page for the Kingdom Management developer org: <a href="https://security.secure.force.com/SecDev_Trailhead_Signup">https://security.secure.force.com/SecDev_Trailhead_Signup</a></li>
+
+<li><p>Fill out the form using an active email address and click <strong>Sign Me Up</strong>.</p>
+
+<p><img src="images/1.png" width="70%" height="70%"></p></li>
+
+<li><p>Check your email for an activation request.</p>
+
+<p><img src="images/2.png" width="70%" height="70%"></p></li>
+
+<li><p>Click the link in the email, and complete your registration by setting a new password and challenge question.</p>
+
+<p>You should now be logged into the Kingdom Management developer org that we’ll be using for this class. This is an org that we’ve expanded from our newly launched Trailhead modules so after you’ve completed this workshop you can use this same org to continue on your secure coding training! For this workshop we’ve expanding the existing trailhead demos to add a few new ones that we’ll use today.</p>
+
+<p>Let’s enable those now.</p></li>
+
+<li><p>Click on the <strong>Setup</strong> link</p></li>
+
+<li><p>Click <em>Manage Users -&gt; Profiles -&gt; System Administrator</em></p></li>
+
+<li><p>Click the <strong>Edit</strong> button</p></li>
+
+<li><p>Click the checkbox next to <strong>DF16 Workshop</strong> to make our custom app visible</p></li>
+
+<li><p>Click the <strong>Save</strong> button</p></li>
+
+<li><p>Select the <strong>DF16 Workshop</strong> from the app selector in the top right corner</p>
+
+<p><img src="images/3.png" width="70%" height="70%"></p></li>
+</ol>
+
+<p>If you see something similar to the above screen you are now ready to start learning how to defend your users against XSS attacks by using application security!</p>
+
+<p><strong>Note</strong>: The code in the Kingdom Management developer org is vulnerable to certain kinds of vulnerabilities. In the developer org these vulnerabilities are benign, but they may pose more serious problems if replicated to a production Salesforce environment. Use the Kingdom Management application for educational purposes only.</p>
+
+<h2 id="what-is-cross-site-scripting">What is Cross-Site Scripting?</h2>
+
+<p>Cross-Site Scripting (XSS) is an injection vulnerability that occurs when an attacker can insert unauthorized JavaScript, VBScript, HTML, or other active content into a web page. When other users view the page, the malicious code executes and effects or attacks the user. For example, a malicious script can hijack the user’s session, submit unauthorized transactions as the user, steal confidential information, or simply deface the page.</p>
+
+<h2 id="how-does-an-xss-attack-work">How Does an XSS Attack Work?</h2>
+
+<p>In the simplest form, XSS attacks occur <strong>when user-supplied input is reflected in the HTML of a web page</strong>. Due to poor separation between code context and user data, the user input is executed as code.
+In the Kingdom Management app, there is a page to create a scroll that can be used in the Kingdom to post announcements. Let’s test it out for XSS vulnerabilities!</p>
+
+<p><strong>Note</strong>: For each of the demos in this class please use <strong>Firefox</strong> as your web browser</p>
+
+<ol>
+<li>In your Kingdom Management developer org select the <strong>XSS Basics</strong> tab.</li>
+<li>In the message text field, enter a basic message like: <em>Hear ye, hear ye, come one, come all!</em> and click the <strong>Create Scroll</strong> button.</li>
+<li>The page should refresh, and you should see the text you entered in the previous step.</li>
+<li>Right click on the page and select <strong>View source</strong>.</li>
+
+<li><p>Search in the HTML using CTRL+F for your message and you should see HTML like: <code>&lt;i&gt;Hear ye, hear ye, come one, come all!&lt;/i&gt;</code></p>
+
+<p>Input that we entered into the form was rendered in the page, just what we expected. But what if you tried something different?
+XSS vulnerabilities result when user input is executed as code. So what happens if we enter code into this message box? Will it execute?</p></li>
+
+<li><p>Back in the Kingdom Management developer org, enter the following before clicking <strong>Create Scroll</strong>: <code>&lt;u&gt; Testing for underline &lt;/u&gt;</code></p>
+
+<p>Did the underline effect occur? Yes! It appears that text we enter into the input box is being interpreted as code!</p>
+
+<p>Now what happens if we try something a lot more complicated?</p></li>
+
+<li><p>Enter the following in the message text field: <code>&lt;img src=x onerror=&quot;alert(\'I said, HEAR YE, HEAR YE, COME ONE, COME ALL!!\');&quot;/&gt;</code></p></li>
+
+<li><p>Click <strong>Create Scroll</strong>. You will see a little window pop up.</p>
+
+<p><img src="images/4.png" width="70%" height="70%"></p></li>
+</ol>
+
+<h2 id="force-com-xss-protections">Force.com XSS Protections</h2>
+
+<p>As a platform, Salesforce offers its customers and developers maximum flexibility for accessing and storing data. We don’t control what you place on our platform, but wherever possible we make sure it’s displayed securely. So the Salesforce approach to XSS defense is to perform output encoding. In fact, by default all merge fields are automatically HTML encoded! We’ll discuss gaps that you’ll need to be aware of and account for in your applications.</p>
+
+<h2 id="automatic-html-encoding">Automatic HTML Encoding</h2>
+
+<p>As we mentioned previously, Salesforce automatically HTML encodes any values and merge fields placed in HTML context. This includes all standard functionality, as well as Visualforce pages and components.</p>
+
+<p>Let’s see this in action in our Kingdom management org.</p>
+
+<ol>
+<li><p>Click on the <strong>XSS Automatic HTML Encoding Demo</strong> tab</p>
+
+<p>On this tab we have a simple app which has a greeting message to the user</p>
+
+<p><img src="images/5.png" width="70%" height="70%"></p>
+
+<p>You may notice that to construct this greeting the app utilizes the URL parameter name as a input.</p></li>
+
+<li><p>Try changing value of the <strong>name</strong> URL parameter to something different like <em>THIS IS A TEST</em>.</p>
+
+<p>Your URL should look something like this:</p>
+
+<pre><code>https://c.[yourinstance].visual.force.com/apex/xss_automatic_html_encoding_demo?name=This is a test
+</code></pre>
+
+<p>When you hit enter the message should have changed to render the value of the URL parameter. Let’s see if this is vulnerable to XSS by using an attack payload similar to one that we’ve used before.</p></li>
+
+<li><p>Change the value of the name URL parameter to <code>&lt;img src=&quot;test&quot; onerror=&quot;alert(‘THIS IS AN XSS ATTACK’)&quot;/&gt;</code></p>
+
+<p>Wait&hellip;the alert message didn’t pop up. Why?</p></li>
+
+<li><p>Right click on page and select <strong>View Page Source</strong></p></li>
+
+<li><p>Search in the source code (using CTRL+F) for THIS IS AN XSS ATTACK</p>
+
+<p>You should notice that the platform automatically encoded all the values that we entered into their HTML entity equivalents:</p>
+
+<p><code>Hello &amp;lt;img src=&quot;test&quot; onerror=&quot;alert(&amp;#8216;THIS IS AN XSS ATTACK&amp;#8217;)&quot;/&amp;gt;!</code></p></li>
+</ol>
+
+<p>This is the automatic HTML encoding in action and as a result it treats the data we entered as text, not code, neutralizing the XSS attack!</p>
+
+<h2 id="disabling-automatic-html-encoding">Disabling Automatic HTML Encoding</h2>
+
+<p>While it’s great that Salesforce provides this functionality for developers out of the box, there are certain use cases where you may want to have raw HTML embedded in the page. To support this, several Visualforce tags have an optional attribute called “escape” which will allow developers to disable the automatic encoding.</p>
+
+<p>Let’s see what happens when this attribute is set to false in our demo org.</p>
+
+<ol>
+<li><p>Click on the <strong>XSS Disabling HTML Encoding</strong> tab</p>
+
+<p>You’ll see the same app as before. It’s a simple app designed to take in the value of the URL parameter <strong>name</strong> and insert it into a greeting message. However this time the visualforce page is applying some extra styling to the merge field.</p></li>
+
+<li><p>Click on the <strong>Visualforce Page</strong> link at the bottom to see the code</p>
+
+<p><code>&lt;apex:outputlabel value=&quot;Hello &lt;b&gt;{!name}&lt;/b&gt;!&quot; escape=&quot;false&quot;/&gt;</code></p>
+
+<p>The platform encoding is explicitly disabled by the addition fo the escape = “false” attribute.</p></li>
+
+<li><p>Navigate back to <strong>XSS Disabling HTML Encoding</strong> tab</p></li>
+
+<li><p>Just as we did in the previous demo, set the value of the name URL parameter to one of our XSS attack payloads: <code>&lt;img src=&quot;test&quot; onerror=&quot;alert('THIS IS AN XSS ATTACK')&quot;/&gt;</code></p>
+
+<p><img src="images/6.png" width="70%" height="70%"></p></li>
+</ol>
+
+<p>The attack works!</p>
+
+<p>While disabling encoding may be necessary for certain use cases, you should exercise <strong>extreme caution</strong>. If you disable automatic encoding, you have to rely on other XSS prevention techniques (like whitelisting) to ensure that your code isn’t vulnerable to XSS.</p>
+
+<h2 id="platform-provided-encoding-functions">Platform Provided Encoding Functions</h2>
+
+<p>While the automatic HTML encoding provided by the platform is a fantastic default protection for a majority of use cases, it’s not a complete solution for developers that more customized applications. Luckily Salesforce provides output encoding functions for both Visualforce and Apex that you can leverage to fortify your code.</p>
+
+<h2 id="mitigate-xss-in-html-context-with-htmlencode">Mitigate XSS in HTML Context with HTMLENCODE()</h2>
+
+<p><strong>HTMLENCODE()</strong> is a function that developers can use to perform additional HTML encoding of input prior to reflection in HTML context. For most use cases, developers don’t need to use this function, but it is required when the default platform encoding is turned off or when you’re adding user-controllable input directly to the DOM.</p>
+
+<h2 id="htmlencode-in-action">HTMLENCODE() in Action!</h2>
+
+<p>Now let’s learn how to fix HTML-based XSS vulnerabilities using HTMLENCODE().</p>
+
+<ol>
+<li>Click the <strong>XSS Visualforce Mitigations Demo</strong> tab.</li>
+
+<li><p>Click the button labeled <strong>Click here to view the HTML-based XSS</strong>.</p>
+
+<p>An XSS in the form of a embedded image appears on the page. Remember: defacement is also a valid impact of XSS.</p>
+
+<p>This code is injected via the user parameter in the URL:<br />
+<a href="https://c.[yourinstance].visual.force.com/apex/xss_visualforce_mitigations_demo?user=THEME+VIOLATION%21%21%21%21+%3Cimg+src%3D%22https%3A%2F%2Fdeveloper.salesforce.com%2Fresource%2Fimages%2Fastro.png%22%2F%3E">https://c.[yourinstance].visual.force.com/apex/xss_visualforce_mitigations_demo?user=THEME+VIOLATION%21%21%21%21+%3Cimg+src%3D%22https%3A%2F%2Fdeveloper.salesforce.com%2Fresource%2Fimages%2Fastro.png%22%2F%3E</a></p></li>
+
+<li><p>Use the link at the bottom of the page to view the Visualforce code and you see the following.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;apex:outputText</span> <span style="color: #4070a0">value=&quot;Welcome, &lt;b&gt;{!$CurrentPage.Parameters.user}&lt;/b&gt;!&quot;</span> <span style="color: #4070a0">escape=&quot;false&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+</pre></div>
+
+<p>Because of the escape=”false” setting, user-controlled content is rendered directly on the page.</p></li>
+
+<li><p>Edit the code, and add your defensive encoding as follows.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;apex:outputText</span> <span style="color: #4070a0">value=&quot;Welcome, &lt;b&gt;{!HTMLENCODE($CurrentPage.Parameters.user)}&lt;/b&gt;!&quot;</span> <span style="color: #4070a0">escape=&quot;false&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span> 
+</pre></div></li>
+
+<li><p>Click <strong>Save</strong> and navigate back to the <strong>XSS Visualforce Mitigations Demo</strong> tab.</p></li>
+
+<li><p>Click the <strong>HTML-based XSS</strong> button again.</p></li>
+</ol>
+
+<p>The injected image no longer renders. You prevented the XSS!</p>
+
+<h2 id="salesforce-default-protections-in-different-execution-contexts">Salesforce Default Protections in Different Execution Contexts</h2>
+
+<p>As we’ve seen from our above demos the platform automatically HTML encodes merge fields (assuming you have not explicitly disabled it) protecting you from XSS attacks. However this protection is specific to fields utilized HTML context. What about other contexts like script and style? Let’s find out!</p>
+
+<h3 id="xss-in-script-context">XSS in Script Context</h3>
+
+<p>When inserting merge fields into JavaScript, watch out for XSS vulnerabilities. Lets take a look at an example in our org.</p>
+
+<ol>
+<li>Click on the <strong>XSS in Script Context</strong> tab</li>
+
+<li><p>Click on the <strong>Visualforce page</strong> link at the bottom to view the code</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"> <span style="color: #062873; font-weight: bold">&lt;script&gt;</span>
+    <span style="color: #007020; font-weight: bold">var</span> a <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;{!$CurrentPage.parameters.userInput}&#39;</span>;
+ <span style="color: #062873; font-weight: bold">&lt;/script&gt;</span>
+     
+ <span style="color: #062873; font-weight: bold">&lt;apex:outputtext&gt;</span>The value of the userInput parameter is: {!$CurrentPage.parameters.userInput}<span style="color: #062873; font-weight: bold">&lt;/apex:outputtext&gt;</span> 
+</pre></div>
+
+<p>We’ve got a user controllable variable userInput being included directly in script context. Is this vulnerable? Let’s find out.</p></li>
+
+<li><p>Navigate back to the <strong>XSS in Script Context</strong> tab</p></li>
+
+<li><p>Try typing in the following string for the userInput URL parameter <code>';alert('XSS');//</code></p>
+
+<p>HINT: The URL in a your address bar should look something like this</p>
+
+<pre><code>https://c.[yourinstance].visual.force.com/apex/XSS_in_Script_Context?userInput=';alert('XSS');//
+</code></pre>
+
+<p><img src="images/8.png" width="70%" height="70%"></p></li>
+</ol>
+
+<p>Yes it is vulnerable! So keep in mind that any user input is inserted into script context isn’t automatically encoded and is vulnerable to XSS.</p>
+
+<h2 id="mitigate-xss-in-script-context-with-jsencode">Mitigate XSS in Script Context with JSENCODE()</h2>
+
+<p><strong>JSENCODE()</strong> is a function that developers can use to perform JavaScript encoding of input prior to reflection in JavaScript context. This function encodes text and merge field values for use in JavaScript by inserting escape characters, such as a backslash before unsafe JavaScript characters, such as the apostrophe (&lsquo;). The function is used in cases where a merge field is directly used as a JavaScript variable.</p>
+
+<h2 id="jsencode-in-action">JSENCODE() in Action!</h2>
+
+<p>Now let’s learn how to fix a JavaScript-based XSS vulnerabilities using JSENCODE.</p>
+
+<ol>
+<li>Click the <strong>XSS Visualforce Mitigations</strong> tab.</li>
+
+<li><p>Click the <strong>Click here to view the JavaScript-based XSS</strong> button to demo the vulnerability.</p>
+
+<p>You should see an image defacing the bottom left corner of your screen. Remember: defacement is also a valid impact of XSS.</p></li>
+
+<li><p>Click the <strong>Visualforce Page</strong> and <strong>Apex</strong> links at the bottom of the page to find the vulnerable code.</p>
+
+<p><strong>Apex</strong>:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    
+<span style="color: #007020; font-weight: bold">public</span> pageReference <span style="color: #06287e">JSXSS</span><span style="color: #666666">(){</span>
+    title <span style="color: #666666">=</span> <span style="border: 1px solid #FF0000">&#39;</span>THEME VIOLATION<span style="color: #666666">!!!!</span><span style="border: 1px solid #FF0000">\&#39;</span><span style="color: #666666">;</span>var newHTML <span style="color: #666666">=</span> document<span style="color: #666666">.</span><span style="color: #4070a0">createElement</span><span style="color: #666666">(</span><span style="border: 1px solid #FF0000">\&#39;</span>div<span style="border: 1px solid #FF0000">\&#39;</span><span style="color: #666666">);</span>newHTML<span style="color: #666666">.</span><span style="color: #4070a0">innerHTML</span> <span style="color: #666666">=</span> <span style="border: 1px solid #FF0000">\&#39;</span><span style="color: #666666">&lt;</span>img src<span style="color: #666666">=</span><span style="color: #4070a0">&quot;https://developer.salesforce.com/resource/images/astro.png&quot;</span> <span style="color: #666666">/&gt;</span><span style="border: 1px solid #FF0000">\&#39;</span><span style="color: #666666">;</span>document<span style="color: #666666">.</span><span style="color: #4070a0">body</span><span style="color: #666666">.</span><span style="color: #4070a0">appendChild</span> <span style="color: #666666">(</span>newHTML<span style="color: #666666">);</span>var x <span style="color: #666666">=</span><span style="border: 1px solid #FF0000">\</span><span style="color: #4070a0">&#39;x&#39;</span><span style="color: #666666">;</span>
+    
+    <span style="color: #007020; font-weight: bold">return</span> <span style="color: #007020; font-weight: bold">null</span><span style="color: #666666">;</span>
+<span style="color: #666666">}</span>
+</pre></div>
+
+<p><strong>Visualforce</strong>:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;script&gt;</span>
+    <span style="color: #007020; font-weight: bold">var</span> vip <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;{!title}&#39;</span>;
+    [...]
+<span style="color: #062873; font-weight: bold">&lt;/script&gt;</span>
+    [...]
+<span style="color: #062873; font-weight: bold">&lt;apex:commandButton</span> <span style="color: #4070a0">value=&quot;Click here to view the JavaScript-based XSS!&quot;</span> <span style="color: #4070a0">action=&quot;{!JSXSS}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+</pre></div>
+
+<p>You’ll notice that when the button is clicked it calls the JSXSS function in Apex. This function sets the title to a XSS payload which is then rendered in Visualforce.</p>
+
+<p>We’ll need to put some encoding around this output in visualforce to prevent this attack!</p></li>
+
+<li><p>Edit the Visualforce page by wrapping the title merge field in JSENCODE like the following: <code>var vip = ‘{!JSENCODE(title)}’;</code>.</p></li>
+
+<li><p>Click <strong>Save</strong> and navigate back to the <strong>XSS Visualforce Mitigations Demo</strong>.</p></li>
+
+<li><p>Click the <strong>JavaScript-based XSS</strong> button again.</p></li>
+</ol>
+
+<p>If no popup appears on the screen, then you’ve successfully mitigated XSS!</p>
+
+<h3 id="xss-in-style-context">XSS in Style Context</h3>
+
+<p>CSS (cascading style sheets) is an increasingly complex language that is slowly becoming standardized across browsers. Modern browsers don’t allow JavaScript injection within CSS attribute values. However, some older browsers do. As a result, be careful about utilizing merge fields within style context.</p>
+
+<p>Let see what a vulnerable app would look like in your developer org!</p>
+
+<ol>
+<li>Click on the <strong>XSS in Style Context</strong> tab</li>
+
+<li><p>Click on the <strong>Visualforce Page</strong> link at the bottom of the screen to view the source code</p>
+
+<pre><code>&lt;style type=&quot;text/css&quot;&gt;
+  p{ background-color: {!color};}
+&lt;/style&gt;
+    
+&lt;p&gt; &lt;b&gt;This is some styled text &lt;/b&gt;&lt;/p&gt;
+</code></pre>
+
+<p>You’ll notice in this simple app the developer is using the variable “color” in order to add additional style to the paragraph attribute.</p></li>
+
+<li><p>Navigate back to the <strong>XSS in Style Context</strong> tab and try entering different values for the URL parameter color like green or blue</p>
+
+<p>The background color of the page should change! User controllable input that’s being used directly in the visualforce page&hellip;.is this vulnerable to XSS attacks?</p></li>
+
+<li><p>Try entering the following for the color parameter <code>blue&lt;/style&gt;&lt;img src=x onerror=&quot;alert(1)&quot;/&gt;</code></p>
+
+<p>You should see something like this:</p>
+
+<p><img src="images/9.png" width="70%" height="70%"></p></li>
+</ol>
+
+<p>So as you can see, the default automatic HTML encoding doesn’t apply here and the application is vulnerable to XSS. Again be very careful about any use of merge fields in style context as it will leave your applications vulnerable to XSS attacks.</p>
+
+<h2 id="xss-in-mixed-contexts">XSS in Mixed Contexts</h2>
+
+<p>Up until now we looked at cases where the visualforce page was parsed by a single parser: HTML, CSS or Javascript. But what about more complicated cases?</p>
+
+<h2 id="mitigate-xss-in-mixed-contexts-with-jsinhtmlencode">Mitigate XSS in Mixed Contexts with JSINHTMLENCODE()</h2>
+
+<p><strong>JSINHTMLENCODE</strong> is a Visualforce encoding function that was introduced when the platform didn’t always automatically HTML encode merge-fields. JSINHTMLENCODE is effectively a combination of HTMLENCODE(JSENCODE()), so before the introduction of auto-HTML encoding, developers called this function when including merge-fields in JavaScript event handlers within HTML (that is, onerror, onload). Now that the platform auto-HTML encodes, it’s sufficient to just call JSENCODE() in most cases. However there are still some cases where you&rsquo;ll want to ensure that you&rsquo;re using the full JSINHTMLENCODE() function. We&rsquo;ll demo one below!</p>
+
+<h2 id="jsinhtmlencode-in-action">JSINHTMLENCODE() in Action!</h2>
+
+<p>Let’s try out the JSINHTMLENCODE function.</p>
+
+<ol>
+<li>In your Kingdom Management developer org, click the <strong>XSS Visualforce Mitigations Demo</strong> tab.</li>
+
+<li><p>Click the <strong>JavaScript + HTML-based XSS</strong> button to demo the vulnerability.</p>
+
+<p>You should see an image defacing the page.</p></li>
+
+<li><p>To find the vulnerable code, click the Visualforce and Apex links at the bottom of the page.</p>
+
+<p><strong>Visualforce</strong>:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;script&gt;</span>
+  [...]
+  <span style="color: #007020; font-weight: bold">var</span> html <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;&lt;br/&gt;&lt;br/&gt;&lt;b&gt;---------------------&lt;/b&gt;&#39;</span>;
+        html <span style="color: #666666">+=</span> <span style="color: #4070a0">&#39;&lt;br/&gt;Personnel Name: {!JSENCODE(name)}&#39;</span>;
+        html <span style="color: #666666">+=</span> <span style="color: #4070a0">&#39;&lt;br/&gt;Favorite color: {!JSENCODE(color)}&#39;</span>;
+        html <span style="color: #666666">+=</span> <span style="color: #4070a0">&#39;&lt;br/&gt;Favorite animal: {!JSENCODE(animal)}&#39;</span>;
+        html <span style="color: #666666">+=</span> <span style="color: #4070a0">&#39;&lt;br/&gt;&lt;b&gt;---------------------&lt;/b&gt;&#39;</span>;
+  <span style="color: #007020">document</span>.getElementById(<span style="color: #4070a0">&#39;{!$Component.output2}&#39;</span>).innerHTML <span style="color: #666666">=</span> html;
+<span style="color: #062873; font-weight: bold">&lt;/script&gt;</span>
+[...]
+<span style="color: #062873; font-weight: bold">&lt;apex:commandButton</span> <span style="color: #4070a0">value=&quot;Click here to view the JavaScript + HTML-based XSS!&quot;</span> <span style="color: #4070a0">action=&quot;{!JSINHTMLXSS}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+</pre></div>
+
+<p><strong>Apex</strong>:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">public</span> pageReference <span style="color: #06287e">JSINHTMLXSS</span><span style="color: #666666">(){</span>
+  color <span style="color: #666666">=</span> <span style="border: 1px solid #FF0000">&#39;</span>THEME VIOLATION<span style="color: #666666">!!!!</span> <span style="color: #666666">&lt;</span>img src<span style="color: #666666">=</span><span style="color: #4070a0">&quot;https://developer.salesforce.com/resource/images/astro.png&quot;</span><span style="color: #666666">/&gt;</span><span style="border: 1px solid #FF0000">&#39;</span><span style="color: #666666">;</span>
+      <span style="color: #007020; font-weight: bold">return</span> <span style="color: #007020; font-weight: bold">null</span><span style="color: #666666">;</span>
+<span style="color: #666666">}</span>
+</pre></div>
+
+<p>When the user clicks the commandButton the application calls the JSINHTMLXSS function in Apex. This function sets a XSS payload to the <strong>color</strong> variable that is then processed by Visualforce.</p>
+
+<p>However, this time we’re wrapping the <strong>color</strong> variable in JSENCODE back in the visualforce page before rendering it to the user. So why is this still a vulnerability?</p>
+
+<p>JSENCODE is an encoder specific to JavaScript context, so it prevents any JavaScript-based XSS such as “blue’;alert(‘hi’);//”. However, in this application our <strong>color</strong> variable is not just used in JavaScript context; it’s also written directly to the DOM via the innerHTML call, rendering the data as HTML. Therefore, in order to fully protect this application against XSS, both forms of encoding are required: JavaScript and HTML. Luckily, there is a combo encoding method provided by the platform: JSINHTMLENCODE().</p></li>
+
+<li><p>Modify the Apex to use JSINHTMLENCODE() rather than JSENCODE().</p>
+
+<p>Your visualforce should look like:</p>
+
+<pre><code>html += '&lt;br/&gt;Favorite color: {!JSINHTMLENCODE(color)}';
+</code></pre></li>
+
+<li><p>Click <strong>Save</strong>.</p></li>
+
+<li><p>Navigate to the <strong>XSS Visualforce Mitigations Demo</strong> tab.</p></li>
+
+<li><p>Click the <strong>JavaScript + HTML-based XSS</strong> button again, and this time the embedded image shouldn’t appear.</p></li>
+</ol>
+
+<p>The important lesson to take away is that there is a form of encoding for every context, and you have to be aware of the context in order to encode properly. Using the wrong encoding method can be dangerous!</p>
+
+<h2 id="take-home-xss-challenge">Take Home XSS Challenge</h2>
+
+<p>To wrap up everything that we have learned, we have created a special vulnerable app for you to practice spotting and mitigating XSS all on your own. To enable the app in your Kingdom Management developer org:</p>
+
+<ol>
+<li>Click on the <strong>Setup</strong> link</li>
+<li>Click <em>Manage Users -&gt; Profiles -&gt; System Administrator</em></li>
+<li>Click the <strong>Edit</strong> button</li>
+<li>Click the checkbox next to <strong>DF16 Workshop Challenge</strong> to make our custom app visible</li>
+<li>Click the <strong>Save</strong> button</li>
+<li>Select the <strong>DF16 Workshop Challenge</strong> from the app selector in the top right corner</li>
+</ol>
+
+<p>You should see the following app on your screen:</p>
+
+<p><img src="images/10.png" width="70%" height="70%"></p>
+
+<p>This is an app that is used to display the personnel in your kingdoms in a graph format. However this app was developed using insecure practices and is filled with spots where the application is vulnerable to XSS.</p>
+
+<p>Your goal is to find <strong>atleast 5</strong> places where the app is vulnerable and mitigate them using the techniques learned in our workshop today. Remember to look for places where user input is being reflected in HTML/Style/JavaScript context without any encoding and/or places where the application is bypassing the default platform encoding.</p>
+
+<p><strong>Hint:</strong> Take a look at the user Peter Dering in the graph.</p>
+
+<p>Good Luck!</p>
+
+</div>
+
+</div>
+</div>
+<script src="http://www.sfdcworkshop.com/js/ui.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84811307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
+

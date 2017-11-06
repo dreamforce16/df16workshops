@@ -2,15 +2,130 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/</loc>
+    <loc>http://www.sfdcworkshop.com/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/workshop/heroku-connect/flask/</loc>
+    <loc>http://www.sfdcworkshop.com/workshop/battle-station/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
   </url>
   
   <url>
-    <loc>http://replace-this-with-your-hugo-site.com/workshop/pythonapp/</loc>
+    <loc>http://www.sfdcworkshop.com/workshop/conference-mgmt/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/prediction-io/recommendation_engine/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/prediction-io/recommendation_engine/index_heroku/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/prediction-io/recommendation_engine/index_local/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/suggestion-box/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/suggestion-box/index_v1/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/home/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/minihacks/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/heroku-connect/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/heroku-connect/hc-java-spring-jdbc/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/heroku-connect/hc-py-flask/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/heroku-connect/hc-py-flask/index_v1/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/prediction-io/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/rapid-prototyping-with-slds/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/secure-apps/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/prediction-io/text_classification/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/prediction-io/text_classification/index_heroku/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/prediction-io/text_classification/index_local/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/wave-apis/</loc>
+    <lastmod>2016-07-29T16:18:23+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/heroku-connect/hc-java-spring-jdbc/MavenInstallation/</loc>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/heroku-connect/hc-py-flask/execute_using_pycharm/</loc>
+  </url>
+  
+  <url>
+    <loc>http://www.sfdcworkshop.com/workshop/wave-apis/metadata/</loc>
   </url>
   
 </urlset>

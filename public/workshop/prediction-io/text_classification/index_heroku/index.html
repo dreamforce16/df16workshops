@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.16" />
+
+  <title>Text Classification : Spam Detection Engine using Logistical Regression : Heroku &middot; Salesforce Developers 2017</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+
+  <link rel="shortcut icon" href="http://www.sfdcworkshop.com/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/"><div><img src='/workshop/2015sf_Developers_logo_RGB_KO.png' height='70'></div></a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/minihacks/"><i class='fa fa-list fa-fw'></i>MINIHACKS</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small style="color: #ffffff">© Copyright 2000-2016 salesforce.com, inc. All rights reserved. Various trademarks held by their respective owners. </small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Text Classification : Spam Detection Engine using Logistical Regression : Heroku</h1>
+  <h2></h2>
+</div>
+<div class="content">
+  
+
+<h2 id="introduction">Introduction</h2>
+
+<p>In this workshop you will learn how to use PredictionIO Machine Learning library to build a Spam Detection Engine using Classification Technique of Logisitical Regression. PredictionIO uses Spark MLlib&rsquo;s implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.</p>
+
+<h2 id="pre-requisities">Pre-requisities</h2>
+
+<ul>
+<li>git command line</li>
+<li>JDK 1.8.x or above</li>
+<li>Heroku Account</li>
+<li>Heroku CLI</li>
+</ul>
+
+<p>Heroku account with Credit Card is required for two Dynos to run simultaneously</p>
+
+<h2 id="source-code">Source Code</h2>
+
+<p>Source code of this workshop resides in two repos listed below</p>
+
+<ul>
+<li><a href="https://github.com/rajdeepd/pio-eventserver-heroku">https://github.com/rajdeepd/pio-eventserver-heroku</a></li>
+<li><a href="https://github.com/rajdeepd/pio-engine-textclassfication-heroku">https://github.com/rajdeepd/pio-engine-textclassfication-heroku</a></li>
+<li><a href="https://github.com/rajdeepd/pio-upload-data">https://github.com/rajdeepd/pio-upload-data</a></li>
+</ul>
+
+<p><strong>pio-eventserver-heroku</strong> : Provides storage for events being generated based on which we want to create our training model.</p>
+
+<p><strong>pio-engine-textclassfication-heroku</strong> : Engine which wraps the <a href="https://en.wikipedia.org/wiki/Logistic_regression">Logisitic Regression Algorithm</a> implementation and provides APIs to create a model, train it and use it to make prediction.</p>
+
+<p>We will be using PostgreSQL database for this workshop.</p>
+
+<h2 id="step-1-clone-the-source-code">Step 1 : Clone the Source code</h2>
+
+<p>Clone the source code</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>git clone https://github.com/rajdeepd/pio-eventserver-heroku
+
+<span style="color: #bb60d5">$ </span>git clone https://github.com/rajdeepd/pio-engine-textclassfication-heroku
+
+<span style="color: #bb60d5">$ </span>git clone https://github.com/rajdeepd/pio-upload-data
+</pre></div>
+
+<h2 id="step-2-create-a-heroku-app">Step 2 Create a Heroku App</h2>
+
+<p>First we will create a new Heroku app locally.</p>
+
+<p>Note : Please replace <code>rd-pio-eventserver-1</code> with the name of your app</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span><span style="color: #007020">cd </span>pio-eventserver-heroku
+<span style="color: #bb60d5">$ </span>heroku create rd-pio-eventserver-1
+</pre></div>
+
+<p>Output</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">Creating rd-pio-eventserver-1... <span style="color: #007020; font-weight: bold">done</span>, stack is cedar-14
+https://rd-pio-eventserver-1.herokuapp.com/ | 
+https://git.heroku.com/rd-pio-eventserver-1.git
+Git remote heroku added
+</pre></div>
+
+<p>Check git remote</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>git remote -v
+</pre></div>
+
+<pre><code>heroku	https://git.heroku.com/rd-pio-eventserver-1.git (fetch)
+heroku	https://git.heroku.com/rd-pio-eventserver-1.git (push)
+origin	https://github.com/rajdeepd/pio-eventserver-heroku (fetch)
+origin	https://github.com/rajdeepd/pio-eventserver-heroku (push)
+
+</code></pre>
+
+<h2 id="deploy-event-server-to-heroku">Deploy Event Server to Heroku</h2>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>git push heroku master
+</pre></div>
+
+<p>Output</p>
+
+<pre><code>remote:        [info] Done updating.
+remote:        [info] Compiling 1 Scala source to /tmp/scala_...
+remote:        [success] Total time: 42 s, completed Aug 25, 2016 9:59:56 AM
+remote:        [info] Wrote 
+                 scala-2.10/pio-eventserver-heroku_2.10-0.1-SNAPSHOT.pom
+remote:        [info] Packaging pio-eventserver-heroku_2.10-0.1-SNAPSHOT.jar 
+remote:        [info] Done packaging.
+remote:        [success] Total time: 2 s, completed Aug 25, 2016 9:59:58 AM
+remote: -----&gt; Dropping ivy cache from the slug
+remote: -----&gt; Dropping sbt boot dir from the slug
+remote: -----&gt; Dropping compilation artifacts from the slug
+remote: -----&gt; Discovering process types
+remote:        Procfile declares types -&gt; console, web
+remote: 
+remote: -----&gt; Compressing...
+remote:        Done: 183.1M
+remote: -----&gt; Launching...
+remote:        Released v4
+remote:        https://rd-pio-eventserver-1.herokuapp.com/ deployed to Heroku
+remote: 
+remote: Verifying deploy.... done.
+To https://git.heroku.com/rd-pio-eventserver-1.git
+ * [new branch]      master -&gt; master
+
+</code></pre>
+
+<p>Check the <code>DATABASE_URL</code></p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>heroku <span style="color: #bb60d5">config</span>
+<span style="color: #666666">===</span> rd-pio-eventserver-1 Config Vars
+DATABASE_URL: postgres://username:password@ec2-54-243-208-195.compute-1.amazonaws.com:5432/d8spomhdp00n03
+</pre></div>
+
+<h2 id="create-a-new-app">Create a new app</h2>
+
+<p>PredictionIO tracks events, ML engine based on App ID. We will create a new app and tie events to this ID as well the ML engine which will be trained later</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>heroku run console app new MyAppLR
+</pre></div>
+
+<pre><code>Running `console app new MyAppLR` attached to terminal... up, run.4659
+[INFO] [App$] Initialized Event Store for this app ID: 2.
+[INFO] [App$] Created new app:
+[INFO] [App$]       Name: MyAppLR
+[INFO] [App$]         ID: 2
+[INFO] [App$] Access Key: 2eNMw5lydFtFl4uT8l5oARd48VDxJz9sIEUuigshZJHttReO5lpiNDeZwELVV3_7
+WARNING: Toolbelt v3.43.9 update available.
+
+</code></pre>
+
+<p>Set Environment variable ACCESS_KEY</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span><span style="color: #007020">export </span><span style="color: #bb60d5">ACCESS_KEY</span><span style="color: #666666">=</span>&lt;ACCESS_KEY&gt;
+</pre></div>
+
+<h2 id="populate-event-server-with-events">Populate Event Server with Events</h2>
+
+<p>We will use a Scala Application cloned from <a href="https://github.com/rajdeepd/pio-upload-data">https://github.com/rajdeepd/pio-upload-data</a> to upload data. It will make a Http Post request and upload email and stop word data.</p>
+
+<p>Sample email event</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">{
+  <span style="color: #062873; font-weight: bold">&quot;eventTime&quot;</span>: <span style="color: #4070a0">&quot;2015-06-08T16:45:00.595+0000&quot;</span>,
+  <span style="color: #062873; font-weight: bold">&quot;entityId&quot;</span>: <span style="color: #40a070">2</span>,
+  <span style="color: #062873; font-weight: bold">&quot;properties&quot;</span>: {
+    <span style="color: #062873; font-weight: bold">&quot;text&quot;</span>: <span style="color: #4070a0">&quot; some spam text&quot;</span>,
+    <span style="color: #062873; font-weight: bold">&quot;label&quot;</span>: <span style="color: #4070a0">&quot;spam&quot;</span>
+  },
+  <span style="color: #062873; font-weight: bold">&quot;event&quot;</span>: <span style="color: #4070a0">&quot;e-mail&quot;</span>,
+  <span style="color: #062873; font-weight: bold">&quot;entityType&quot;</span>: <span style="color: #4070a0">&quot;content&quot;</span>
+}
+</pre></div>
+
+<ol>
+<li><p>Copy application.conf.sample to application.conf as shown below</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span><span style="color: #007020">cd </span>pio-upload-data
+<span style="color: #bb60d5">$ </span>cp pio-upload-data/src/main/resources/application.conf.sample <span style="color: #4070a0; font-weight: bold">\</span>
+   pio-upload-data/src/main/resources/application.conf
+      
+</pre></div></li>
+
+<li><p>Open <code>application.conf</code> file</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">pio <span style="color: #666666">{</span>
+  <span style="color: #bb60d5">access_token</span> <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;TODO&quot;</span>
+  <span style="color: #bb60d5">app_name</span> <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;TODO&quot;</span>
+  <span style="color: #bb60d5">host</span> <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;localhost:7070&quot;</span>
+<span style="color: #666666">}</span>
+</pre></div>
+
+<p>Update with appropriate values as shown below</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">        
+pio <span style="color: #666666">{</span>
+  <span style="color: #bb60d5">access_token</span> <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;2eNMw5lydFtFl4uT..Jz9sIEUuigshZJHttReO5lpiNDeZwELVV3_7&quot;</span>
+  <span style="color: #bb60d5">app_name</span> <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;MyTextLR&quot;</span>
+  <span style="color: #bb60d5">host</span> <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;rd-pio-eventserver-1.herokuapp.com&quot;</span>
+<span style="color: #666666">}</span>
+</pre></div></li>
+
+<li><p>Execute Upload</p>
+
+<p>We will upload 100 emails and 300+ stopwords (in real use case your email data will be much larger)</p>
+
+<pre><code>$ cd ~/pio-upload-data
+$ ./sbt &quot;runMain UploadEmails&quot;
+$ ./sbt &quot;runMain UploadStopWords&quot;
+</code></pre></li>
+</ol>
+
+<p>Your output will be similar to listing below</p>
+
+<pre><code>98
+HttpResponseProxy{HTTP/1.1 201 Created [Connection: .. charset=UTF-8,Content-Length: 46,Chunked: false]}}
+99
+HttpResponseProxy{HTTP/1.1 201 Created [Connection: .. charset=UTF-8,Content-Length: 46,Chunked: false]}}
+100
+Completed uploads
+[success] Total time: 96 s, completed 31 Aug, 2016 12:37:25 PM
+
+</code></pre>
+
+<h3 id="check-the-events-inserted-in-a-browser">Check the Events Inserted in a Browser</h3>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">http://rd-pio-eventserver-1.herokuapp.com/events.json?accessKey<span style="color: #666666">=</span>MYACCESSKEY&amp;<span style="color: #bb60d5">limit</span><span style="color: #666666">=</span>100
+</pre></div>
+
+<p><img src="/workshop/prediction-io/recommendation_engine/images/pio-events-screenshot.png" width="100%" height="100%"></p>
+
+<h2 id="deploy-recommendation-engine">Deploy Recommendation Engine</h2>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>heroku create rd-pio-engine-text-class
+<span style="color: #bb60d5">$ </span>git push heroku master
+</pre></div>
+
+<h3 id="remove-existing-addon">Remove existing AddOn</h3>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>heroku addons
+</pre></div>
+
+<pre><code>=== Resources for rd-pio-engine-1
+Plan                         Name                     Price
+---------------------------  -----------------------  -----
+heroku-postgresql:hobby-dev  postgresql-pointy-19292  free
+
+</code></pre>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>heroku addons:destroy postgresql-pointy-19292
+</pre></div>
+
+<p>Output</p>
+
+<pre><code>
+ !    WARNING: Destructive Action
+ !    This command will affect the app: rd-pio-engine-1
+ !    To proceed, type &quot;rd-pio-engine-1&quot; or re-run this command with --confirm rd-pio-engine-1
+
+&gt; rd-pio-engine-1
+Destroying postgresql-pointy-19292 on rd-pio-engine-1... done, (free)
+Removing vars for DATABASE from rd-pio-engine-1 and restarting... done, v5
+
+</code></pre>
+
+<h3 id="configure-database-url-to-point-to-event-server-db">Configure DATABASE_URL to point to Event Server DB</h3>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>heroku config:set <span style="color: #bb60d5">DATABASE_URL</span><span style="color: #666666">=</span>postgres://username:password@ec2-54-243-208-195.compute-1.amazonaws.com:5432/d8spomhdp00n03
+</pre></div>
+
+<h2 id="configure-the-heroku-app">Configure the Heroku app:</h2>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">heroku config:set <span style="color: #bb60d5">ACCESS_KEY</span><span style="color: #666666">=</span>&lt;YOUR APP ACCESS KEY&gt; <span style="color: #bb60d5">APP_NAME</span><span style="color: #666666">=</span>&lt;APP NAME&gt; <span style="color: #bb60d5">EVENT_SERVER_IP</span><span style="color: #666666">=</span>&lt;YOUR EVENT SERVER HOSTNAME&gt; <span style="color: #bb60d5">EVENT_SERVER_PORT</span><span style="color: #666666">=</span>80
+</pre></div>
+
+<p>Example</p>
+
+<pre><code>heroku config:set ACCESS_KEY=2Evbo5hiUiXXXCu_uB-gK1Q3EiT2N8nGd1-AGY5hjrsQ3PonJCdwP1YZ5WN5519O APP_NAME=MyApp1 \
+  EVENT_SERVER_IP=rd-pio-eventserver-1.herokuapp.com \
+  EVENT_SERVER_PORT=80
+</code></pre>
+
+<p>Output</p>
+
+<pre><code>Setting config vars and restarting rd-pio-engine-1... done, v6
+ACCESS_KEY:        2Evbo5hiUiXXXCu_uB-gK1Q3EiT2N8nGd1-AGY5hjrsQ3PonJCdwP1YZ5WN5519O
+APP_NAME:          MyApp1
+EVENT_SERVER_IP:   rd-pio-eventserver-1.herokuapp.com
+EVENT_SERVER_PORT: 80
+
+</code></pre>
+
+<h2 id="increase-heap-size-for-java-vm">Increase Heap size for Java VM</h2>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>heroku config:set <span style="color: #bb60d5">JAVA_OPTS</span><span style="color: #666666">=</span><span style="color: #4070a0">&quot;-Xmx512m&quot;</span>
+</pre></div>
+
+<h2 id="train">Train</h2>
+
+<p>In this step we will train the Recommendation Engine based on the Events inserted above.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>heroku run train
+</pre></div>
+
+<p>Output</p>
+
+<pre><code>Running `train` attached to terminal... up, run.6559
+Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
+[WARN] [NativeCodeLoader] Unable to load native-hadoop library for your
+        platform... using builtin-java classes where applicable
+[INFO] [Remoting] Starting remoting
+[INFO] [Remoting] Remoting started; listening on addresses :
+       [akka.tcp://sparkDriver@172.16.194.10:48050]
+[INFO] [Server] jetty-8.y.z-SNAPSHOT
+[INFO] [AbstractConnector] Started SocketConnector@0.0.0.0:33483
+[INFO] [Server] jetty-8.y.z-SNAPSHOT
+[INFO] [AbstractConnector] Started SelectChannelConnector@0.0.0.0:4040
+[INFO] [Engine$] EngineWorkflow.train
+[INFO] [Engine$] DataSource: 
+             org.template.textclassification.DataSource@1a47a1e8
+[INFO] [Engine$] Preparator: org.template.textclassification.Preparator@3811510
+[INFO] [Engine$] AlgorithmList: List(org.template.textclassification.LRAlgorithm@748f93bb)
+[INFO] [Engine$] Data sanity check is on.
+[INFO] [Engine$] org.template.textclassification.TrainingData supports 
+                 data sanity check. Performing check.Observation 1 label: 1.0
+Observation 2 label: 1.0
+Observation 3 label: 1.0
+Observation 4 label: 1.0
+Observation 5 label: 1.0
+
+[INFO] [Engine$] org.template.textclassification.PreparedData 
+                 does not support data sanity check. Skipping check.                                      
+INFO] [Engine$] org.template.textclassification.LRModel does not 
+                support data sanity check. Skipping check.
+[INFO] [Engine$] EngineWorkflow.train completed
+[INFO] [Engine] engineInstanceId=7e2e9a86-a17c-4ac7-bfde-9941430e85dd
+
+</code></pre>
+
+<p>Check the Classification Engine running in the browser</p>
+
+<p><img src="/workshop/prediction-io/text_classification/images/pio-text-engine-heroku-screenshot.png" width="100%" height="100%" alt="engine image"></p>
+
+<h2 id="predict">Predict</h2>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>curl -H <span style="color: #4070a0">&quot;Content-Type: application/json&quot;</span> -d <span style="color: #4070a0">&#39;{ &quot;text&quot;:&quot;Earn extra cash!&quot; }&#39;</span> <span style="color: #4070a0; font-weight: bold">\</span>
+       http://rd-pio-engine-text-class.herokuapp.com/queries.json
+</pre></div>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">{<span style="color: #062873; font-weight: bold">&quot;category&quot;</span>:<span style="color: #4070a0">&quot;not spam&quot;</span>,<span style="color: #062873; font-weight: bold">&quot;confidence&quot;</span>:<span style="color: #40a070">0.7219493232910391</span>}
+</pre></div>
+
+</div>
+
+</div>
+</div>
+<script src="http://www.sfdcworkshop.com/js/ui.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84811307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
+

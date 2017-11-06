@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.16" />
+
+  <title> &middot; Salesforce Developers 2017</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+
+  <link rel="shortcut icon" href="http://www.sfdcworkshop.com/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/"><div><img src='/workshop/2015sf_Developers_logo_RGB_KO.png' height='70'></div></a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/minihacks/"><i class='fa fa-list fa-fw'></i>MINIHACKS</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small style="color: #ffffff">© Copyright 2000-2016 salesforce.com, inc. All rights reserved. Various trademarks held by their respective owners. </small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1></h1>
+  <h2></h2>
+</div>
+<div class="content">
+  <div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">{
+    <span style="color: #062873; font-weight: bold">&quot;fileFormat&quot;</span>: {
+        <span style="color: #062873; font-weight: bold">&quot;charsetName&quot;</span>: <span style="color: #4070a0">&quot;UTF-8&quot;</span>,
+        <span style="color: #062873; font-weight: bold">&quot;fieldsEnclosedBy&quot;</span>: <span style="color: #4070a0">&quot;&quot;</span>,
+        <span style="color: #062873; font-weight: bold">&quot;fieldsDelimitedBy&quot;</span>: <span style="color: #4070a0">&quot;,&quot;</span>,
+        <span style="color: #062873; font-weight: bold">&quot;numberOfLinesToIgnore&quot;</span>: <span style="color: #40a070">1</span>
+    },
+    <span style="color: #062873; font-weight: bold">&quot;objects&quot;</span>: [{
+        <span style="color: #062873; font-weight: bold">&quot;connector&quot;</span>: <span style="color: #4070a0">&quot;CSVConnector&quot;</span>,
+        <span style="color: #062873; font-weight: bold">&quot;description&quot;</span>: <span style="color: #4070a0">&quot;&quot;</span>,
+        <span style="color: #062873; font-weight: bold">&quot;fullyQualifiedName&quot;</span>: <span style="color: #4070a0">&quot;trailhead badge count&quot;</span>,
+        <span style="color: #062873; font-weight: bold">&quot;label&quot;</span>: <span style="color: #4070a0">&quot;badges&quot;</span>,
+        <span style="color: #062873; font-weight: bold">&quot;name&quot;</span>: <span style="color: #4070a0">&quot;badges&quot;</span>,
+        <span style="color: #062873; font-weight: bold">&quot;fields&quot;</span>: [{
+            <span style="color: #062873; font-weight: bold">&quot;description&quot;</span>: <span style="color: #4070a0">&quot;&quot;</span>,
+            <span style="color: #062873; font-weight: bold">&quot;fullyQualifiedName&quot;</span>: <span style="color: #4070a0">&quot;UserName&quot;</span>,
+            <span style="color: #062873; font-weight: bold">&quot;label&quot;</span>: <span style="color: #4070a0">&quot;UserName&quot;</span>,
+            <span style="color: #062873; font-weight: bold">&quot;name&quot;</span>: <span style="color: #4070a0">&quot;Name&quot;</span>,
+            <span style="color: #062873; font-weight: bold">&quot;isSystemField&quot;</span>: <span style="color: #007020; font-weight: bold">false</span>,
+            <span style="color: #062873; font-weight: bold">&quot;isUniqueId&quot;</span>: <span style="color: #007020; font-weight: bold">true</span>,
+            <span style="color: #062873; font-weight: bold">&quot;isMultiValue&quot;</span>: <span style="color: #007020; font-weight: bold">false</span>,
+            <span style="color: #062873; font-weight: bold">&quot;type&quot;</span>: <span style="color: #4070a0">&quot;Text&quot;</span>
+        }, {
+            <span style="color: #062873; font-weight: bold">&quot;description&quot;</span>: <span style="color: #4070a0">&quot;&quot;</span>,
+            <span style="color: #062873; font-weight: bold">&quot;fullyQualifiedName&quot;</span>: <span style="color: #4070a0">&quot;Organization&quot;</span>,
+            <span style="color: #062873; font-weight: bold">&quot;label&quot;</span>: <span style="color: #4070a0">&quot;Organization&quot;</span>,
+            <span style="color: #062873; font-weight: bold">&quot;name&quot;</span>: <span style="color: #4070a0">&quot;Organization&quot;</span>,
+            <span style="color: #062873; font-weight: bold">&quot;isSystemField&quot;</span>: <span style="color: #007020; font-weight: bold">false</span>,
+            <span style="color: #062873; font-weight: bold">&quot;isUniqueId&quot;</span>: <span style="color: #007020; font-weight: bold">false</span>,
+            <span style="color: #062873; font-weight: bold">&quot;type&quot;</span>: <span style="color: #4070a0">&quot;Text&quot;</span>
+
+        }, {
+            <span style="color: #062873; font-weight: bold">&quot;description&quot;</span>: <span style="color: #4070a0">&quot;&quot;</span>,
+            <span style="color: #062873; font-weight: bold">&quot;fullyQualifiedName&quot;</span>: <span style="color: #4070a0">&quot;BadgeCount&quot;</span>,
+            <span style="color: #062873; font-weight: bold">&quot;label&quot;</span>: <span style="color: #4070a0">&quot;BadgeCount&quot;</span>,
+            <span style="color: #062873; font-weight: bold">&quot;name&quot;</span>: <span style="color: #4070a0">&quot;BadgeCount&quot;</span>,
+            <span style="color: #062873; font-weight: bold">&quot;isSystemField&quot;</span>: <span style="color: #007020; font-weight: bold">false</span>,
+            <span style="color: #062873; font-weight: bold">&quot;isUniqueId&quot;</span>: <span style="color: #007020; font-weight: bold">false</span>,
+            <span style="color: #062873; font-weight: bold">&quot;type&quot;</span>: <span style="color: #4070a0">&quot;Text&quot;</span>
+        }]
+    }]
+}
+</pre></div>
+
+</div>
+
+</div>
+</div>
+<script src="http://www.sfdcworkshop.com/js/ui.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84811307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
+

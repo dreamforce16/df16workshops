@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.16" />
+
+  <title>Build a Conference Management App using Lightning &middot; Salesforce Developers 2017</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+
+  <link rel="shortcut icon" href="http://www.sfdcworkshop.com/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/"><div><img src='/workshop/2015sf_Developers_logo_RGB_KO.png' height='70'></div></a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/minihacks/"><i class='fa fa-list fa-fw'></i>MINIHACKS</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small style="color: #ffffff">© Copyright 2000-2016 salesforce.com, inc. All rights reserved. Various trademarks held by their respective owners. </small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Build a Conference Management App using Lightning</h1>
+  <h2></h2>
+</div>
+<div class="content">
+  
+
+<h2 id="introduction">Introduction</h2>
+
+<p>In this project, you learn how to build an application from start to finish using the Lightning framework for the Lightning Experience desktop UI and the Salesforce1 mobile app. We will build an app to manage sessions and speakers at a conference. We will build the UI and also automate tasks for Conference Management, using a Salesforce Developer Edition org. If you don&rsquo;t have one, you can sign up <a href="https://developer.salesforce.com/signup">here</a>.</p>
+
+<p>Here are the steps involved:</p>
+
+<ul>
+<li>Create the Data Model using the Schema Builder</li>
+<li>Create a New Speaker Form Lightning Component</li>
+<li>Create a Session list Lightning Component</li>
+<li>Write an Apex class for Components client-side</li>
+<li>Use the Lightning App Builder to buil the App with the newly created components</li>
+<li>Add the app to Salesforce1 and Lightning Experience</li>
+<li>Configure time-based actions using Lightning Process Builder</li>
+<li>Build an Apex Trigger to handle advanced tasks.</li>
+<li>Test the App using Apex unit tests</li>
+</ul>
+
+<h3 id="step-1-create-the-data-model">Step 1: Create the Data Model</h3>
+
+<h4 id="what-you-ll-do">What you&rsquo;ll do</h4>
+
+<p>You will create custom sObjects for Sessions, Speakers and Session Speaker associations quickly using the Schema Builder.</p>
+
+<h5 id="todo">TODO</h5>
+
+<h3 id="step-2-create-the-speaker-form-component">Step 2: Create the Speaker form component</h3>
+
+<h4 id="what-you-ll-do-1">What you&rsquo;ll do</h4>
+
+<p>You will create a new Lightning component which will let you add new speakers and assign them to existing sessions.</p>
+
+<h5 id="todo-1">TODO</h5>
+
+<h3 id="step-3-create-the-session-list-component">Step 3: Create the Session List component</h3>
+
+<h4 id="what-you-ll-do-2">What you&rsquo;ll do</h4>
+
+<p>You will create another Lightning component which shows a list of current sessions including speaker name.</p>
+
+<h5 id="todo-2">TODO</h5>
+
+<h3 id="step-4-create-the-apex-controller">Step 4: Create the Apex controller</h3>
+
+<h4 id="what-you-ll-do-3">What you&rsquo;ll do</h4>
+
+<p>You will create an Apex controller which contains the methods accessed by the components to retrieve server-side data.</p>
+
+<h5 id="todo-3">TODO</h5>
+
+<h3 id="step-5-create-the-app-for-desktop-and-salesforce1">Step 5: Create the App for desktop and Salesforce1</h3>
+
+<h4 id="what-you-ll-do-4">What you&rsquo;ll do</h4>
+
+<p>You will create a new Lightning app using the Lightning App Builder and add the new app to Salesforce1 mobile app and the Lightning Experience desktop UI.</p>
+
+<h5 id="todo-4">TODO</h5>
+
+<h3 id="step-6-create-the-process">Step 6: Create the Process</h3>
+
+<h4 id="what-you-ll-do-5">What you&rsquo;ll do</h4>
+
+<p>You will create a process to send reminder emails to speakers before their sessions using the Lightning Process Builder.</p>
+
+<h5 id="todo-5">TODO</h5>
+
+<h3 id="step-7-create-the-apex-trigger">Step 7: Create the Apex trigger</h3>
+
+<h4 id="what-you-ll-do-6">What you&rsquo;ll do</h4>
+
+<p>You will create an Apex trigger to send confirmation emails to speakers when they are assigned to a session.</p>
+
+<h5 id="todo-6">TODO</h5>
+
+<h3 id="step-8-create-the-apex-test-class">Step 8: Create the Apex test class</h3>
+
+<h4 id="what-you-ll-do-7">What you&rsquo;ll do</h4>
+
+<p>You will create an Apex class which contains all the unit tests covering the Apex controller and trigger code we previously wrote.</p>
+
+<h5 id="todo-7">TODO</h5>
+
+<h3 id="todo-8">TODO</h3>
+
+</div>
+
+</div>
+</div>
+<script src="http://www.sfdcworkshop.com/js/ui.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84811307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
+

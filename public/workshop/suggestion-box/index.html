@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.16" />
+
+  <title>Build a Suggestion Box App with Lightning Components &middot; Salesforce Developers 2017</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+
+  <link rel="shortcut icon" href="http://www.sfdcworkshop.com/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/"><div><img src='/workshop/2015sf_Developers_logo_RGB_KO.png' height='70'></div></a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/minihacks/"><i class='fa fa-list fa-fw'></i>MINIHACKS</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small style="color: #ffffff">© Copyright 2000-2016 salesforce.com, inc. All rights reserved. Various trademarks held by their respective owners. </small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Build a Suggestion Box App with Lightning Components</h1>
+  <h2></h2>
+</div>
+<div class="content">
+  
+
+<h2 id="table-of-content">Table of Content</h2>
+
+<ol>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#add-a-custom-domain-to-your-org-with-my-domain">Add a Custom Domain to Your Org with My Domain</a></li>
+<li><a href="#create-a-server-side-apex-controller-class">Create a Server-side Apex Controller Class</a></li>
+<li><a href="#create-the-suggestionboxapp-application">Create the SuggestionBoxApp Application</a></li>
+<li><a href="#create-the-suggestionboxcreate-component">Create the SuggestionBoxCreate Component</a></li>
+<li><a href="#create-the-skchange-event-and-searchbar-component">Create the SKChange Event and SearchBar Component</a></li>
+<li><a href="#create-the-suggestionlist-component">Create the SuggestionList Component</a></li>
+<li><a href="#create-the-suggestiondetails-component">Create the SuggestionDetails Component</a></li>
+<li><a href="#summary">Summary</a></li>
+</ol>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>In this project, you learn how to build a Lightning Application on App Cloud from start to finish.If you&rsquo;re new to App Cloud, the goal is to introduce you to the basics of app building together with introduction to the new lightning platform and basics to develop application using lightning components.
+If you&rsquo;re familiar with the App Cloud Admin features—managing users and security, customizing standard objects, and so on—the goal is to apply those skills to developing new application and learn how to extend the functionality of these applications using lightning.</p>
+
+<p>You need a Developer Edition org to complete this project. If you don&rsquo;t have one, you can sign up <a href="https://developer.salesforce.com/signup">here</a>.</p>
+
+<p>You will build a Suggestion Box Lightning Application that allows employees to submit suggestions, search for existing suggestions and vote for them. All of this with the following steps:</p>
+
+<ol>
+<li><p>Install the pre-created building blocks of the Suggestion Box App by clicking <a href="http://bit.ly/df16_sb_package">here</a> and <a href="http://sforce.co/2dH9lZJ">here</a>
+These packages include the app definition, data model, validation rules, process and reports and dashboard which together form the basic Suggestion box Application.
+Steps to install an unmanaged package are detailed <a href="https://help.salesforce.com/apex/HTViewHelpDoc?id=distribution_installing_packages.htm">here</a>. You can install this app for <strong>Admins only</strong> for now.</p></li>
+
+<li><p>Extend this application using Lightning components to design a stand-alone Suggestion Box Application which will look something like this:</p></li>
+</ol>
+
+<p><img src="images/SB_app.png" width="90%" height="90%"/></p>
+
+<p>Each rectangle in this image represents a lightning component:</p>
+
+<ol>
+<li>Displays the &ldquo;add suggestion&rdquo; functionality</li>
+<li>Displays the &ldquo;search suggestion&rdquo; functionality</li>
+<li>Displays the &ldquo;results&rdquo; of the search functionality</li>
+<li>Displays the &ldquo;details of the selected record&rdquo; in the search functionality</li>
+<li>&ldquo;Suggeston Box&rdquo; Lightning Application</li>
+</ol>
+
+<p>Let&rsquo;s begin with exploring our prebuilt Suggestion Box App which was installed using the package.</p>
+
+<p>All eyes on the screen!</p>
+
+<p>Now, that we know and understand how we can build a basic application using point-and-click, let us now extend this app using lightning components.The UI of the Application we will create will resemble the Lightning Experience UI as we will make use of Salesforce Lightning Design System.</p>
+
+<h2 id="add-a-custom-domain-to-your-org-with-my-domain">Add a Custom Domain to Your Org with My Domain</h2>
+
+<p>To use Lightning Components, your organization needs to have a custom domain configured using My Domain.</p>
+
+<p>To provide world class security for apps, we’re requiring that all users of Lightning Components use My Domain, just as we do for other advanced features, such as Salesforce Identity. If you want to use Lightning Components in Lightning tabs, Lightning Pages, or as standalone apps, you must enable My Domain in your org.</p>
+
+<h4 id="enable-my-domain-in-your-org">Enable My Domain in Your Org</h4>
+
+<p>Set up a custom domain with the Salesforce My Domain feature to put your Lightning Components to work.
+If you already have My Domain enabled in your Developer org, you can skip this section and the next one.</p>
+
+<ol>
+<li>From <strong>Setup</strong>, go to <strong>My Domain</strong></li>
+<li>Enter the <strong>subdomain name</strong> you want to use within the sample URL. For example, a company called Universal Containers wants to use the subdomain universalcontainers. The company’s login URL would be <a href="https://universalcontainers.my.salesforce.com/">https://universalcontainers.my.salesforce.com/</a>. Your name can include up to 40 letters, numbers, and hyphens.</li>
+<li>Click <strong>Check Availability</strong>. If your name is already taken, choose a different one</li>
+<li>Click <strong>Terms and Conditions</strong> to review your agreement, then select the checkbox</li>
+<li>Click <strong>Register Domain</strong></li>
+</ol>
+
+<p>You receive an email when your domain name is ready for testing. It can take up to 3 minutes.</p>
+
+<h4 id="roll-out-my-domain-to-your-org">Roll Out My Domain to Your Org</h4>
+
+<p>After you set up your domain name, test it and then roll it out to your org. Even though you don&rsquo;t have any users to deploy it to in your DE org, you must still roll out My Domain to make your custom Lightning components available in Lightning Pages, in the Lightning App Builder, and for standalone apps.</p>
+
+<ol>
+<li>Test your domain login. From <strong>Setup</strong>, go to  <strong>My Domain</strong>, then <strong>Click here to login</strong>. Or, log out of your DE org and log in to Salesforce using your custom domain name. You can click the login link in the activation email you received.</li>
+<li>Test the new domain name by clicking tabs and links. All pages now show your new domain name.</li>
+<li>To roll out the new domain name to your organization, from <strong>Setup</strong>, go to <strong>My Domain</strong> , Click on <strong>Deploy to Users</strong> then select <strong>OK</strong></li>
+</ol>
+
+<h2 id="create-a-server-side-apex-controller-class">Create a Server-side Apex Controller Class</h2>
+
+<p>Create a class to access data from Suggestion custom object:</p>
+
+<ol>
+<li>In your DE environment, click Your <strong>Name | Developer Console</strong></li>
+<li>Select <strong>File | New | Apex Class</strong></li>
+<li>For the class name, enter <strong>SuggestionController</strong> and then click <strong>OK</strong></li>
+<li>Replace the code with the following:</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">class</span> <span style="color: #0e84b5; font-weight: bold">SuggestionController</span> <span style="color: #666666">{</span>
+
+  	<span style="color: #555555; font-weight: bold">@AuraEnabled</span>
+	<span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">static</span> List<span style="color: #666666">&lt;</span>Suggestion__c<span style="color: #666666">&gt;</span> <span style="color: #06287e">getSuggestions</span><span style="color: #666666">()</span> <span style="color: #666666">{</span>
+		<span style="color: #007020; font-weight: bold">return</span> <span style="color: #666666">[</span>SELECT id<span style="color: #666666">,</span> Name<span style="color: #666666">,</span> Status__c<span style="color: #666666">,</span> Suggestion_Category__c<span style="color: #666666">,</span> Suggestion_Description__c<span style="color: #666666">,</span>	Implemented_Date__c<span style="color: #666666">,</span> createdDate 
+			FROM Suggestion__c 
+			ORDER BY createdDate DESC<span style="color: #666666">];</span>
+	  <span style="color: #666666">}</span>
+    
+    <span style="color: #555555; font-weight: bold">@AuraEnabled</span>
+    <span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">static</span> Suggestion__c <span style="color: #06287e">saveSuggestion</span><span style="color: #666666">(</span>Suggestion__c suggestion<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+        upsert suggestion<span style="color: #666666">;</span>
+        <span style="color: #007020; font-weight: bold">return</span> suggestion<span style="color: #666666">;</span>
+    <span style="color: #666666">}</span>
+    
+    <span style="color: #555555; font-weight: bold">@AuraEnabled</span>
+    <span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">static</span> List<span style="color: #666666">&lt;</span>Suggestion__c<span style="color: #666666">&gt;</span> <span style="color: #06287e">findAll</span><span style="color: #666666">()</span> <span style="color: #666666">{</span>
+        <span style="color: #007020; font-weight: bold">return</span> <span style="color: #666666">[</span>SELECT id<span style="color: #666666">,</span> name<span style="color: #666666">,</span> Suggestion_Description__c<span style="color: #666666">,</span> Vote_up__c FROM Suggestion__c LIMIT <span style="color: #40a070">50</span><span style="color: #666666">];</span>
+    <span style="color: #666666">}</span>
+    
+    <span style="color: #555555; font-weight: bold">@AuraEnabled</span>
+    <span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">static</span> List<span style="color: #666666">&lt;</span>Suggestion__c<span style="color: #666666">&gt;</span> <span style="color: #06287e">findByName</span><span style="color: #666666">(</span>String searchKey<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+        String name <span style="color: #666666">=</span> <span style="color: #4070a0">&#39;%&#39;</span> <span style="color: #666666">+</span> searchKey <span style="color: #666666">+</span> <span style="color: #4070a0">&#39;%&#39;</span><span style="color: #666666">;</span>
+        <span style="color: #007020; font-weight: bold">return</span> <span style="color: #666666">[</span>SELECT id<span style="color: #666666">,</span> name<span style="color: #666666">,</span> Suggestion_Description__c<span style="color: #666666">,</span> Vote_up__c FROM Suggestion__c WHERE name LIKE <span style="color: #666666">:</span>name LIMIT <span style="color: #40a070">50</span><span style="color: #666666">];</span>
+    <span style="color: #666666">}</span>  
+   
+    <span style="color: #555555; font-weight: bold">@AuraEnabled</span>
+    <span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">static</span> Suggestion__c <span style="color: #06287e">findById</span><span style="color: #666666">(</span>String suggestionId<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+        <span style="color: #007020; font-weight: bold">return</span> <span style="color: #666666">[</span>SELECT id<span style="color: #666666">,</span> name<span style="color: #666666">,</span> Status__c<span style="color: #666666">,</span> Suggestion_Category__c<span style="color: #666666">,</span> Suggestion_Description__c<span style="color: #666666">,</span>Vote_up__c
+                    FROM Suggestion__c WHERE Id <span style="color: #666666">=</span> <span style="color: #666666">:</span>suggestionId<span style="color: #666666">];</span>
+    <span style="color: #666666">}</span>
+    
+    <span style="color: #555555; font-weight: bold">@AuraEnabled</span>
+    <span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">static</span> Suggestion__c <span style="color: #06287e">voteSuggestion</span><span style="color: #666666">(</span>String suggestionId<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+        Suggestion__c s <span style="color: #666666">=</span> <span style="color: #007020; font-weight: bold">new</span> Suggestion__c<span style="color: #666666">();</span>
+        s<span style="color: #666666">=[</span>SELECT id<span style="color: #666666">,</span> name<span style="color: #666666">,</span> Status__c<span style="color: #666666">,</span> Suggestion_Category__c<span style="color: #666666">,</span> Suggestion_Description__c<span style="color: #666666">,</span>Vote_up__c
+                    FROM Suggestion__c WHERE Id <span style="color: #666666">=:</span>suggestionId<span style="color: #666666">];</span>
+        
+        s<span style="color: #666666">.</span><span style="color: #4070a0">Vote_up__c</span> <span style="color: #666666">=</span> s<span style="color: #666666">.</span><span style="color: #4070a0">Vote_up__c</span> <span style="color: #666666">+</span> <span style="color: #40a070">1</span><span style="color: #666666">;</span>
+        upsert s<span style="color: #666666">;</span>
+        <span style="color: #007020; font-weight: bold">return</span> s<span style="color: #666666">;</span>
+    <span style="color: #666666">}</span> 
+<span style="color: #666666">}</span> 
+</pre></div>
+
+<p>@AuraEnabled enables client and server-side access to the controller method. Select <strong>File | Save</strong>.</p>
+
+<h2 id="create-the-suggestionboxapp-application">Create the SuggestionBoxApp Application</h2>
+
+<p>This application holds all the components we will create in th next steps together to make it a stand-alone application.</p>
+
+<ol>
+<li>In the <strong>Developer Console</strong>, select <strong>File | New | Lightning Application</strong></li>
+<li>For the component name, enter <strong>SuggestionBoxApp</strong> and then click <strong>Submit</strong></li>
+<li>Replace the code with the following:</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:application&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;ltng:require</span> <span style="color: #4070a0">styles=&quot;/resource/slds/assets/styles/salesforce-lightning-design-system-ltng.css&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;salesforce slds&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-grid slds-wrap slds-grid--pull-padded&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-6&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;/div&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--4-of-6&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;h3</span> <span style="color: #4070a0">class=&quot;slds-section-title--divider  slds-text-align--center textsize&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>SUGGESTION BOX APPLICATION<span style="color: #062873; font-weight: bold">&lt;/h3&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-6&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;/div&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-6&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;/div&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--4-of-6&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-grid&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                    <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-col&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                       <span style="color: #60a0b0; font-style: italic">&lt;!-- &lt;c:SuggestionBoxCreate /&gt; to be uncommented after component creation --&gt;</span>
+                       <span style="color: #60a0b0; font-style: italic">&lt;!-- &lt;c:SearchBar /&gt; to be uncommented after component creation --&gt;</span>
+                    <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-grid slds-grid--pull-padded&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                    <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-col--padded&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                       <span style="color: #60a0b0; font-style: italic">&lt;!-- &lt;c:SuggestionList /&gt; to be uncommented after component creation --&gt;</span>
+                    <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+                    <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-col--padded&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                       <span style="color: #60a0b0; font-style: italic">&lt;!-- &lt;c:SuggestionDetails /&gt; to be uncommented after component creation --&gt;</span>
+                    <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-6&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;/div&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-6&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;/div&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--4-of-6&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;h3</span> <span style="color: #4070a0">class=&quot;slds-section-title--divider  slds-text-align--center textsize&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>@created by Salesforce Developer Relations Team<span style="color: #062873; font-weight: bold">&lt;/h3&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1 slds-large-size--1-of-6&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;/div&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+<span style="color: #062873; font-weight: bold">&lt;/aura:application&gt;</span>
+</pre></div>
+
+<p>You can see how the application looks by clicking on the <strong>Preview</strong> button, the first button in the application bundle.</p>
+
+<h4 id="code-highlights">Code Highlights:</h4>
+
+<ul>
+<li>This application uses lightning design system guidelines to create the UI as explained <a href="https://www.lightningdesignsystem.com/components/utilities/grid/">here</a></li>
+</ul>
+
+<h2 id="create-the-suggestionboxcreate-component">Create the SuggestionBoxCreate Component</h2>
+
+<p>This component will implement the <em>Add Suggestion</em> functionality.</p>
+
+<p><img src="images/Addsuggestion.png" width="90%" height="90%"/></p>
+
+<p>A lightning component is a combination of markup, JavaScript, and CSS. You first create a component bundle.</p>
+
+<ol>
+<li>In the <strong>Developer Console</strong>, select <strong>File | New | Lightning Component</strong></li>
+<li>For the component name, enter <strong>SuggestionBoxCreate</strong> and then click <strong>Submit</strong></li>
+<li>Replace the code with the following:</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:component</span> <span style="color: #4070a0">controller=&quot;SuggestionController&quot;</span> <span style="color: #4070a0">implements=&quot;flexipage:availableForAllPageTypes&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;ltng:require</span> <span style="color: #4070a0">styles=&quot;{!$Resource.slds + &#39;assets/styles/salesforce-lightning-design-system-vf.css&#39;}&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;suggestions&quot;</span> <span style="color: #4070a0">type=&quot;Suggestion__c[]&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;newSuggestion&quot;</span> <span style="color: #4070a0">type=&quot;Suggestion__c&quot;</span>
+      <span style="color: #4070a0">default=&quot;{ &#39;sobjectType&#39;: &#39;Suggestion__c&#39;,</span>
+<span style="color: #4070a0">      &#39;Name&#39;: &#39;&#39;,</span>
+<span style="color: #4070a0">      &#39;Status__c&#39;: &#39;&#39;,</span>
+<span style="color: #4070a0">      &#39;Suggestion_Category__c&#39;: &#39;&#39;,</span>
+<span style="color: #4070a0">      &#39;Suggestion_Description__c&#39;: &#39;&#39;</span>
+<span style="color: #4070a0">      }&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;/aura:attribute&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;container&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;h1&gt;</span>
+         Add Suggestions
+         <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">style=&quot;margin-left: 0; height: 30px; float: right; margin-top: -3px; margin-right: 0; auto; vertical-align: inherit;&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:button</span> <span style="color: #4070a0">aura:id=&quot;addbutton&quot;</span> <span style="color: #4070a0">label=&quot;New&quot;</span> <span style="color: #4070a0">labelClass=&quot;assistiveText&quot;</span> <span style="color: #4070a0">class=&quot;myButton&quot;</span> <span style="color: #4070a0">press=&quot;{!c.addNew}&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+         <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;/h1&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+   <span style="color: #60a0b0; font-style: italic">&lt;!-- Input Form using components --&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">aura:id=&quot;formbox&quot;</span> <span style="color: #4070a0">class=&quot;myboxhidden&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;form&gt;</span>
+         <span style="color: #062873; font-weight: bold">&lt;fieldset&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:inputText</span> <span style="color: #4070a0">aura:id=&quot;sugname&quot;</span> <span style="color: #4070a0">label=&quot;Suggestion Name&quot;</span>
+               <span style="color: #4070a0">class=&quot;form-control&quot;</span>
+               <span style="color: #4070a0">value=&quot;{!v.newSuggestion.Name}&quot;</span>
+               <span style="color: #4070a0">placeholder=&quot;Suggestion Name&quot;</span> <span style="color: #4070a0">required=&quot;true&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:inputSelect</span> <span style="color: #4070a0">aura:id=&quot;category&quot;</span> <span style="color: #4070a0">label=&quot;Suggestion Category&quot;</span>
+               <span style="color: #4070a0">class=&quot;cExpenseForm form-control&quot;</span>
+               <span style="color: #4070a0">value=&quot;{!v.newSuggestion.Suggestion_Category__c}&quot;</span>
+               <span style="color: #4070a0">required=&quot;true&quot;</span> <span style="color: #062873; font-weight: bold">&gt;</span>
+               <span style="color: #062873; font-weight: bold">&lt;ui:inputSelectOption</span> <span style="color: #4070a0">text=&quot;Customer Service&quot;</span> <span style="color: #4070a0">value=&quot;Customer Service&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+               <span style="color: #062873; font-weight: bold">&lt;ui:inputSelectOption</span> <span style="color: #4070a0">text=&quot;Employee Services&quot;</span> <span style="color: #4070a0">value=&quot;Employee Services&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+               <span style="color: #062873; font-weight: bold">&lt;ui:inputSelectOption</span> <span style="color: #4070a0">text=&quot;Facilities/ IT&quot;</span> <span style="color: #4070a0">value=&quot;Facilities/ IT&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+               <span style="color: #062873; font-weight: bold">&lt;ui:inputSelectOption</span> <span style="color: #4070a0">text=&quot;Kitchen Snacks&quot;</span> <span style="color: #4070a0">value=&quot;Implemented&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+               <span style="color: #062873; font-weight: bold">&lt;ui:inputSelectOption</span> <span style="color: #4070a0">text=&quot;Others&quot;</span> <span style="color: #4070a0">value=&quot;Implemented&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;/ui:inputSelect&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:inputText</span> <span style="color: #4070a0">aura:id=&quot;description&quot;</span> <span style="color: #4070a0">label=&quot;Suggestion Description&quot;</span>
+               <span style="color: #4070a0">class=&quot;cExpenseForm form-control&quot;</span>
+               <span style="color: #4070a0">value=&quot;{!v.newSuggestion.Suggestion_Description__c}&quot;</span>
+               <span style="color: #4070a0">placeholder=&quot;Describe your suggestion here&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:button</span> <span style="color: #4070a0">label=&quot;Submit&quot;</span> <span style="color: #4070a0">press=&quot;{!c.createSuggestion}&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+         <span style="color: #062873; font-weight: bold">&lt;/fieldset&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;/form&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+<span style="color: #062873; font-weight: bold">&lt;/aura:component&gt;</span>
+</pre></div>
+
+<ol>
+<li>Select <strong>File | Save</strong></li>
+<li>In the button panel on the right, click <strong>Controller</strong></li>
+<li>Replace the code with the following:</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  ({
+   addNew<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) 
+    			{
+                <span style="color: #007020; font-weight: bold">var</span> el <span style="color: #666666">=</span> component.find(<span style="color: #4070a0">&#39;formbox&#39;</span>);
+                <span style="color: #007020; font-weight: bold">if</span> ($A.util.hasClass(el.getElement(), <span style="color: #4070a0">&#39;myboxhidden&#39;</span>)) 
+                {
+                helper.showInput(component);
+				} 
+                    <span style="color: #007020; font-weight: bold">else</span> {
+				helper.hideInput(component);
+						 }
+				},
+                
+    createSuggestion<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) 
+    			{
+                <span style="color: #007020; font-weight: bold">var</span> newSuggestion <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;v.newSuggestion&quot;</span>);
+                helper.createSuggestion(component, newSuggestion);
+				}
+}) 
+</pre></div>
+
+<ol>
+<li>Select <strong>File | Save</strong></li>
+<li>In the button panel on the right, click <strong>Helper</strong></li>
+<li>Replace the code with the following:</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">({
+    showInput<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component) {
+        <span style="color: #007020; font-weight: bold">var</span> el <span style="color: #666666">=</span> component.find(<span style="color: #4070a0">&#39;formbox&#39;</span>);
+        $A.util.removeClass(el.getElement(), <span style="color: #4070a0">&#39;myboxhidden&#39;</span>);
+        $A.util.addClass(el.getElement(), <span style="color: #4070a0">&#39;mybox&#39;</span>);
+    },
+
+    hideInput<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component) {
+        <span style="color: #007020; font-weight: bold">var</span> el <span style="color: #666666">=</span> component.find(<span style="color: #4070a0">&#39;formbox&#39;</span>);
+        $A.util.addClass(el.getElement(), <span style="color: #4070a0">&#39;myboxhidden&#39;</span>);
+    },
+
+    createSuggestion<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, suggestion) {
+        <span style="color: #007020; font-weight: bold">this</span>.upsertSuggestion(component, suggestion, <span style="color: #007020; font-weight: bold">function</span>(a) {
+            <span style="color: #007020; font-weight: bold">var</span> suggestions <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;v.suggestions&quot;</span>);
+            suggestions.unshift(a.getReturnValue());
+            component.set(<span style="color: #4070a0">&quot;v.suggestions&quot;</span>, suggestions);
+            <span style="color: #007020; font-weight: bold">this</span>.hideInput(component);
+        });
+    },
+    upsertSuggestion<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, suggestion, callback) {
+        <span style="color: #007020; font-weight: bold">var</span> action <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;c.saveSuggestion&quot;</span>);
+        action.setParams({
+            <span style="color: #4070a0">&quot;suggestion&quot;</span><span style="color: #666666">:</span> suggestion
+        });
+        <span style="color: #007020; font-weight: bold">if</span> (callback) {
+            action.setCallback(<span style="color: #007020; font-weight: bold">this</span>, callback);
+        }
+        $A.enqueueAction(action);
+    }
+
+})
+</pre></div>
+
+<ol>
+<li>Select <strong>File | Save</strong></li>
+<li>In the button panel on the right, click <strong>Style</strong></li>
+<li>Replace the code with the following:</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #0e84b5; font-weight: bold">.THIS</span> <span style="color: #062873; font-weight: bold">h3</span> {
+	<span style="color: #007020; font-weight: bold">margin</span><span style="color: #666666">:</span> <span style="color: #40a070">0px</span>;
+}
+<span style="color: #0e84b5; font-weight: bold">.THIS</span> <span style="color: #062873; font-weight: bold">h1</span> {
+	<span style="color: #007020; font-weight: bold">font-size</span><span style="color: #666666">:</span> <span style="color: #40a070">24pt</span>;
+	<span style="color: #007020; font-weight: bold">margin-top</span><span style="color: #666666">:</span> <span style="color: #40a070">5px</span>;
+	<span style="color: #007020; font-weight: bold">margin-bottom</span><span style="color: #666666">:</span> <span style="color: #40a070">5px</span>;
+	<span style="color: #007020; font-weight: bold">margin-left</span><span style="color: #666666">:</span> <span style="color: #40a070">5px</span>;
+	<span style="color: #007020; font-weight: bold">margin-right</span><span style="color: #666666">:</span> <span style="color: #40a070">5px</span>;
+    <span style="color: #007020; font-weight: bold">height</span><span style="color: #666666">:</span> <span style="color: #40a070">35px</span>;
+    
+}
+
+<span style="color: #0e84b5; font-weight: bold">.THIS.container</span> {
+	<span style="color: #007020; font-weight: bold">margin</span><span style="color: #666666">:</span> <span style="color: #40a070">5px</span>;
+	<span style="color: #007020; font-weight: bold">border</span><span style="color: #666666">:</span> <span style="color: #40a070">1px</span> <span style="color: #007020; font-weight: bold">solid</span> <span style="color: #007020">black</span>;
+	<span style="color: #007020; font-weight: bold">border</span><span style="color: #666666">-</span>radius<span style="color: #666666">:</span> <span style="color: #40a070">1px</span>;
+	<span style="color: #007020; font-weight: bold">background-color</span><span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">rgb</span>(<span style="color: #40a070">200</span><span style="color: #666666">,</span> <span style="color: #40a070">198</span><span style="color: #666666">,</span> <span style="color: #40a070">198</span>);
+    <span style="color: #007020; font-weight: bold">font-size</span><span style="color: #666666">:</span> <span style="color: #40a070">18pt</span>;
+}
+
+<span style="color: #0e84b5; font-weight: bold">.THIS</span> <span style="color: #0e84b5; font-weight: bold">.form-control</span> {
+    <span style="color: #007020; font-weight: bold">display</span><span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">block</span>;
+    <span style="color: #007020; font-weight: bold">width</span><span style="color: #666666">:</span> <span style="color: #40a070">100%</span>;
+    <span style="color: #007020; font-weight: bold">height</span><span style="color: #666666">:</span> <span style="color: #40a070">34px</span>;
+    <span style="color: #007020; font-weight: bold">padding</span><span style="color: #666666">:</span> <span style="color: #40a070">6px</span> <span style="color: #40a070">14px</span>;
+    <span style="color: #007020; font-weight: bold">font-size</span><span style="color: #666666">:</span> <span style="color: #40a070">14px</span>;
+    <span style="color: #007020; font-weight: bold">line-height</span><span style="color: #666666">:</span> <span style="color: #40a070">1</span><span style="color: #666666">.</span><span style="color: #40a070">42857143</span>;
+    <span style="color: #007020; font-weight: bold">color</span><span style="color: #666666">:</span> <span style="color: #40a070">#000000</span>;
+    <span style="color: #007020; font-weight: bold">background-color</span><span style="color: #666666">:</span> <span style="color: #40a070">#ffffff</span>;
+    <span style="color: #007020; font-weight: bold">background-image</span><span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">none</span>;
+    <span style="color: #007020; font-weight: bold">border</span><span style="color: #666666">:</span> <span style="color: #40a070">1px</span> <span style="color: #007020; font-weight: bold">solid</span> <span style="color: #40a070">#cfd0d2</span>;
+    <span style="color: #007020; font-weight: bold">border</span><span style="color: #666666">-</span>radius<span style="color: #666666">:</span> <span style="color: #40a070">4px</span>;
+    <span style="color: #666666">-</span>webkit<span style="color: #666666">-</span>box<span style="color: #666666">-</span>shadow<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">inset</span> <span style="color: #40a070">0</span> <span style="color: #40a070">1px</span> <span style="color: #40a070">1px</span> rgba(<span style="color: #40a070">0</span><span style="color: #666666">,</span> <span style="color: #40a070">0</span><span style="color: #666666">,</span> <span style="color: #40a070">0</span><span style="color: #666666">,</span> <span style="color: #40a070">0</span><span style="color: #666666">.</span><span style="color: #40a070">075</span>);
+    box<span style="color: #666666">-</span>shadow<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">inset</span> <span style="color: #40a070">0</span> <span style="color: #40a070">1px</span> <span style="color: #40a070">1px</span> rgba(<span style="color: #40a070">0</span><span style="color: #666666">,</span> <span style="color: #40a070">0</span><span style="color: #666666">,</span> <span style="color: #40a070">0</span><span style="color: #666666">,</span> <span style="color: #40a070">0</span><span style="color: #666666">.</span><span style="color: #40a070">075</span>);
+    <span style="color: #666666">-</span>webkit<span style="color: #666666">-</span>transition<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">border-color</span> ease<span style="color: #666666">-</span>in<span style="color: #666666">-</span>out <span style="color: #40a070">.15s</span><span style="color: #666666">,</span> box<span style="color: #666666">-</span>shadow ease<span style="color: #666666">-</span>in<span style="color: #666666">-</span>out <span style="color: #40a070">.15s</span>;
+    <span style="color: #666666">-</span>o<span style="color: #666666">-</span>transition<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">border-color</span> ease<span style="color: #666666">-</span>in<span style="color: #666666">-</span>out <span style="color: #40a070">.15s</span><span style="color: #666666">,</span> box<span style="color: #666666">-</span>shadow ease<span style="color: #666666">-</span>in<span style="color: #666666">-</span>out <span style="color: #40a070">.15s</span>;
+    transition<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">border-color</span> ease<span style="color: #666666">-</span>in<span style="color: #666666">-</span>out <span style="color: #40a070">.15s</span><span style="color: #666666">,</span> box<span style="color: #666666">-</span>shadow ease<span style="color: #666666">-</span>in<span style="color: #666666">-</span>out <span style="color: #40a070">.15s</span>;
+}
+
+<span style="color: #0e84b5; font-weight: bold">.THIS</span> <span style="color: #0e84b5; font-weight: bold">.myButton</span> {
+	<span style="color: #007020; font-weight: bold">width</span><span style="color: #666666">:</span> <span style="color: #40a070">35px</span>;
+	<span style="color: #007020; font-weight: bold">background-image</span><span style="color: #666666">:</span> <span style="color: #c65d09">url(/resource/plusbutton)</span>;
+	<span style="color: #007020; font-weight: bold">background-repeat</span><span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">no-repeat</span>;
+	<span style="color: #007020; font-weight: bold">height</span><span style="color: #666666">:</span> <span style="color: #40a070">35px</span>;
+	<span style="color: #007020; font-weight: bold">background</span><span style="color: #666666">-</span><span style="color: #007020; font-weight: bold">size</span><span style="color: #666666">:</span> contain;
+	<span style="color: #60a0b0; font-style: italic">/*margin-left: -50px;*/</span>
+	<span style="color: #007020; font-weight: bold">border-style</span><span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">none</span>;
+	<span style="color: #007020; font-weight: bold">background-color</span><span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">transparent</span>;
+}
+
+<span style="color: #0e84b5; font-weight: bold">.THIS</span> <span style="color: #0e84b5; font-weight: bold">.img</span> {
+	<span style="color: #007020; font-weight: bold">background</span><span style="color: #666666">:</span> <span style="color: #c65d09">url(/resource/plusbutton/)</span> <span style="color: #007020; font-weight: bold">no-repeat</span>;
+	<span style="color: #007020; font-weight: bold">width</span><span style="color: #666666">:</span><span style="color: #40a070">50px</span>;
+	<span style="color: #007020; font-weight: bold">height</span><span style="color: #666666">:</span><span style="color: #40a070">25px</span>;
+}
+
+<span style="color: #0e84b5; font-weight: bold">.THIS.mybox</span> {
+  <span style="color: #60a0b0; font-style: italic">/*display: block;*/</span>
+  <span style="color: #007020; font-weight: bold">opacity</span><span style="color: #666666">:</span> <span style="color: #40a070">1</span>;
+  <span style="color: #007020; font-weight: bold">margin-left</span><span style="color: #666666">:</span> <span style="color: #40a070">5px</span>;
+  <span style="color: #007020; font-weight: bold">margin-bottom</span><span style="color: #666666">:</span> <span style="color: #40a070">5px</span>;
+  <span style="color: #007020; font-weight: bold">margin-right</span><span style="color: #666666">:</span> <span style="color: #40a070">5px</span>;
+  transform<span style="color: #666666">:</span> scale(<span style="color: #40a070">1</span><span style="color: #666666">,</span> <span style="color: #40a070">1</span>);
+  transition<span style="color: #666666">-</span>property<span style="color: #666666">:</span> transform<span style="color: #666666">,</span> <span style="color: #007020; font-weight: bold">height</span>;
+  transition<span style="color: #666666">-</span>duration<span style="color: #666666">:</span> <span style="color: #40a070">1s</span><span style="color: #666666">,</span> <span style="color: #40a070">1s</span>;
+}
+
+<span style="color: #0e84b5; font-weight: bold">.THIS.myboxhidden</span> {
+  <span style="color: #60a0b0; font-style: italic">/*display: none;*/</span>
+  transform<span style="color: #666666">:</span> scale(<span style="color: #40a070">0</span><span style="color: #666666">,</span><span style="color: #40a070">0</span>);
+  <span style="color: #007020; font-weight: bold">height</span><span style="color: #666666">:</span> <span style="color: #40a070">0</span>;
+  <span style="color: #60a0b0; font-style: italic">/*opacity: 0;*/</span>
+  transition<span style="color: #666666">-</span>property<span style="color: #666666">:</span> transform<span style="color: #666666">,</span> <span style="color: #007020; font-weight: bold">height</span>;
+  transition<span style="color: #666666">-</span>duration<span style="color: #666666">:</span> <span style="color: #40a070">1s</span><span style="color: #666666">,</span> <span style="color: #40a070">1.2s</span>;
+}
+</pre></div>
+
+<ol>
+<li>Open the <strong>SuggestionBoxApp</strong> Application and replace the below</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #60a0b0; font-style: italic">&lt;!-- &lt;c:SuggestionBoxCreate /&gt; to be uncommented after component creation --&gt;</span>   
+</pre></div>
+
+<p>with</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"> <span style="color: #062873; font-weight: bold">&lt;c:SuggestionBoxCreate</span> <span style="color: #062873; font-weight: bold">/&gt;</span>     
+</pre></div>
+
+<p>You can see how the application looks by clicking on the <strong>Preview</strong> button, the first button in the application bundle.</p>
+
+<h4 id="code-highlights-1">Code highlights:</h4>
+
+<ul>
+<li>Lightning components can include regular HTML markup and other Lightning components</li>
+<li>The Server-side Apex Controller has methods which will be used by components to access and modify records in the database</li>
+<li>The controller in the Component bundle has javascript methods which use the component attributes and invoke server side controller    method to process data. <em>CreateSuggestion</em> is one such method which invokes <em>savesuggestion</em> method in the <em>SuggestionController</em> apex class</li>
+<li>The <em>newSuggestion</em> attribute is defined to hold the new suggestion that will be created by employee via the form.</li>
+<li>{!v.newSuggestion.Name} is the Lightning data binding notation to take the name field as input from the user</li>
+<li><em>.THIS</em> in the CSS symbolises that the css written in the component bundle only applies to this specific component UI</li>
+</ul>
+
+<h2 id="create-the-skchange-event-and-searchbar-component">Create the SKChange Event and SearchBar Component</h2>
+
+<p>We are creating two components namely the SearchBar and SuggestionList which need to communicate with each other to implement the search functionality.When employee types the searchkey in the searchbar, the Suggestionlist component should be updated with relevant suggestions.This communication will happen using the Lightning Event.</p>
+
+<ol>
+<li>In the <strong>Developer Console</strong>, select <strong>File | New | Lightning Event</strong></li>
+<li>For the event name, enter <strong>SKChange</strong> and then click <strong>Submit</strong></li>
+<li>Replace the code with the following:</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:event</span> <span style="color: #4070a0">type=&quot;APPLICATION&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;searchKey&quot;</span> <span style="color: #4070a0">type=&quot;String&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+<span style="color: #062873; font-weight: bold">&lt;/aura:event&gt;</span>
+</pre></div>
+
+<h4 id="code-highlights-2">Code highlights:</h4>
+
+<ul>
+<li>This event holds a single attribute named searchkey</li>
+</ul>
+
+<h2 id="creating-the-searchbar-component">Creating the SearchBar Component</h2>
+
+<p>This component will implement the <em>Search Suggestion</em> functionality.</p>
+
+<p><img src="images/Searchbar.png" width="90%" height="90%"/></p>
+
+<ol>
+<li>In the <strong>Developer Console</strong>, select <strong>File | New | Lightning Component</strong></li>
+<li>For the component name, enter <strong>SearchBar</strong> and then click <strong>Submit</strong></li>
+<li>Replace the code with the following:</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:component</span> <span style="color: #4070a0">implements=&quot;flexipage:availableForAllPageTypes&quot;</span> <span style="color: #062873; font-weight: bold">&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;ltng:require</span> <span style="color: #4070a0">styles=&quot;{!$Resource.slds + &#39;assets/styles/salesforce-lightning-design-system-vf.css&#39;}&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;aura:registerEvent</span> <span style="color: #4070a0">name=&quot;SKChange&quot;</span> <span style="color: #4070a0">type=&quot;c:SKChange&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-form-element&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-form-element__control&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+         <span style="color: #062873; font-weight: bold">&lt;input</span> <span style="color: #4070a0">id=&quot;text-input-01&quot;</span> <span style="color: #4070a0">class=&quot;slds-input textfont&quot;</span> <span style="color: #4070a0">type=&quot;text&quot;</span> <span style="color: #4070a0">onkeyup=&quot;{!c.searchKeyChange}&quot;</span> <span style="color: #4070a0">placeholder=&quot;Search for Suggestions&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+<span style="color: #062873; font-weight: bold">&lt;/aura:component&gt;</span>
+</pre></div>
+
+<ol>
+<li>Select <strong>File | Save</strong></li>
+<li>In the button panel on the right, click <strong>Controller</strong></li>
+<li>Replace the code with the following:</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">({
+    searchKeyChange<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        <span style="color: #007020; font-weight: bold">var</span> myEvent <span style="color: #666666">=</span> $A.get(<span style="color: #4070a0">&quot;e.c:SKChange&quot;</span>);
+        myEvent.setParams({<span style="color: #4070a0">&quot;searchKey&quot;</span><span style="color: #666666">:</span> event.target.value});
+        myEvent.fire();
+    }
+})
+</pre></div>
+
+<ol>
+<li>Select <strong>File | Save</strong></li>
+<li>In the button panel on the right, click <strong>Style</strong></li>
+<li>Replace the code with the following:</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #0e84b5; font-weight: bold">.THIS</span> <span style="color: #0e84b5; font-weight: bold">.textfont</span>{
+    <span style="color: #007020; font-weight: bold">font-family</span><span style="color: #666666">:</span><span style="color: #4070a0">&#39;Salesforce Sans&#39;</span><span style="color: #666666">,</span> Arial<span style="color: #666666">,</span> <span style="color: #007020; font-weight: bold">sans-serif</span>;   
+    <span style="color: #007020; font-weight: bold">font-size</span><span style="color: #666666">:</span> <span style="color: #40a070">15pt</span>;
+}
+</pre></div>
+
+<ol>
+<li>Select <strong>File | Save</strong></li>
+<li>Open the <strong>SuggestionBoxApp</strong> Application  and replace the below:</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"> <span style="color: #60a0b0; font-style: italic">&lt;!-- &lt;c:SearchBar /&gt; to be uncommented after component creation --&gt;</span>  
+</pre></div>
+
+<p>with</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #062873; font-weight: bold">&lt;c:SearchBar</span> <span style="color: #062873; font-weight: bold">/&gt;</span>     
+</pre></div>
+
+<p>You can see how the application looks by clicking on the <strong>Preview</strong> button, the first button in the application bundle.</p>
+
+<h4 id="code-highlights-3">Code highlights:</h4>
+
+<ul>
+<li>The <em>SearchBar</em> component has a single input field where employee will type the searchkey and each key entered in this field will trigger the <em>searchKeyChange</em> client-side controller function</li>
+<li>The <em>searchKeyChange</em> takes the event and sets the event parameter <em>searchKey</em> as the input field&rsquo;s value</li>
+<li>Once set, it fires the event for the registered listners can catch it</li>
+</ul>
+
+<h2 id="create-the-suggestionlist-component">Create the SuggestionList Component</h2>
+
+<p>This component will display the list of Suggestions based on the searchKey.</p>
+
+<p><img src="images/Searchbar_searchlist.png" width="90%" height="90%"/></p>
+
+<ol>
+<li>In the <strong>Developer Console</strong>, select <strong>File | New | Lightning Component</strong></li>
+<li>For the component name, enter <strong>SuggestionList</strong> and then click <strong>Submit</strong></li>
+<li>Replace the code with the following:</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:component</span> <span style="color: #4070a0">controller=&quot;SuggestionController&quot;</span> <span style="color: #4070a0">implements=&quot;flexipage:availableForAllPageTypes&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;ltng:require</span> <span style="color: #4070a0">styles=&quot;{!$Resource.slds +&#39;assets/styles/salesforce-lightning-design-system-vf.css&#39;}&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;suggestions&quot;</span> <span style="color: #4070a0">type=&quot;Suggestion__c[]&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;aura:handler</span> <span style="color: #4070a0">name=&quot;init&quot;</span> <span style="color: #4070a0">value=&quot;{!this}&quot;</span> <span style="color: #4070a0">action=&quot;{!c.doInit}&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;aura:handler</span> <span style="color: #4070a0">event=&quot;c:SKChange&quot;</span> <span style="color: #4070a0">action=&quot;{!c.searchKeyChange}&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot; salesforce slds&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;ul</span> <span style="color: #4070a0">class=&quot;slds-has-dividers--around-space&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+         <span style="color: #062873; font-weight: bold">&lt;aura:iteration</span> <span style="color: #4070a0">items=&quot;{!v.suggestions}&quot;</span> <span style="color: #4070a0">var=&quot;suggestion&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;li</span> <span style="color: #4070a0">class=&quot;slds-item&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+               <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-tile slds-tile--board&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                  <span style="color: #062873; font-weight: bold">&lt;h3</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span> <span style="color: #062873; font-weight: bold">&gt;&lt;a</span> <span style="color: #4070a0">href=&quot;{! &#39;#suggestion/&#39; + suggestion.Id }&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>Name: {!suggestion.Name}<span style="color: #062873; font-weight: bold">&lt;/a&gt;&lt;/h3&gt;</span>
+                  <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-tile__detail slds-text-body--small&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                     <span style="color: #062873; font-weight: bold">&lt;p</span> <span style="color: #4070a0">class=&quot;slds-text-heading--medium&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>Description : {!suggestion.Suggestion_Description__c}<span style="color: #062873; font-weight: bold">&lt;/p&gt;</span>
+                  <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+               <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;/li&gt;</span>
+         <span style="color: #062873; font-weight: bold">&lt;/aura:iteration&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;/ul&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+<span style="color: #062873; font-weight: bold">&lt;/aura:component&gt;</span>
+</pre></div>
+
+<ol>
+<li>Select <strong>File | Save</strong></li>
+<li>In the button panel on the right, click <strong>Controller</strong></li>
+<li>Replace the code with the following:</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">({
+    doInit <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event) {
+        <span style="color: #007020; font-weight: bold">var</span> action <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;c.findAll&quot;</span>);
+        action.setCallback(<span style="color: #007020; font-weight: bold">this</span>, <span style="color: #007020; font-weight: bold">function</span>(a) {
+            component.set(<span style="color: #4070a0">&quot;v.suggestions&quot;</span>, a.getReturnValue());
+        });
+        $A.enqueueAction(action);
+    },
+    
+    searchKeyChange<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event) {
+    <span style="color: #007020; font-weight: bold">var</span> searchKey <span style="color: #666666">=</span> event.getParam(<span style="color: #4070a0">&quot;searchKey&quot;</span>);
+    <span style="color: #007020; font-weight: bold">var</span> action <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;c.findByName&quot;</span>);
+    action.setParams({
+      <span style="color: #4070a0">&quot;searchKey&quot;</span><span style="color: #666666">:</span> searchKey
+    });
+    action.setCallback(<span style="color: #007020; font-weight: bold">this</span>, <span style="color: #007020; font-weight: bold">function</span>(a) {
+        component.set(<span style="color: #4070a0">&quot;v.suggestions&quot;</span>, a.getReturnValue());
+    });
+    $A.enqueueAction(action);
+	}
+    
+})
+</pre></div>
+
+<ol>
+<li>Open the <strong>SuggestionBoxApp</strong> Application and replace the below</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"> <span style="color: #60a0b0; font-style: italic">&lt;!-- &lt;c:SuggestionList /&gt; to be uncommented after component creation --&gt;</span>  
+</pre></div>
+
+<p>with</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #062873; font-weight: bold">&lt;c:SuggestionList</span> <span style="color: #062873; font-weight: bold">/&gt;</span>     
+</pre></div>
+
+<p>You can see how the application looks by clicking on the <strong>Preview</strong> button, the first button in the application bundle.</p>
+
+<h4 id="code-highlights-4">Code highlights:</h4>
+
+<ul>
+<li>The controller assigned to the component refers to the server-side controller SuggestionController</li>
+<li>This component catches the SKChange Event and handles it with the <code>&lt;aura:handler&gt;</code> tag triggering the client-side controller function <em>searchKeyChange</em></li>
+<li>The suggestions attribute is defined to hold the list of suggestion objects returned from the server</li>
+<li>The init handler is defined to execute some code when the component is initialized</li>
+<li><code>&lt;aura:iteration&gt;</code> is used to iterate through the list of suggestions and create an <code>&lt;li&gt;</code> for each suggestion</li>
+<li>The <code>&lt;a href=&quot;{! '#suggestion/' + suggestion.Id }&quot;&gt;</code> anchor tag around the suggestion data is defined to set the page hashtag to #suggestion/ followed by the suggestion id. The SuggestionDetails component will use this hashtag to display suggestion details every time an employee selects a suggestion from the list</li>
+<li>We get the value of the searchKey and then invoke findByName() method in the SuggestionController Apex class</li>
+<li>A callback is used here as the call to the server is an asynchronous call. When this call returns some value, we assign the list of suggestions returned by findByName() to the component&rsquo;s suggestions attribute.</li>
+</ul>
+
+<h2 id="create-the-suggestiondetails-component">Create the SuggestionDetails Component</h2>
+
+<p>This component will display the details of the suggestion selected by the employee from the Suggestionlist Component.</p>
+
+<p><img src="images/Searchdetail.png" width="90%" height="90%"/></p>
+
+<ol>
+<li>In the <strong>Developer Console</strong>, select <strong>File | New | Lightning Component</strong></li>
+<li>For the component name, enter <strong>SuggestionDetails</strong> and then click <strong>Submit</strong></li>
+<li>Replace the code with the following:</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:component</span> <span style="color: #4070a0">controller=&quot;SuggestionController&quot;</span> <span style="color: #4070a0">implements=&quot;flexipage:availableForAllPageTypes&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;ltng:require</span> <span style="color: #4070a0">styles=&quot;{!$Resource.slds}&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;suggestion&quot;</span> <span style="color: #4070a0">type=&quot;Suggestion__c&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;aura:handler</span> <span style="color: #4070a0">name=&quot;init&quot;</span> <span style="color: #4070a0">value=&quot;{!this}&quot;</span> <span style="color: #4070a0">action=&quot;{!c.doInit}&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;aura:handler</span> <span style="color: #4070a0">event=&quot;aura:locationChange&quot;</span> <span style="color: #4070a0">action=&quot;{!c.locationChange}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;aura:if</span> <span style="color: #4070a0">isTrue=&quot;{! v.suggestion.Name !=null }&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;details&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+         <span style="color: #062873; font-weight: bold">&lt;ul</span> <span style="color: #4070a0">class=&quot;slds-has-dividers--around-space&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;li</span> <span style="color: #4070a0">class=&quot;slds-item&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+               <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-tile slds-tile--board&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                  <span style="color: #062873; font-weight: bold">&lt;h3</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;a</span> <span style="color: #4070a0">href=&quot;javascript:void(0);&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                     Suggestion Details
+                     <span style="color: #062873; font-weight: bold">&lt;/a&gt;</span>
+                  <span style="color: #062873; font-weight: bold">&lt;/h3&gt;</span>
+                  <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-tile__detail slds-text-body--small&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                     <span style="color: #062873; font-weight: bold">&lt;p</span> <span style="color: #4070a0">class=&quot;slds-text-heading--medium&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                        {!v.suggestion.Name} 
+                     <span style="color: #062873; font-weight: bold">&lt;/p&gt;</span>
+                     <span style="color: #062873; font-weight: bold">&lt;p</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;a</span> <span style="color: #4070a0">href=&quot;javascript:void(0);&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                        {!v.suggestion.Status__c} 
+                        <span style="color: #062873; font-weight: bold">&lt;/a&gt;</span>
+                     <span style="color: #062873; font-weight: bold">&lt;/p&gt;</span>
+                     <span style="color: #062873; font-weight: bold">&lt;p</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                        {!v.suggestion.Suggestion_Category__c} 
+                     <span style="color: #062873; font-weight: bold">&lt;/p&gt;</span>
+                     <span style="color: #062873; font-weight: bold">&lt;p</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;a</span> <span style="color: #4070a0">href=&quot;javascript:void(0);&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                        {!v.suggestion.Suggestion_Description__c} <span style="color: #062873; font-weight: bold">&lt;/a&gt;</span>
+                     <span style="color: #062873; font-weight: bold">&lt;/p&gt;</span>
+                     <span style="color: #062873; font-weight: bold">&lt;p</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                        {!v.suggestion.Vote_up__c}
+                        <span style="color: #062873; font-weight: bold">&lt;aura:if</span> <span style="color: #4070a0">isTrue=&quot;{! v.suggestion.Name !=null }&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span> Votes
+                        <span style="color: #062873; font-weight: bold">&lt;/aura:if&gt;</span>
+                     <span style="color: #062873; font-weight: bold">&lt;/p&gt;</span>
+                     <span style="color: #062873; font-weight: bold">&lt;p</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                        <span style="color: #062873; font-weight: bold">&lt;a</span> <span style="color: #4070a0">href=&quot;javascript:void(0);&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                           <span style="color: #062873; font-weight: bold">&lt;aura:if</span> <span style="color: #4070a0">isTrue=&quot;{! v.suggestion.Name !=null }&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                              <span style="color: #062873; font-weight: bold">&lt;button</span> <span style="color: #4070a0">class=&quot;.slds-button--neutral&quot;</span> <span style="color: #4070a0">type=&quot;button&quot;</span> <span style="color: #4070a0">onclick=&quot;{!c.voteup}&quot;</span> <span style="color: #062873; font-weight: bold">&gt;</span>Vote up<span style="color: #062873; font-weight: bold">&lt;/button&gt;</span>
+                           <span style="color: #062873; font-weight: bold">&lt;/aura:if&gt;</span>
+                        <span style="color: #062873; font-weight: bold">&lt;/a&gt;</span>
+                     <span style="color: #062873; font-weight: bold">&lt;/p&gt;</span>
+                  <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+               <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;/li&gt;</span>
+         <span style="color: #062873; font-weight: bold">&lt;/ul&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+   <span style="color: #062873; font-weight: bold">&lt;/aura:if&gt;</span>
+<span style="color: #062873; font-weight: bold">&lt;/aura:component&gt;</span>
+</pre></div>
+
+<ol>
+<li>Select <strong>File | Save</strong></li>
+<li>In the button panel on the right, click <strong>Controller</strong></li>
+<li>Replace the code with the following:</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">({
+    locationChange<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        <span style="color: #007020; font-weight: bold">var</span> token <span style="color: #666666">=</span> event.getParam(<span style="color: #4070a0">&quot;token&quot;</span>);
+        <span style="color: #007020; font-weight: bold">if</span> (token <span style="color: #666666">!=</span> <span style="color: #007020; font-weight: bold">null</span>) {
+            <span style="color: #007020; font-weight: bold">if</span> (token.indexOf(<span style="color: #4070a0">&#39;suggestion/&#39;</span>) <span style="color: #666666">===</span> <span style="color: #40a070">0</span>) {
+                <span style="color: #007020; font-weight: bold">var</span> suggestionId <span style="color: #666666">=</span> token.substr(token.indexOf(<span style="color: #4070a0">&#39;/&#39;</span>) <span style="color: #666666">+</span> <span style="color: #40a070">1</span>);
+                <span style="color: #007020; font-weight: bold">var</span> action <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;c.findById&quot;</span>);
+                action.setParams({
+                    <span style="color: #4070a0">&quot;suggestionId&quot;</span><span style="color: #666666">:</span> suggestionId
+                });
+                action.setCallback(<span style="color: #007020; font-weight: bold">this</span>, <span style="color: #007020; font-weight: bold">function</span>(a) {
+                    component.set(<span style="color: #4070a0">&quot;v.suggestion&quot;</span>, a.getReturnValue());
+                });
+                $A.enqueueAction(action);
+            }
+        }
+    },
+
+
+    doInit<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event) {
+        <span style="color: #007020; font-weight: bold">var</span> token <span style="color: #666666">=</span> event.getParam(<span style="color: #4070a0">&quot;token&quot;</span>);
+    },
+
+    voteup<span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event) {
+
+        <span style="color: #007020; font-weight: bold">var</span> suggestionId <span style="color: #666666">=</span> event.target.id;
+        <span style="color: #007020; font-weight: bold">var</span> action <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;c.voteSuggestion&quot;</span>);
+        action.setParams({
+            <span style="color: #4070a0">&quot;suggestionId&quot;</span><span style="color: #666666">:</span> component.get(<span style="color: #4070a0">&quot;v.suggestion.Id&quot;</span>)
+        });
+        action.setCallback(<span style="color: #007020; font-weight: bold">this</span>, <span style="color: #007020; font-weight: bold">function</span>(a) {
+            component.set(<span style="color: #4070a0">&quot;v.suggestion&quot;</span>, a.getReturnValue());
+        });
+        $A.enqueueAction(action);
+    }
+})
+</pre></div>
+
+<ol>
+<li>Select <strong>File | Save</strong></li>
+<li>Open the <strong>SuggestionBoxApp</strong> Application  and replace the below</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"> <span style="color: #60a0b0; font-style: italic">&lt;!-- &lt;c:SuggestionDetails /&gt; to be uncommented after component creation --&gt;</span>  
+</pre></div>
+
+<p>with</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #062873; font-weight: bold">&lt;c:SuggestionDetails</span> <span style="color: #062873; font-weight: bold">/&gt;</span>     
+</pre></div>
+
+<p>You can see how the <strong>FINAL</strong> application looks by clicking on the <strong>Preview</strong> button, the first button in the application bundle.</p>
+
+<h4 id="code-highlights-5">Code Highlights:</h4>
+
+<ul>
+<li>In the SuggestionList component we created, we wrapped each suggestion in the list with a <code>&lt;a href=&quot;{! '#suggestion/' + suggestion.Id }&quot;&gt;</code> anchor tag that sets the page hashtag to #suggestion/ followed by the suggestion id of the clicked suggestion. In this component, the locationChange handler is defined to listen to hashtag changes, and execute the controller&rsquo;s locationChange() when it happens. The locationChange() function implemented in the next step retrieves and displays the selected suggestion</li>
+<li>The button labeled as <em>Vote Up</em> is used by employees to vote up a suggestion.The button when clicked triggers the voteup function in the client-side controller</li>
+<li>The <em>locationChange</em> function gets the new value of the hashtag which it then parses to extract the suggestion id and invokes the findById() method in the Apex controller SuggestionController. When the asynchronous call returns, it assigns the suggestion returned by findById() to the component&rsquo;s suggestion attribute.</li>
+<li>The <em>voteup</em> function calls the voteSuggestion method in the server-side controller and passes the suggestion id as the method parameter.When the asynchronous call returns, it assigns the suggestion returned by voteupSuggestion() to the component&rsquo;s suggestion attribute thus updating the vote count</li>
+</ul>
+
+<h1 id="summary">Summary</h1>
+
+<p>Congratulations! You&rsquo;ve become a Lightning application developer! You created and wired up events between multiple Lightning components. You created a suggestion box component that is built with other components. You have created and used a server-side controller for pulling data out of Salesforce as well as several client-side components to handle user interaction.</p>
+
+<p>These building blocks are used for creating every kind of Lighnting application!</p>
+
+</div>
+
+</div>
+</div>
+<script src="http://www.sfdcworkshop.com/js/ui.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84811307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
+

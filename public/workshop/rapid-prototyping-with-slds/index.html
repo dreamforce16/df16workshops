@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.16" />
+
+  <title>Rapid Prototyping with the Design System UI Kit and Starter Kit &middot; Salesforce Developers 2017</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+
+  <link rel="shortcut icon" href="http://www.sfdcworkshop.com/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/"><div><img src='/workshop/2015sf_Developers_logo_RGB_KO.png' height='70'></div></a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/minihacks/"><i class='fa fa-list fa-fw'></i>MINIHACKS</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small style="color: #ffffff">© Copyright 2000-2016 salesforce.com, inc. All rights reserved. Various trademarks held by their respective owners. </small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Rapid Prototyping with the Design System UI Kit and Starter Kit</h1>
+  <h2></h2>
+</div>
+<div class="content">
+  
+
+<h2 id="what-you-ll-learn">What you’ll learn</h2>
+
+<p>By the end of this workshop, you&rsquo;ll know how to:</p>
+
+<ol>
+<li>Get your idea into a static prototype in Sketch</li>
+<li>Create a prototype of your idea using the <a href="https://www.lightningdesignsystem.com">Lightning Design System</a></li>
+<li>Iterate on that prototype directly <em>in</em> the browser</li>
+<li>Deploy the result for free to Heroku in a few clicks only</li>
+</ol>
+
+<p>In a nutshell: getting high definition concepts in front of stakeholders and customers at minimum cost.</p>
+
+<h2 id="why-rapid-prototyping">Why Rapid Prototyping?</h2>
+
+<p>Rapid prototyping is a very effective technique for testing new ideas and iterating on them. Experimenting and refining concepts lead to a better user experience for your customers and force.com users.</p>
+
+<p>The closer to reality and the more interactive a prototype is, the better. But developing a whole web solution &ldquo;just for research&rdquo; can be costly. That&rsquo;s where rapid prototyping comes into play! Both the <a href="https://github.com/salesforce-ux/design-system-ui-kit">Design System UI Kit</a> and the <a href="https://github.com/salesforce-ux/design-system-starter-kit">Design System Starter Kit</a> are tools that help reducing that cost while allowing you to build high quality prototypes that look and feel like the Lightning Experience.</p>
+
+<p><a href="http://www.uxmatters.com/mt/archives/2013/03/are-rapid-prototyping-lean-ux-and-agile-development-good-for-user-experience.php">Read more about the benefits of rapid prototyping, Lean UX and agile development on user experience</a></p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<ul>
+<li>A recent browser (Chrome or Firefox recommended)</li>
+<li><a href="https://nodejs.org/en/">Node.js</a> 4.2 or up</li>
+</ul>
+
+<h3 id="nice-to-have">Nice to have</h3>
+
+<ul>
+<li>A <a href="https://github.com/">GitHub</a> account</li>
+<li><a href="https://git-scm.com/">Git</a></li>
+<li>Not familiar with the command line? Use <a href="https://desktop.github.com/">GitHub Desktop</a> instead!</li>
+</ul>
+
+<h3 id="optional">Optional</h3>
+
+<ul>
+<li>An <a href="https://www.heroku.com/">Heroku</a> account (free)</li>
+<li><a href="https://www.sketchapp.com/">Sketch</a> 39 or up</li>
+<li><a href="https://github.com/salesforce-ux/design-system-ui-kit#salesforce-sans-fonts">Salesforce Sans fonts</a></li>
+</ul>
+
+<hr />
+
+<h2 id="what-is-the-design-system-starter-kit">What is the Design System Starter Kit?</h2>
+
+<p>The starter kit is a rapid prototyping environment using the <a href="https://www.lightningdesignsystem.com/">Salesforce Lightning Design System</a>, HTML, and <a href="http://www.sass-lang.com/">Sass</a>.</p>
+
+<p>It&rsquo;s built for designers, developers, and anyone who wants to build a prototype and dabbles in HTML.</p>
+
+<h2 id="get-started">Get Started</h2>
+
+<p>You&rsquo;re going to download the starter kit, install dependencies, and run it locally.</p>
+
+<ol>
+<li>Fork the starter kit
+
+<ol>
+<li>Go to <a href="https://git.io/starter-kit">https://git.io/starter-kit</a></li>
+<li>Click the &ldquo;Fork&rdquo; button</li>
+</ol></li>
+<li>In a terminal window, <code>cd</code> into the directory where you&rsquo;d like to clone the repository (e.g. <code>cd ~/Documents</code>)</li>
+<li>Clone your fork (<code>git clone https://github.com/[YOUR USERNAME]/design-system-starter-kit.git</code> – or using the GUI of your choosing)</li>
+<li>Open the fork in a terminal (<code>cd path/to/design-system-starter-kit</code>)</li>
+</ol>
+
+<p>Then, follow the instructions below (also in the Quick Start section of the starter kit&rsquo;s <a href="https://github.com/salesforce-ux/design-system-starter-kit/#README">README.md file</a>)</p>
+
+<h3 id="4-run-npm-install">4. Run <code>npm install</code></h3>
+
+<p>Run <code>npm install</code> to install npm dependencies, which include the latest public version of the Lightning Design System itself. Depending on the speed of your connection, this may take up to a few minutes.</p>
+
+<h3 id="5-run-npm-run-dev">5. Run <code>npm run dev</code></h3>
+
+<p>Run <code>npm run dev</code> to start a local development server:
+
+<img class="pure-img" src="images/npm-run-dev.png" alt="">
+</p>
+
+<p>It will open <a href="http://localhost:3000">http://localhost:3000</a>, and you should see this something like this:</p>
+
+
+<img class="pure-img" src="images/starter-kit-welcome-screen.png" alt="">
+
+
+<p>⚠️ Don&rsquo;t have git installed on your machine? <a href="https://github.com/salesforce-ux/design-system-starter-kit/archive/master.zip">Download the project as a zip archive</a>. Note that you will only be able to run the starter kit locally.</p>
+
+<h2 id="get-to-know-the-starter-kit">Get to know the starter kit</h2>
+
+<p>Now you&rsquo;ve installed the starter kit locally, let&rsquo;s have a look at what&rsquo;s inside.</p>
+
+<p>The kit&rsquo;s file structure looks like this:</p>
+
+<ul>
+<li><a href="https://github.com/salesforce-ux/design-system-starter-kit/tree/master/assets/"><code>/src/assets/</code></a>: images, fonts</li>
+<li><a href="https://github.com/salesforce-ux/design-system-starter-kit/tree/master/scripts/"><code>/src/scripts/</code></a>: JavaScript files*</li>
+<li><a href="https://github.com/salesforce-ux/design-system-starter-kit/tree/master/styles/"><code>/src/styles/</code></a>: stylesheets (built using Sass)</li>
+<li><a href="https://github.com/salesforce-ux/design-system-starter-kit/tree/master/views/"><code>/src/views/</code></a>: markup and data for your pages and templates</li>
+</ul>
+
+<p>* the Lightning Design System does not include any JavaScript, but the starter kit bundles a few basic interactions for the most common components (e.g. tabs, dropdowns).</p>
+
+<h2 id="let-s-build-our-first-page">Let&rsquo;s build our first page</h2>
+
+<p>Included in the starter kit:</p>
+
+<ul>
+<li><code>index.html</code>: the welcome screen</li>
+<li><code>example.html</code>: an example that showcases the possibilities offered by the starter kit</li>
+<li><code>blank.html</code>: a blank template ready to host <em>your</em> prototype!</li>
+<li><code>workshop.html</code>: a blank template ready to host <em>your</em> prototype!</li>
+<li><code>workshop-done.html</code>: what your prototype should look like when you&rsquo;ve completed this workshop!</li>
+</ul>
+
+<p>The easiest way to throw a quick prototype together is to copy and paste ready-made components from the Lightning Design System website into <code>blank.html</code>.</p>
+
+<p>Let&rsquo;s copy-paste a related list component into <code>blank.html</code>:</p>
+
+<ol>
+<li>Go to <a href="https://www.lightningdesignsystem.com/">https://www.lightningdesignsystem.com/</a></li>
+<li>Search for &ldquo;Related List With Table&rdquo;</li>
+<li>Follow the first search result</li>
+<li>Copy the code (below the component itself)</li>
+<li>Paste it into <code>blank.html</code>, between <code>{% block content %}</code> and <code>{% endblock %}</code></li>
+</ol>
+
+<p>Your browser should display this at <a href="http://localhost:3000/blank.html">http://localhost:3000/blank.html</a>:</p>
+
+
+<img class="pure-img" src="images/first-component-in.png" alt="">
+
+
+<h2 id="designing-in-the-browser">Designing in the Browser</h2>
+
+<h3 id="1-live-reload">1. Live Reload</h3>
+
+<p>You may have seen it when you were adding a component to the markup: any change made to your prototype will display in the browser automatically, without you having to hit the &ldquo;reload&rdquo; button!</p>
+
+<p>Try for yourself:</p>
+
+<ol>
+<li>Open <a href="http://localhost:3000/blank.html">http://localhost:3000/blank.html</a></li>
+<li>In <code>blank.html</code>, find occurrences of <code>Contacts (will truncate)</code></li>
+<li>Replace with <code>Any text you want!</code></li>
+<li>Admire the page as it updates itself with the new text (see animation below)!</li>
+</ol>
+
+
+<img class="pure-img" src="images/livereload.gif" alt="">
+
+
+<p>Feel free to add more components to the page and go crazy! You&rsquo;ll see the results appear instantly in the browser. Oh… and one more thing: <em>all</em> browsers and devices connected to your local development environment will reload at the same time!</p>
+
+<h3 id="2-directly-from-chrome">2. Directly from Chrome</h3>
+
+<ol>
+<li>Open <a href="http://localhost:3000">http://localhost:3000</a></li>
+<li>Inspect any element on the page (<strong>right click, inspect element</strong>), this will open the Chrome DevTools</li>
+<li>In DevTools, go to the <strong>Sources</strong> tab</li>
+<li><strong>Right-Click</strong> anywhere in the left pane and select <strong>Add folder to workspace</strong></li>
+<li><strong>Find the design-system-starter-kit directory</strong> (where it was cloned)</li>
+<li>Hit <strong>Select</strong></li>
+<li>Click <strong>Allow</strong> to give the DevTools access to your drive</li>
+</ol>
+
+
+<img class="pure-img" src="images/add-folder-to-workspace.gif" alt="">
+
+
+<p>Congrats, you now have access to your directory structure from within Chrome!</p>
+
+<p>Let&rsquo;s see what you can do:</p>
+
+<h4 id="editing-pages-in-the-browser">Editing Pages in the Browser</h4>
+
+
+<img class="pure-img" src="images/edit-in-browser.gif" alt="">
+
+
+<h4 id="editing-styles-in-the-browser">Editing Styles in the Browser</h4>
+
+
+<img class="pure-img" src="images/edit-scss-in-browser.gif" alt="">
+
+
+<h2 id="from-sketch-to-the-browser">From Sketch to the Browser</h2>
+
+<p>The static design you got in Sketch is in a pretty good shape and you know how to modify our prototype directly in the browser.</p>
+
+<p>Now is the moment you do some copy and pasting! Errr… some coding!</p>
+
+<p>In the <code>src/views</code> directory, there&rsquo;s a file called <a href="https://github.com/salesforce-ux/design-system-starter-kit/blob/master/src/views/workshop.html"><strong><code>workshop.html</code></strong></a>. That&rsquo;s where you&rsquo;re going to make the magic happen.</p>
+
+<p>Open <code>workshop.html</code> in your browser, both in the developer tools and in <a href="http://localhost:3000/workshop.html">http://localhost:3000/workshop.html</a>.</p>
+
+<p>In the HTML, you&rsquo;ll see comments such as:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    <span style="color: #60a0b0; font-style: italic">&lt;!-- PAGE HEADER: https://www.lightningdesignsystem.com/components/page-headers/#flavor-record-home --&gt;</span>
+
+    <span style="color: #60a0b0; font-style: italic">&lt;!-- /PAGE HEADER --&gt;</span>
+</pre></div>
+
+<p>For every set of comments, head to the mentioned URL, copy the component&rsquo;s code, and paste it in the page!</p>
+
+<p>After a while, your page should look pretty close to the static mockup, and you should have a solid prototype to show around!</p>
+
+<h2 id="deploying-on-heroku">Deploying on Heroku</h2>
+
+<p>You&rsquo;ve pushed your work to your fork (<code>git push origin master</code>), and now it&rsquo;s now time to share your prototype with the world!</p>
+
+<p>Deploying your fork to Heroku is free and only takes 2 minutes.</p>
+
+<ol>
+<li>Head to your fork on GitHub</li>
+<li>Click the <strong>Deploy to Heroku</strong> button</li>
+<li><strong>Submit</strong> the form (<strong>Deploy for Free</strong> button)</li>
+<li>Click the <strong>View</strong> button</li>
+</ol>
+
+<p>That&rsquo;s it! You can now share the link with the rest of the world!</p>
+
+<h3 id="linking-to-github">Linking to GitHub</h3>
+
+<p>Now that you’ve got your project deployed, what do you do with any changes thereafter?</p>
+
+<p>Heroku has a really cool feature that integrates with GitHub and does automatic deployments of every pushed commit:</p>
+
+<p><a href="https://devcenter.heroku.com/articles/github-integration">https://devcenter.heroku.com/articles/github-integration</a></p>
+
+<p>Go to “Manage App” › “Deploy” › “GitHub” › “Connect to GitHub” › Authorize if you need to › Search “design-system-starter-kit” and connect” › “Enable Automatic Deploys”</p>
+
+<p>This means that every time you push a change, your application will be deployed.</p>
+
+<p>So if you edit something and it gets committed and pushed to the master branch, a deploy hook will get triggered on Heroku and after a few minutes your application will automatically update!</p>
+
+<p>Refresh and check!</p>
+
+<p>Weeee!</p>
+
+<hr />
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3 id="issues-with-git">Issues with Git</h3>
+
+<p>Not familiar with the command line? Use <a href="https://desktop.github.com/">GitHub Desktop</a> instead!</p>
+
+<p>Here&rsquo;s how to clone a repository using GitHub Desktop: <a href="https://help.github.com/desktop/guides/contributing/cloning-a-repository-from-github-desktop/">https://help.github.com/desktop/guides/contributing/cloning-a-repository-from-github-desktop/</a></p>
+
+<h4 id="permission-denied-publickey">Permission denied (publickey)</h4>
+
+<p>This error happens when you&rsquo;re trying to clone the repository:</p>
+
+<pre><code>Initialized empty Git repository in `/Users/username/Documents/design-system-starter-kit/.git/`
+Permission denied (publickey).
+fatal: The remote end hung up unexpectedly
+</code></pre>
+
+<p>A &ldquo;Permission denied&rdquo; error means that the server rejected your connection. There could be several reasons why, and the most common examples are explained below.</p>
+
+<ul>
+<li><a href="https://help.github.com/articles/generating-an-ssh-key/">Follow these instructions to set up your SSH keys</a></li>
+<li><a href="https://help.github.com/articles/error-permission-denied-publickey/">Error: Permission denied (publickey)</a> on GitHub&rsquo;s help pages</li>
+</ul>
+
+<h3 id="issues-with-node-js-and-npm">Issues with Node.js and npm</h3>
+
+<p>If you&rsquo;re encountering issues with Node.js modules, perform those actions in this order:</p>
+
+<p>Verify that you&rsquo;re running Node.js 4 or up.</p>
+
+<pre><code>node --version
+# v4.x.x
+</code></pre>
+
+<p>Update npm:</p>
+
+<pre><code>npm install npm --global
+</code></pre>
+
+<p>Re-install dependencies:</p>
+
+<pre><code>cd path/to/design-system-starter-kit
+npm cache clear
+rm -Rf node_modules
+npm install
+</code></pre>
+
+<h3 id="other-issues">Other issues</h3>
+
+<p><strong>Dropdowns and tabs don&rsquo;t work in your browser?</strong> The bundled JavaScript only works in the most recent browsers.</p>
+
+</div>
+
+</div>
+</div>
+<script src="http://www.sfdcworkshop.com/js/ui.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84811307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
+

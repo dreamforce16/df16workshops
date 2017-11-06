@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.16" />
+
+  <title>Heroku Connect : Sync Heroku app with Salesforce using Java Spring and JDBC &middot; Salesforce Developers 2017</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+
+  <link rel="shortcut icon" href="http://www.sfdcworkshop.com/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/"><div><img src='/workshop/2015sf_Developers_logo_RGB_KO.png' height='70'></div></a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/minihacks/"><i class='fa fa-list fa-fw'></i>MINIHACKS</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small style="color: #ffffff">© Copyright 2000-2016 salesforce.com, inc. All rights reserved. Various trademarks held by their respective owners. </small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Heroku Connect : Sync Heroku app with Salesforce using Java Spring and JDBC</h1>
+  <h2></h2>
+</div>
+<div class="content">
+  
+
+<ol>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#clone-the-source-code">Clone the Source Code</a></li>
+<li><a href="#heroku-login">Heroku Login</a></li>
+<li><a href="#about-the-application">About the Application</a></li>
+<li><a href="#get-contacts-implementation">Get Contacts Implementation</a></li>
+<li><a href="#create-contact-form">Create Contact Form</a></li>
+<li><a href="#complete-code-listing-for-the-controller">Complete code Listing for the Controller</a></li>
+<li><a href="#compile-the-app-locally">Compile the App Locally</a>
+
+<ul>
+<li><a href="#procfile">Procfile</a><br /></li>
+</ul></li>
+<li><a href="#deploying-to-heroku">Deploying to Heroku</a>
+
+<ul>
+<li><a href="#add-postgresql-add-on">Add PostgreSQL Add-On</a></li>
+<li><a href="#add-heroku-connect-add-on">Add Heroku Connect Add-On</a></li>
+<li><a href="configure-heroku-connect-add-on">Configure Heroku Connect Add-On</a></li>
+</ul></li>
+<li><a href="#connect-to-postgresql-from-local-instance">Connect to PostgreSQL from Local Instance</a>
+
+<ul>
+<li><a href="#open-the-remote-app-in-heroku">Open the Remote App in Heroku</a></li>
+<li><a href="#show-contacts">Show Contacts</a></li>
+<li><a href="#create-contact">Create Contact</a></li>
+</ul></li>
+<li><a href="#summary">Summary</a></li>
+</ol>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>In this workshop you will learn how to run a <a href="http://projects.spring.io/spring-boot/">Spring Boot</a> with PostgreSQL JDBC driver which connects to the database populated by Heroku Connect.</p>
+
+<p><img src="images/heroku-connect-spring-boot-flow.png" width="70%" height="70%"></p>
+
+<p>Figure 1 : Heroku-Connect Spring Boot Data flow</p>
+
+<p>Figure 1 show the  how HerokuConnect Add-On interacts with Heroku PostgreSQL and Force.com behind the scenes.</p>
+
+<p>Note : Make sure you have Java 1.8, <a href="https://github.com/dbhasuru/df16workshops/blob/master/content/workshop/heroku-connect/hc-java-spring-jdbc/MavenInstallation.md">Maven 3.3.3</a> installed and <a href="https://toolbelt.heroku.com/">Heroku Toolbelt</a></p>
+
+<p>We will be using a Spring Boot Sample app available at <a href="https://github.com/rajdeepd/heroku-connect-spring-boot-jdbc-rw">heroku connect spring boot</a></p>
+
+<p>This app has four rest endpoints</p>
+
+<ul>
+<li><code>@app.route('/')</code> shows the home page of the App</li>
+<li><code>@app.route('/contacts')</code> which fetches list of contacts from Postgres table <code>salesforce</code>.</li>
+<li><code>@app.route('/createcontactform')</code> shows the Create Contact Form</li>
+<li><code>@app.route('/createcontact')</code> Called by the Create Contact Form to insert form data into PostgreSQL <code>salesforce.contact</code></li>
+</ul>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>This workshop assumes you have following setup</p>
+
+<ul>
+<li><a href="https://signup.heroku.com/">Heroku Account</a></li>
+<li><a href="https://devcenter.heroku.com/articles/heroku-command-line#download-and-install">Heroku CLI</a></li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">Java 1.8</a> or above</li>
+<li><a href="https://maven.apache.org/download.cgi">Maven 3.3.9</a> or above</li>
+<li><a href="https://git-scm.com/downloads">git</a></li>
+<li><a href="http://developer.salesforce.com/signup">Salesforce Developer Edition Account</a></li>
+</ul>
+
+<h2 id="clone-the-source-code">Clone the Source Code</h2>
+
+<p>Clone the source code using <code>git clone</code> and change into the cloned project directory <code>heroku-connect-spring-boot</code></p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    <span style="color: #bb60d5">$ </span>git clone https://github.com/rajdeepd/heroku-connect-spring-boot-jdbc-rw
+    <span style="color: #bb60d5">$ </span><span style="color: #007020">cd </span>heroku-connect-spring-boot-jdbc-rw
+</pre></div>
+
+<h2 id="heroku-login">Heroku Login</h2>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">   <span style="color: #bb60d5">$ </span>heroku login
+</pre></div>
+
+<h3 id="code">Code</h3>
+
+<h5 id="note-for-information-only">Note : For information only</h5>
+
+<p>This is a basic Spring-boot app which uses PostgrSQL JDBC driver to connect to the PostgreSQL database and return the list of contacts. It uses Thymeleaf to render the HTML template.</p>
+
+<p>Structure of the App is Listed below</p>
+
+<pre><code>  |-- pom.xml
+  |-- Procfile
+  |-- README.md
+  |-- src
+  |   `-- main
+  |       |-- java
+  |       |   `-- com
+  |       |       `-- example
+  |       |           |-- Contact.java
+  |       |           `-- HerokuConnectApplication.java
+  |       |-- resources
+  |       |   |-- application.properties
+  |       |   `-- templates
+  |       |       |-- contact.html
+  |       |       |-- createcontact.html
+  |       |       |-- home.html
+  |       |       `-- result.html
+  |       `-- webapp
+  |           `-- assets
+  |               |-- css
+  |               |   |-- bootstrap.css
+  |               |   `-- style.css
+  |               `-- js
+  |                   `-- bootstrap.js
+</code></pre>
+
+<h2 id="about-the-application">About the Application</h2>
+
+<p>Application is based on Spring MVC Architecture.</p>
+
+<p>The Spring Web model-view-controller (MVC) framework uses  DispatcherServlet that dispatches requests to handlers. It has configurable handler mappings, view resolution, locale and theme resolution.
+The default handler is based on the <code>@Controller</code> and <code>@RequestMapping</code> annotations, offering a wide range of handling methods.</p>
+
+<p>Controllers provide access to the application behavior  defined through a service interface. Controllers interpret user input and transform it into a model that is represented to the user by the view (Thymeleaf in our case). Spring implements a controller in a abstract way, which enables developers to create a wide variety of controllers.</p>
+
+<p>Since Spring 2.5  annotation-based programming model for MVC controllers that uses annotations <code>@RequestMapping</code>, <code>@RequestParam</code>, <code>@ModelAttribute</code> has been introduced.</p>
+
+<p>Controllers implemented using this style do not have to extend specific base classes or implement specific interfaces
+In our example we are using <code>@Controller</code> annotation to define the Controller and <code>@RequestMapping</code> to map rest endpoints to implementation methods.</p>
+
+<p>Spring Boot developers always annotate the main class with <code>@Configuration</code>, <code>@EnableAutoConfiguration</code> and <code>@ComponentScan</code>. These annotations are frequently used together Spring Boot provides a convenient <code>@SpringBootApplication</code> alternative.</p>
+
+<p>The <code>@SpringBootApplication</code> annotation is equivalent to using @Configuration, @EnableAutoConfiguration and @ComponentScan with their default attributes.  This is the annotation we are using in our controller listed below.</p>
+
+<h3 id="view-implementation-with-thymeleaf-templates">View implementation with Thymeleaf Templates</h3>
+
+<p><a href="http://www.thymeleaf.org/">Thymeleaf</a>  is a  template engine capable of processing and generating HTML, XML etc. It can work both in web and non-web environments. It is better suited for serving the view layer of web applications.
+It provides an optional integration with Spring MVC, so that it can be used  as a complete substitute of JSP.</p>
+
+<p>We are using Thymeleaf templates for rendering the Contacts sent by the controller.</p>
+
+<h3 id="controller">Controller</h3>
+
+<h5 id="note-for-information-only-1">Note : For information only</h5>
+
+<p>Main Controller of the App is <code>HerokuConnectApplication</code> class which provides implementation of four rest Endpoints.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #555555; font-weight: bold">@Controller</span>
+  <span style="color: #555555; font-weight: bold">@SpringBootApplication</span>
+  <span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">class</span> <span style="color: #0e84b5; font-weight: bold">HerokuConnectApplication</span> <span style="color: #666666">{</span>
+
+  <span style="color: #666666">}</span>
+</pre></div>
+
+<p>Following four <code>@RequestMappings</code> have been implemented in the Controller <code>HerokuConnectApplication</code></p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #555555; font-weight: bold">@RequestMapping</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;/&quot;</span><span style="color: #666666">)</span>
+    <span style="color: #007020; font-weight: bold">public</span> String <span style="color: #06287e">home</span><span style="color: #666666">(</span>Model model<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+        <span style="color: #666666">...</span>
+    <span style="color: #666666">}</span>
+
+    <span style="color: #555555; font-weight: bold">@RequestMapping</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;/contacts&quot;</span><span style="color: #666666">)</span>
+    <span style="color: #007020; font-weight: bold">public</span> String <span style="color: #06287e">contacts</span><span style="color: #666666">(</span>Model model<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+      <span style="color: #666666">....</span>
+    <span style="color: #666666">}</span>
+
+    <span style="color: #555555; font-weight: bold">@RequestMapping</span><span style="color: #666666">(</span>value<span style="color: #666666">=</span><span style="color: #4070a0">&quot;/createcontact&quot;</span><span style="color: #666666">,</span> method<span style="color: #666666">=</span> RequestMethod<span style="color: #666666">.</span><span style="color: #4070a0">POST</span><span style="color: #666666">)</span>
+    <span style="color: #007020; font-weight: bold">public</span> String <span style="color: #06287e">createContact</span><span style="color: #666666">(</span><span style="color: #555555; font-weight: bold">@ModelAttribute</span> Contact contact<span style="color: #666666">,</span> Model model<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+        <span style="color: #666666">....</span>
+    <span style="color: #666666">}</span>
+
+    <span style="color: #555555; font-weight: bold">@RequestMapping</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;/createcontactform&quot;</span><span style="color: #666666">)</span>
+    <span style="color: #007020; font-weight: bold">public</span> String <span style="color: #06287e">createContactForm</span><span style="color: #666666">(</span>Model model<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+        <span style="color: #666666">....</span>
+    <span style="color: #666666">}</span>
+</pre></div>
+
+<p>Before we look at the implementation of contacts() method, following code listing shows how the JDBC connection is obtained based on DATABASE_URL environment variable. This can be setup for a local PostgreSQL, or a PostgreSQL instance running in Heroku as shown in sections later in this tutorial.</p>
+
+<p>In Heroku dynos running on Heroku this environment variable is setup automatically</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #007020; font-weight: bold">private</span> <span style="color: #007020; font-weight: bold">static</span> Connection <span style="color: #06287e">getConnection</span><span style="color: #666666">()</span> <span style="color: #007020; font-weight: bold">throws</span> URISyntaxException<span style="color: #666666">,</span> SQLException <span style="color: #666666">{</span>
+    URI dbUri <span style="color: #666666">=</span> <span style="color: #007020; font-weight: bold">new</span> URI<span style="color: #666666">(</span>System<span style="color: #666666">.</span><span style="color: #4070a0">getenv</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;DATABASE_URL&quot;</span><span style="color: #666666">));</span>
+
+    String username <span style="color: #666666">=</span> dbUri<span style="color: #666666">.</span><span style="color: #4070a0">getUserInfo</span><span style="color: #666666">().</span><span style="color: #4070a0">split</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;:&quot;</span><span style="color: #666666">)[</span><span style="color: #40a070">0</span><span style="color: #666666">];</span>
+    String password <span style="color: #666666">=</span> dbUri<span style="color: #666666">.</span><span style="color: #4070a0">getUserInfo</span><span style="color: #666666">().</span><span style="color: #4070a0">split</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;:&quot;</span><span style="color: #666666">)[</span><span style="color: #40a070">1</span><span style="color: #666666">];</span>
+    String dbUrl <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;jdbc:postgresql://&quot;</span> <span style="color: #666666">+</span> dbUri<span style="color: #666666">.</span><span style="color: #4070a0">getHost</span><span style="color: #666666">()</span> <span style="color: #666666">+</span> <span style="color: #4070a0">&#39;:&#39;</span>
+                <span style="color: #666666">+</span> dbUri<span style="color: #666666">.</span><span style="color: #4070a0">getPort</span><span style="color: #666666">()</span> <span style="color: #666666">+</span> dbUri<span style="color: #666666">.</span><span style="color: #4070a0">getPath</span><span style="color: #666666">()</span>
+                <span style="color: #666666">+</span> <span style="color: #4070a0">&quot;?sslmode=require&quot;</span><span style="color: #666666">;</span>
+
+    <span style="color: #007020; font-weight: bold">return</span> DriverManager<span style="color: #666666">.</span><span style="color: #4070a0">getConnection</span><span style="color: #666666">(</span>dbUrl<span style="color: #666666">,</span> username<span style="color: #666666">,</span> password<span style="color: #666666">);</span>
+  <span style="color: #666666">}</span>
+</pre></div>
+
+<h2 id="get-contacts-implementation">Get Contacts Implementation</h2>
+
+<h5 id="note-for-information-only-2">Note : For information only</h5>
+
+<p>In the implementation of <code>contacts(Model model)</code> method following steps are followed:</p>
+
+<ol>
+<li>Get the database <code>connection</code> using <code>getConnection()</code> method in the controller</li>
+<li>Create a <code>Statement</code> object <code>stmt</code>
+<code>java
+Statement stmt = connection.createStatement();
+</code></li>
+<li>Create the sql String to be executed which in our case is
+<code>java
+sql = &quot;SELECT id, sfid,  firstname, lastname, name, email FROM salesforce.contact&quot;;
+</code></li>
+<li>Execute the statement <code>stmt</code>
+<code>java
+ResultSet rs = stmt.executeQuery(sql);
+</code></li>
+
+<li><p>Populate List of <code>com.example.Contact</code> Object for each contact and add to Model model.
+Code listing for <code>Contact.</code> class
+<a href="https://github.com/rajdeepd/heroku-connect-spring-boot/blob/master/src/main/java/com/example/Contact.java">Contact</a></p></li>
+
+<li><p>return the <code>contact.html</code> Thymeleaf template</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">model<span style="color: #666666">.</span><span style="color: #4070a0">addAttribute</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;contacts&quot;</span><span style="color: #666666">,</span> contacts<span style="color: #666666">);</span>
+<span style="color: #007020; font-weight: bold">return</span> <span style="color: #4070a0">&quot;contact&quot;</span><span style="color: #666666">;</span>
+</pre></div>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #555555; font-weight: bold">@RequestMapping</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;/contacts&quot;</span><span style="color: #666666">)</span>
+ <span style="color: #007020; font-weight: bold">public</span> String <span style="color: #06287e">contacts</span><span style="color: #666666">(</span>Model model<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+      <span style="color: #007020; font-weight: bold">try</span> <span style="color: #666666">{</span>
+          Connection connection <span style="color: #666666">=</span> getConnection<span style="color: #666666">();</span>
+          Statement stmt <span style="color: #666666">=</span> connection<span style="color: #666666">.</span><span style="color: #4070a0">createStatement</span><span style="color: #666666">();</span>
+          String sql<span style="color: #666666">;</span>
+          sql <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;SELECT id, sfid,  firstname, lastname, name, email&quot;</span> <span style="color: #666666">+</span>
+            <span style="color: #4070a0">&quot; FROM salesforce.contact&quot;</span><span style="color: #666666">;</span>
+          ResultSet rs <span style="color: #666666">=</span> stmt<span style="color: #666666">.</span><span style="color: #4070a0">executeQuery</span><span style="color: #666666">(</span>sql<span style="color: #666666">);</span>
+              
+          List contacts <span style="color: #666666">=</span> <span style="color: #007020; font-weight: bold">new</span> ArrayList<span style="color: #666666">&lt;&gt;();</span>
+          <span style="color: #60a0b0; font-style: italic">// Extract data from result set</span>
+          <span style="color: #007020; font-weight: bold">while</span> <span style="color: #666666">(</span>rs<span style="color: #666666">.</span><span style="color: #4070a0">next</span><span style="color: #666666">())</span> <span style="color: #666666">{</span>
+              <span style="color: #902000">int</span> id <span style="color: #666666">=</span> rs<span style="color: #666666">.</span><span style="color: #4070a0">getInt</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;id&quot;</span><span style="color: #666666">);</span>
+              String sfid <span style="color: #666666">=</span> rs<span style="color: #666666">.</span><span style="color: #4070a0">getString</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;sfid&quot;</span><span style="color: #666666">);</span>
+              String name <span style="color: #666666">=</span> rs<span style="color: #666666">.</span><span style="color: #4070a0">getString</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;name&quot;</span><span style="color: #666666">);</span>
+              String first <span style="color: #666666">=</span> rs<span style="color: #666666">.</span><span style="color: #4070a0">getString</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;firstname&quot;</span><span style="color: #666666">);</span>
+              String last <span style="color: #666666">=</span> rs<span style="color: #666666">.</span><span style="color: #4070a0">getString</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;lastname&quot;</span><span style="color: #666666">);</span>
+              String email <span style="color: #666666">=</span> rs<span style="color: #666666">.</span><span style="color: #4070a0">getString</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;email&quot;</span><span style="color: #666666">);</span>
+              contacts<span style="color: #666666">.</span><span style="color: #4070a0">add</span><span style="color: #666666">(</span><span style="color: #007020; font-weight: bold">new</span> Contact<span style="color: #666666">(</span>id<span style="color: #666666">,</span> sfid<span style="color: #666666">,</span> first<span style="color: #666666">,</span> last<span style="color: #666666">,</span> email<span style="color: #666666">));</span>
+          <span style="color: #666666">}</span>
+          model<span style="color: #666666">.</span><span style="color: #4070a0">addAttribute</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;contacts&quot;</span><span style="color: #666666">,</span> contacts<span style="color: #666666">);</span>
+          <span style="color: #007020; font-weight: bold">return</span> <span style="color: #4070a0">&quot;contact&quot;</span><span style="color: #666666">;</span>
+      <span style="color: #666666">}</span> <span style="color: #007020; font-weight: bold">catch</span> <span style="color: #666666">(</span>Exception e<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+          <span style="color: #007020; font-weight: bold">return</span> e<span style="color: #666666">.</span><span style="color: #4070a0">toString</span><span style="color: #666666">();</span>
+      <span style="color: #666666">}</span>
+  <span style="color: #666666">}</span>
+</pre></div></li>
+</ol>
+
+<p>Thymeleaf template <code>contact.html</code> below uses variable set in Model to retrieve and display list of contacts.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    <span style="color: #062873; font-weight: bold">&lt;table&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;th&gt;&lt;td&gt;</span>Id<span style="color: #062873; font-weight: bold">&lt;/td&gt;&lt;td&gt;</span>SFID<span style="color: #062873; font-weight: bold">&lt;/td&gt;&lt;td&gt;</span>First<span style="color: #062873; font-weight: bold">&lt;/td&gt;&lt;td&gt;</span>Last<span style="color: #062873; font-weight: bold">&lt;/td&gt;</span>
+          <span style="color: #062873; font-weight: bold">&lt;td&gt;</span>Email<span style="color: #062873; font-weight: bold">&lt;/td&gt;&lt;/th&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;tr</span> <span style="color: #4070a0">th:each=&quot;contact : ${contacts}&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;td&gt;&lt;/td&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;td</span> <span style="color: #4070a0">th:text=&quot;${contact.id}&quot;</span> <span style="color: #062873; font-weight: bold">&gt;&lt;/td&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;td</span> <span style="color: #4070a0">th:text=&quot;${contact.sfid}&quot;</span> <span style="color: #062873; font-weight: bold">&gt;&lt;/td&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;td</span> <span style="color: #4070a0">th:text=&quot;${contact.first}&quot;</span> <span style="color: #062873; font-weight: bold">&gt;&lt;/td&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;td</span> <span style="color: #4070a0">th:text=&quot;${contact.last}&quot;</span> <span style="color: #062873; font-weight: bold">&gt;&lt;/td&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;td</span> <span style="color: #4070a0">th:text=&quot;${contact.email}&quot;</span> <span style="color: #062873; font-weight: bold">&gt;&lt;/td&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/tr&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/table&gt;</span>
+</pre></div>
+
+<h2 id="create-contact-form">Create Contact Form</h2>
+
+<h5 id="note-for-information-only-3">Note : For information only</h5>
+
+<p>This implementation returns the <code>createcontact.html</code> Thymeleaf template Listed below.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #555555; font-weight: bold">@RequestMapping</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;/createcontactform&quot;</span><span style="color: #666666">)</span>
+    <span style="color: #007020; font-weight: bold">public</span> String <span style="color: #06287e">createContactForm</span><span style="color: #666666">(</span>Model model<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+        model<span style="color: #666666">.</span><span style="color: #4070a0">addAttribute</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;contact&quot;</span><span style="color: #666666">,</span> <span style="color: #007020; font-weight: bold">new</span> Contact<span style="color: #666666">());</span>
+        <span style="color: #007020; font-weight: bold">return</span> <span style="color: #4070a0">&quot;createcontact&quot;</span><span style="color: #666666">;</span>
+    <span style="color: #666666">}</span>
+</pre></div>
+
+<p>Create Contact Form html</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #007020">&lt;!DOCTYPE HTML&gt;</span>
+  <span style="color: #062873; font-weight: bold">&lt;html</span> <span style="color: #4070a0">xmlns:th=&quot;http://www.thymeleaf.org&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+  <span style="color: #062873; font-weight: bold">&lt;head&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;title&gt;</span>Heroku Connect Spring Boot Demo<span style="color: #062873; font-weight: bold">&lt;/title&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;meta</span> <span style="color: #4070a0">http-equiv=&quot;Content-Type&quot;</span> <span style="color: #4070a0">content=&quot;text/html; charset=UTF-8&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;link</span> <span style="color: #4070a0">rel=&quot;stylesheet&quot;</span> <span style="color: #4070a0">href=&quot;../assets/css/bootstrap.css&quot;</span> 
+          <span style="color: #4070a0">th:href=&quot;@{/assets/css/bootstrap.css}&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;link</span> <span style="color: #4070a0">rel=&quot;stylesheet&quot;</span> <span style="color: #4070a0">href=&quot;../assets/css/thymeleaf-demo.css&quot;</span> 
+          <span style="color: #4070a0">th:href=&quot;@{/assets/css/style.css}&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+  <span style="color: #062873; font-weight: bold">&lt;/head&gt;</span>
+  <span style="color: #062873; font-weight: bold">&lt;body&gt;</span>
+  <span style="color: #60a0b0; font-style: italic">&lt;!--&lt;div style=&quot;margin-top: 20px;margin-left: 50px&quot;&gt;--&gt;</span>
+  <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;container&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+  <span style="color: #062873; font-weight: bold">&lt;h3&gt;</span> Contacts : <span style="color: #062873; font-weight: bold">&lt;/h3&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;form</span> <span style="color: #4070a0">action=&quot;#&quot;</span> <span style="color: #4070a0">th:action=&quot;@{/createcontact}&quot;</span> <span style="color: #4070a0">th:object=&quot;${contact}&quot;</span> 
+          <span style="color: #4070a0">method=&quot;post&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+          <span style="color: #062873; font-weight: bold">&lt;table</span> <span style="color: #4070a0">border=&quot;0&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+              <span style="color: #062873; font-weight: bold">&lt;tr&gt;</span>
+                  <span style="color: #062873; font-weight: bold">&lt;td</span> <span style="color: #4070a0">colspan=&quot;2&quot;</span> <span style="color: #4070a0">align=&quot;center&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;h4&gt;</span>Create Contact<span style="color: #062873; font-weight: bold">&lt;/h4&gt;&lt;/td&gt;</span>
+              <span style="color: #062873; font-weight: bold">&lt;/tr&gt;</span>
+              <span style="color: #062873; font-weight: bold">&lt;tr&gt;</span>
+                  <span style="color: #062873; font-weight: bold">&lt;td&gt;</span>First Name:<span style="color: #062873; font-weight: bold">&lt;/td&gt;</span>
+                  <span style="color: #062873; font-weight: bold">&lt;td&gt;&lt;input</span> <span style="color: #4070a0">id=&quot;first&quot;</span> <span style="color: #4070a0">type=&quot;text&quot;</span> <span style="color: #4070a0">th:field=&quot;*{first}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;&lt;/td&gt;</span>
+              <span style="color: #062873; font-weight: bold">&lt;/tr&gt;</span>
+              <span style="color: #062873; font-weight: bold">&lt;tr&gt;</span>
+                  <span style="color: #062873; font-weight: bold">&lt;td&gt;</span>Last Name:<span style="color: #062873; font-weight: bold">&lt;/td&gt;</span>
+                  <span style="color: #062873; font-weight: bold">&lt;td&gt;&lt;input</span> <span style="color: #4070a0">id=&quot;last&quot;</span> <span style="color: #4070a0">type=&quot;text&quot;</span> <span style="color: #4070a0">th:field=&quot;*{last}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;&lt;/td&gt;</span>
+              <span style="color: #062873; font-weight: bold">&lt;/tr&gt;</span>
+              <span style="color: #062873; font-weight: bold">&lt;tr&gt;</span>
+                  <span style="color: #062873; font-weight: bold">&lt;td&gt;</span>Email:<span style="color: #062873; font-weight: bold">&lt;/td&gt;</span>
+                  <span style="color: #062873; font-weight: bold">&lt;td&gt;&lt;input</span> <span style="color: #4070a0">id=&quot;email&quot;</span> <span style="color: #4070a0">type=&quot;text&quot;</span> <span style="color: #4070a0">th:field=&quot;*{email}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;&lt;/td&gt;</span>
+              <span style="color: #062873; font-weight: bold">&lt;/tr&gt;</span>
+              <span style="color: #062873; font-weight: bold">&lt;tr&gt;&lt;td&gt;&lt;input</span> <span style="color: #4070a0">type=&quot;submit&quot;</span> <span style="color: #4070a0">name=&quot;Submit&quot;</span><span style="color: #062873; font-weight: bold">/&gt;&lt;/td&gt;&lt;/tr&gt;</span>
+
+          <span style="color: #062873; font-weight: bold">&lt;/table&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;/form&gt;</span>
+  <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+  <span style="color: #062873; font-weight: bold">&lt;/body&gt;</span>
+  <span style="color: #062873; font-weight: bold">&lt;/html&gt;</span>
+</pre></div>
+
+<h3 id="create-contact-rest-endpoint">Create Contact Rest Endpoint</h3>
+
+<h5 id="note-for-information-only-4">Note : For information only</h5>
+
+<p>Listing below inserts the Contact data in the Database using JDBC.</p>
+
+<ul>
+<li>Form parameters are passed from the Form into Contact object and extracted from there.
+<br /></li>
+</ul>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">     model<span style="color: #666666">.</span><span style="color: #4070a0">addAttribute</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;contact&quot;</span><span style="color: #666666">,</span> contact<span style="color: #666666">);</span>
+     <span style="color: #902000">int</span> id <span style="color: #666666">=</span> contact<span style="color: #666666">.</span><span style="color: #4070a0">getId</span><span style="color: #666666">();</span>
+     String first <span style="color: #666666">=</span> contact<span style="color: #666666">.</span><span style="color: #4070a0">getFirst</span><span style="color: #666666">();</span>
+     String last <span style="color: #666666">=</span> contact<span style="color: #666666">.</span><span style="color: #4070a0">getLast</span><span style="color: #666666">();</span>
+     String email <span style="color: #666666">=</span> contact<span style="color: #666666">.</span><span style="color: #4070a0">getEmail</span><span style="color: #666666">();</span>
+</pre></div>
+
+<ul>
+<li>JDBC Connection object is fetched, JDBC statement is created and executed</li>
+</ul>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">     Connection connection <span style="color: #666666">=</span> getConnection<span style="color: #666666">();</span>
+     Statement stmt <span style="color: #666666">=</span> connection<span style="color: #666666">.</span><span style="color: #4070a0">createStatement</span><span style="color: #666666">();</span>
+     String sql<span style="color: #666666">;</span>
+     sql <span style="color: #666666">=</span> 
+        <span style="color: #4070a0">&quot;insert into salesforce.contact(firstname, lastname, email) values &quot;</span> <span style="color: #666666">+</span>
+        <span style="color: #4070a0">&quot;(&#39;&quot;</span> <span style="color: #666666">+</span> first  <span style="color: #666666">+</span> <span style="color: #4070a0">&quot;&#39;, &#39;&quot;</span> <span style="color: #666666">+</span> last <span style="color: #666666">+</span> <span style="color: #4070a0">&quot; &#39;,&#39; &quot;</span> <span style="color: #666666">+</span> email <span style="color: #666666">+</span>  <span style="color: #4070a0">&quot;&#39;);&quot;</span><span style="color: #666666">;</span>
+     <span style="color: #902000">int</span> result <span style="color: #666666">=</span> stmt<span style="color: #666666">.</span><span style="color: #4070a0">executeUpdate</span><span style="color: #666666">(</span>sql<span style="color: #666666">);</span>
+</pre></div>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">        <span style="color: #555555; font-weight: bold">@RequestMapping</span><span style="color: #666666">(</span>value<span style="color: #666666">=</span><span style="color: #4070a0">&quot;/createcontact&quot;</span><span style="color: #666666">,</span> method<span style="color: #666666">=</span> RequestMethod<span style="color: #666666">.</span><span style="color: #4070a0">POST</span><span style="color: #666666">)</span>
+        <span style="color: #007020; font-weight: bold">public</span> String <span style="color: #06287e">createContact</span><span style="color: #666666">(</span><span style="color: #555555; font-weight: bold">@ModelAttribute</span> Contact contact<span style="color: #666666">,</span> 
+          Model model<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+        model<span style="color: #666666">.</span><span style="color: #4070a0">addAttribute</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;contact&quot;</span><span style="color: #666666">,</span> contact<span style="color: #666666">);</span>
+        <span style="color: #902000">int</span> id <span style="color: #666666">=</span> contact<span style="color: #666666">.</span><span style="color: #4070a0">getId</span><span style="color: #666666">();</span>
+        String first <span style="color: #666666">=</span> contact<span style="color: #666666">.</span><span style="color: #4070a0">getFirst</span><span style="color: #666666">();</span>
+        String last <span style="color: #666666">=</span> contact<span style="color: #666666">.</span><span style="color: #4070a0">getLast</span><span style="color: #666666">();</span>
+        String email <span style="color: #666666">=</span> contact<span style="color: #666666">.</span><span style="color: #4070a0">getEmail</span><span style="color: #666666">();</span>
+
+        <span style="color: #007020; font-weight: bold">try</span> <span style="color: #666666">{</span>
+            Connection connection <span style="color: #666666">=</span> getConnection<span style="color: #666666">();</span>
+            Statement stmt <span style="color: #666666">=</span> connection<span style="color: #666666">.</span><span style="color: #4070a0">createStatement</span><span style="color: #666666">();</span>
+            String sql<span style="color: #666666">;</span>
+            sql <span style="color: #666666">=</span> 
+              <span style="color: #4070a0">&quot;insert into salesforce.contact(firstname, lastname, email) &quot;</span> <span style="color: #666666">+</span> 
+              <span style="color: #4070a0">&quot;values &quot;</span> <span style="color: #666666">+</span>
+              <span style="color: #4070a0">&quot;(&#39;&quot;</span> <span style="color: #666666">+</span> first  <span style="color: #666666">+</span> <span style="color: #4070a0">&quot;&#39;, &#39;&quot;</span> <span style="color: #666666">+</span> last <span style="color: #666666">+</span> <span style="color: #4070a0">&quot; &#39;,&#39; &quot;</span> <span style="color: #666666">+</span> email <span style="color: #666666">+</span>  <span style="color: #4070a0">&quot;&#39;);&quot;</span><span style="color: #666666">;</span>
+            System<span style="color: #666666">.</span><span style="color: #4070a0">out</span><span style="color: #666666">.</span><span style="color: #4070a0">println</span><span style="color: #666666">(</span>sql<span style="color: #666666">);</span>
+            <span style="color: #902000">int</span> result <span style="color: #666666">=</span> stmt<span style="color: #666666">.</span><span style="color: #4070a0">executeUpdate</span><span style="color: #666666">(</span>sql<span style="color: #666666">);</span>
+            System<span style="color: #666666">.</span><span style="color: #4070a0">out</span><span style="color: #666666">.</span><span style="color: #4070a0">println</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;execute update returned: &quot;</span> <span style="color: #666666">+</span> result<span style="color: #666666">);</span>
+        <span style="color: #666666">}</span><span style="color: #007020; font-weight: bold">catch</span><span style="color: #666666">(</span>Exception e<span style="color: #666666">){</span>
+            e<span style="color: #666666">.</span><span style="color: #4070a0">printStackTrace</span><span style="color: #666666">();</span>
+            model<span style="color: #666666">.</span><span style="color: #4070a0">addAttribute</span><span style="color: #666666">(</span><span style="color: #4070a0">&quot;Exception&quot;</span><span style="color: #666666">,</span> e<span style="color: #666666">.</span><span style="color: #4070a0">toString</span><span style="color: #666666">());</span>
+        <span style="color: #666666">}</span>
+        <span style="color: #007020; font-weight: bold">return</span> <span style="color: #4070a0">&quot;result&quot;</span><span style="color: #666666">;</span>
+    <span style="color: #666666">}</span>
+</pre></div>
+
+<p>Result html page returned just shows the inserted record</p>
+
+<h2 id="complete-code-listing-for-the-controller">Complete code Listing for the Controller</h2>
+
+<p>Complete Code Listing can be found at <a href="https://github.com/rajdeepd/heroku-connect-spring-boot-jdbc-rw/blob/master/src/main/java/com/example/HerokuConnectApplication.java">HerokuConnectApplication</a></p>
+
+<h2 id="compile-the-app-locally">Compile the App Locally</h2>
+
+<ol>
+<li>Execute the following commands to compile and build the jar file
+<br /></li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">    <span style="color: #bb60d5">$ </span>mvn compile
+    <span style="color: #bb60d5">$ </span>mvn package
+</pre></div>
+
+<ol>
+<li>Run the app using the following command locally</li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #bb60d5">$ </span>mvn spring-boot:run
+</pre></div>
+
+<p>Your app should now be running on <a href="https://localhost:8080">localhost:8080</a></p>
+
+<h3 id="procfile">Procfile</h3>
+
+<h5 id="note-for-information-only-5">Note : For information only</h5>
+
+<p>There is already a Procfile which tells the Heroku what kind of Dyno is required and the source for the application.</p>
+
+<pre><code>  web: java -Dserver.port=$PORT -jar  target/heroku-connect-spring-boot-jdbc-rw-0.0.1-SNAPSHOT.jar
+</code></pre>
+
+<h2 id="deploying-to-heroku">Deploying to Heroku</h2>
+
+<p>Before moving forward, get signup for a Heroku account <a href="https://signup.heroku.com/">here</a>.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #bb60d5">$ </span>heroku login       
+  <span style="color: #bb60d5">$ </span>heroku create
+  <span style="color: #bb60d5">$ </span>git push heroku master
+</pre></div>
+
+<p>The App is deployed but still needs PostgreSQL to be configured along with Heroku Connect.</p>
+
+<h3 id="add-postgresql-add-on">Add PostgreSQL Add-On</h3>
+
+<p>Add Postgress Add-On as shown below. This step is optional and is required if heroku-postgresql addon is not already configured by heroku for your app.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #bb60d5">$ </span>heroku addons:create heroku-postgresql:hobby-dev
+</pre></div>
+
+<h3 id="add-heroku-connect-add-on">Add Heroku Connect Add-On</h3>
+
+<p>Configure Heroku Connect Add-On. Command below configures Heroku-Connect Add-On to the application.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #bb60d5">$ </span>heroku addons:create herokuconnect
+</pre></div>
+
+<h3 id="configure-heroku-connect-add-on">Configure Heroku Connect Add-On</h3>
+
+<ol>
+<li>Setup Connection</li>
+</ol>
+
+<p><img src="images/setup-connection1.png" width="90%" height="80%"></p>
+
+<ol>
+<li>Enter Schema Name : This is the schema name under which database will be created.</li>
+</ol>
+
+<p><img src="images/enter-schemaname2.png" width="90%" height="80%"></p>
+
+<ol>
+<li>Trigger OAuth</li>
+</ol>
+
+<p><img src="images/trigger-oauth3.png" width="90%" height="80%"></p>
+
+<ol>
+<li>Enter Salesforce.com developer account credentials</li>
+</ol>
+
+<p><img src="images/oauth4.png" width="40%" height="50%"></p>
+
+<ol>
+<li>Create Mappings</li>
+</ol>
+
+<p><img src="images/create-mappings5.png" width="90%" height="80%"></p>
+
+<ol>
+<li>Create Mappings Contacts : Choose the fields in Salesforce Schema which need to be mapped to Postgres Database in the application. Make sure you select the Writable checkbox. Select the fields FirstName, LastName, Email, Name and Phone number.</li>
+</ol>
+
+<p><img src="images/create-mapping-contacts6.png" width="90%" height="80%"></p>
+
+<ol>
+<li>Explore Contacts in the Dashboard</li>
+</ol>
+
+<p><img src="images/contacts-explorer7.png" width="90%" height="80%"></p>
+
+<h2 id="connect-to-postgresql-from-local-instance">Connect to PostgreSQL from Local Instance</h2>
+
+<ol>
+<li>Find the DATABASE_URL of the remote database using the following command
+<br /></li>
+</ol>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">   <span style="color: #bb60d5">$ </span>heroku config
+</pre></div>
+
+<p>You will see the output as shown below, we have removed the actual values of <code>user_name</code>, <code>password</code> and <code>database_name</code>.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  heroku <span style="color: #bb60d5">config</span>
+  <span style="color: #666666">===</span> rd-spring-boot-hc-1 Config Vars
+  DATABASE_URL:      postgres://&lt;user_name&gt;:&lt;password&gt;@ec2-107-20-136-89.compute-1.amazonaws.com:5432/&lt;database_name&gt;
+  HEROKUCONNECT_URL: DATABASE_URL:salesforce
+</pre></div>
+
+<ol>
+<li>Set the DATABASE_URL environment variable</li>
+</ol>
+
+<pre><code>  export DATABASE_URL=postgres://&lt;user_name&gt;:&lt;password&gt;@ec2-107-20-136-89.compute-1.amazonaws.com:5432/&lt;database_name&gt;
+</code></pre>
+
+<ol>
+<li>Run the app locally again</li>
+</ol>
+
+<pre><code>  $ mvn spring-boot:run
+</code></pre>
+
+<p><strong>Note</strong> :Make sure you kill previous instances of spring-boot instances started</p>
+
+<p>The App opens up in the default route <code>/</code> with the following view</p>
+
+<p><img src="images/1.png" width="90%" height="80%"></p>
+
+<p>Browse to URL <code>http://localhost:8080/contacts</code> to see the list of contact names.</p>
+
+<p><img src="images/2.png" width="90%" height="80%"></p>
+
+<p>Browse to URL <code>http://localhost:8080/createcontactform</code> to get the Create Contact Form. Filling this and submitting results in data being inserted into PostgreSQL and Salesforce</p>
+
+<p><img src="images/3.png" width="90%" height="80%"></p>
+
+<h3 id="open-the-remote-app-in-heroku">Open the Remote App in Heroku</h3>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">  <span style="color: #bb60d5">$ </span>heroku open
+</pre></div>
+
+<p>The App opens up in the default route <code>/</code> with the following view</p>
+
+<p><img src="images/4.png" width="90%" height="80%"></p>
+
+<h3 id="show-contacts">Show Contacts</h3>
+
+<p>Browse to URL <code>http://{your-app-name}.herokuapp.com/contacts</code> to see the list of contact names.</p>
+
+<p><img src="images/5.png" width="90%" height="80%"></p>
+
+<h3 id="create-contact">Create Contact</h3>
+
+<p><img src="images/6.png" width="90%" height="80%"></p>
+
+<h2 id="summary">Summary</h2>
+
+<p>In this workshop we learnt how to configure a <strong>Pre-existing</strong> Spring Boot Application to work with Heroku Connect. We used PostgreSQL JDBC driver for talking to the PostgreSQL database deployed on Heroku.</p>
+
+</div>
+
+</div>
+</div>
+<script src="http://www.sfdcworkshop.com/js/ui.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84811307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
+

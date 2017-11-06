@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.16" />
+
+  <title>Build a Battle Station Manager App using Lightning Components &middot; Salesforce Developers 2017</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+
+  <link rel="shortcut icon" href="http://www.sfdcworkshop.com/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/"><div><img src='/workshop/2015sf_Developers_logo_RGB_KO.png' height='70'></div></a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/minihacks/"><i class='fa fa-list fa-fw'></i>MINIHACKS</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small style="color: #ffffff">© Copyright 2000-2016 salesforce.com, inc. All rights reserved. Various trademarks held by their respective owners. </small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Build a Battle Station Manager App using Lightning Components</h1>
+  <h2></h2>
+</div>
+<div class="content">
+  
+
+<h2 id="introduction">Introduction</h2>
+
+<p>In this project, you learn how to build an application using the Lightning Component framework for the Lightning Experience desktop UI and the Salesforce1 mobile app. We will build an app to manage the construction of Battle Stations on a single page. This is an extension of the <a href="https://trailhead.salesforce.com/project/workshop-battle-station" target="_blank">Battle Station Trailhead project</a>. However, you don&rsquo;t have to necessarily complete the project before this workshop as you can install the metadata from the project using an unmanaged package.</p>
+
+<p>Once we are done with creating the App, it will look like this:
+<img src="images/appready2.png" width="90%" height="90%"/></p>
+
+<h4 id="component-breakup">Component breakup</h4>
+
+<ol>
+<li><code>BattleStationsList</code> component</li>
+<li><code>BattleStationItem</code> component</li>
+<li><code>BattleStationDetail</code> component</li>
+<li><code>ResourceList</code> component</li>
+<li><code>SupplyList</code> component</li>
+<li><code>StationRelatedLists</code> component</li>
+<li>standard <em>Report Chart</em> component</li>
+</ol>
+
+<h4 id="prerequisites">Prerequisites:</h4>
+
+<ul>
+<li>You will use your Salesforce Developer Edition org for this workshop. If you don’t have a Developer Edition account, please <a href="https://developer.salesforce.com/signup" target="_blank">Signup</a>.</li>
+<li>You should have <a href="https://help.salesforce.com/apex/HTViewHelpDoc?id=domain_name_setup.htm" target="_blank">My Domain</a> enabled in your org and setup a domain to develop Lightning Components</li>
+</ul>
+
+<h4 id="here-are-the-steps-involved-in-creating-our-app">Here are the steps involved in creating our app:</h4>
+
+<ul>
+<li><a href="#step1">Install the unmanaged package</a></li>
+<li><a href="#step2">Create a server-side Apex utility class</a></li>
+<li><a href="#step3">Create a BattleStationsList component</a></li>
+<li><a href="#step4">Create a BattleStationItem component</a></li>
+<li><a href="#step5">Create a BattleStationDetail component</a></li>
+<li><a href="#step6">Create BattleStationRelatedItems, ResourceList and SupplyList components</a></li>
+<li><a href="#step7">Create the lightning page and tab with these components</a></li>
+<li><a href="#step8">Add functionality with Lightning Events</a></li>
+<li><a href="#step9">Open the App and try it out!</a></li>
+</ul>
+
+<h3 id="a-name-step1-a-step-1-install-the-unmanaged-package"><a name="step1"></a>Step 1: Install the unmanaged package</h3>
+
+<h4 id="what-you-ll-do">What you&rsquo;ll do</h4>
+
+<p>You will install the unmanaged package in your Developer Edition org.</p>
+
+<ol>
+<li><p><a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04t28000000HAQs" target="_blank">Click here to install</a> the unmanaged package to get the Battle Station app metadata.
+<img src="images/packageInstall.png" width="90%" height="90%"/></p></li>
+
+<li><p>Observe and understand the setup, i.e., the custom objects, fields and the report that are installed by the package, either in the Schema Builder or directly in the Setup. If you are using the Schema Builder, click &ldquo;Clear All&rdquo; in the object selection panel and select the Objects &ldquo;Battle Station&rdquo;, &ldquo;Resource&rdquo; and &ldquo;Supply&rdquo;. Schema Builder can be found by searching for &ldquo;schema builder&rdquo; in the Setup search.
+<img src="images/schemaSetup.png" width="90%" height="90%"/>
+<img src="images/schemaBuilder.png" width="90%" height="90%"/></p></li>
+</ol>
+
+<h3 id="a-name-step2-a-step-2-create-a-server-side-apex-utility-class"><a name="step2"></a>Step 2: Create a server-side Apex utility class</h3>
+
+<h4 id="what-you-ll-do-1">What you&rsquo;ll do</h4>
+
+<p>You will create a new Apex class which will contain lightning enabled methods that can be called by components for server-side data.</p>
+
+<ol>
+<li><p>Open the developer console from Setup &gt; Developer Console.
+<img src="images/devConsole.png" width="90%" height="90%"/></p></li>
+
+<li><p>In the developer console, click <em>File &gt; New &gt; Apex Class</em>, give it a name <code>BattleStationUtil</code>, and click Ok to see the newly created skeletal Apex class.
+<img src="images/fileNewApex.png" width="90%" height="90%"/>
+<img src="images/newApex.png" width="90%" height="90%"/>
+<img src="images/apexSkeleton.png" width="90%" height="90%"/></p></li>
+
+<li><p>Clear the default code and replace with below code, and click <em>File &gt; Save</em>:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">class</span> <span style="color: #0e84b5; font-weight: bold">BattleStationUtil</span> <span style="color: #666666">{</span>
+    <span style="color: #555555; font-weight: bold">@auraEnabled</span>
+    <span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">static</span> list<span style="color: #666666">&lt;</span>battle_station__c<span style="color: #666666">&gt;</span> <span style="color: #06287e">getStations</span><span style="color: #666666">(){</span>
+        <span style="color: #007020; font-weight: bold">return</span> <span style="color: #666666">[</span>select id<span style="color: #666666">,</span>name<span style="color: #666666">,</span>project_status__c<span style="color: #666666">,</span>weapons_status__c from battle_station__c order by createdDate desc<span style="color: #666666">];</span>
+    <span style="color: #666666">}</span>
+    <span style="color: #555555; font-weight: bold">@auraEnabled</span>
+    <span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">static</span> list<span style="color: #666666">&lt;</span>resource__c<span style="color: #666666">&gt;</span> <span style="color: #06287e">getResources</span><span style="color: #666666">(</span>string stationId<span style="color: #666666">){</span>
+        <span style="color: #007020; font-weight: bold">return</span> <span style="color: #666666">[</span>select name<span style="color: #666666">,</span> utilization__c<span style="color: #666666">,</span> quantity__c from resource__c where battle_station__c <span style="color: #666666">=</span> <span style="color: #666666">:</span>stationId order by createdDate desc<span style="color: #666666">];</span>
+    <span style="color: #666666">}</span>
+    <span style="color: #555555; font-weight: bold">@auraEnabled</span>
+    <span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">static</span> list<span style="color: #666666">&lt;</span>supply__c<span style="color: #666666">&gt;</span> <span style="color: #06287e">getSupplies</span><span style="color: #666666">(</span>string stationId<span style="color: #666666">){</span>
+        <span style="color: #007020; font-weight: bold">return</span> <span style="color: #666666">[</span>select name<span style="color: #666666">,</span> unit_cost__c<span style="color: #666666">,</span> quantity__c<span style="color: #666666">,</span> total_cost__c from supply__c where battle_station__c <span style="color: #666666">=</span> <span style="color: #666666">:</span>stationId order by createdDate<span style="color: #666666">];</span>
+    <span style="color: #666666">}</span>
+    <span style="color: #555555; font-weight: bold">@auraEnabled</span>
+    <span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">static</span> Battle_Station__c <span style="color: #06287e">createStation</span><span style="color: #666666">(</span>string name<span style="color: #666666">,</span> string projectStatus<span style="color: #666666">,</span> string weaponsStatus<span style="color: #666666">){</span>
+        battle_station__c station <span style="color: #666666">=</span> <span style="color: #007020; font-weight: bold">new</span> battle_station__c<span style="color: #666666">();</span>
+        station<span style="color: #666666">.</span><span style="color: #4070a0">Name</span> <span style="color: #666666">=</span> name<span style="color: #666666">;</span>
+        station<span style="color: #666666">.</span><span style="color: #4070a0">Project_Status__c</span> <span style="color: #666666">=</span> projectStatus<span style="color: #666666">;</span>
+        station<span style="color: #666666">.</span><span style="color: #4070a0">Weapons_Status__c</span> <span style="color: #666666">=</span> weaponsStatus<span style="color: #666666">;</span>
+        insert station<span style="color: #666666">;</span>
+        <span style="color: #007020; font-weight: bold">return</span> <span style="color: #666666">[</span>select id<span style="color: #666666">,</span> name<span style="color: #666666">,</span> project_status__c<span style="color: #666666">,</span> weapons_status__c from battle_station__c order by createdDate desc limit <span style="color: #40a070">1</span><span style="color: #666666">];</span>
+    <span style="color: #666666">}</span>
+    <span style="color: #555555; font-weight: bold">@auraEnabled</span>
+    <span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">static</span> Battle_Station__c <span style="color: #06287e">deleteStation</span><span style="color: #666666">(</span>String Id<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+        battle_station__c station <span style="color: #666666">=</span> <span style="color: #666666">[</span>select id from battle_station__c where id <span style="color: #666666">=</span> <span style="color: #666666">:</span>Id<span style="color: #666666">];</span>
+        delete station<span style="color: #666666">;</span>
+        <span style="color: #007020; font-weight: bold">return</span> station<span style="color: #666666">;</span>
+    <span style="color: #666666">}</span>
+    <span style="color: #555555; font-weight: bold">@auraEnabled</span>
+    <span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">static</span> Supply__c <span style="color: #06287e">insertSupply</span><span style="color: #666666">(</span>string name<span style="color: #666666">,</span> integer unitCost<span style="color: #666666">,</span> integer quantity<span style="color: #666666">,</span> string stationId<span style="color: #666666">){</span>
+        supply__c supply <span style="color: #666666">=</span> <span style="color: #007020; font-weight: bold">new</span> supply__c<span style="color: #666666">();</span>
+        supply<span style="color: #666666">.</span><span style="color: #4070a0">name</span> <span style="color: #666666">=</span> name<span style="color: #666666">;</span>
+        supply<span style="color: #666666">.</span><span style="color: #4070a0">Battle_Station__c</span> <span style="color: #666666">=</span> stationId<span style="color: #666666">;</span>
+        supply<span style="color: #666666">.</span><span style="color: #4070a0">Quantity__c</span> <span style="color: #666666">=</span> quantity<span style="color: #666666">;</span>
+        supply<span style="color: #666666">.</span><span style="color: #4070a0">Unit_Cost__c</span> <span style="color: #666666">=</span> unitCost<span style="color: #666666">;</span>
+        insert supply<span style="color: #666666">;</span>
+        <span style="color: #007020; font-weight: bold">return</span> supply<span style="color: #666666">;</span>
+    <span style="color: #666666">}</span>
+    <span style="color: #555555; font-weight: bold">@auraEnabled</span>
+    <span style="color: #007020; font-weight: bold">public</span> <span style="color: #007020; font-weight: bold">static</span> Resource__c <span style="color: #06287e">insertResource</span><span style="color: #666666">(</span>string name<span style="color: #666666">,</span> integer utilization<span style="color: #666666">,</span> integer quantity<span style="color: #666666">,</span> string stationId<span style="color: #666666">){</span>
+        Resource__c resource <span style="color: #666666">=</span> <span style="color: #007020; font-weight: bold">new</span> Resource__c<span style="color: #666666">();</span>
+        resource<span style="color: #666666">.</span><span style="color: #4070a0">name</span> <span style="color: #666666">=</span> name<span style="color: #666666">;</span>
+        resource<span style="color: #666666">.</span><span style="color: #4070a0">Battle_Station__c</span> <span style="color: #666666">=</span> stationId<span style="color: #666666">;</span>
+        resource<span style="color: #666666">.</span><span style="color: #4070a0">Quantity__c</span> <span style="color: #666666">=</span> quantity<span style="color: #666666">;</span>
+        resource<span style="color: #666666">.</span><span style="color: #4070a0">Utilization__c</span> <span style="color: #666666">=</span> utilization<span style="color: #666666">;</span>
+        insert resource<span style="color: #666666">;</span>
+        <span style="color: #007020; font-weight: bold">return</span> resource<span style="color: #666666">;</span>
+    <span style="color: #666666">}</span>
+<span style="color: #666666">}</span>
+</pre></div></li>
+</ol>
+
+<h3 id="a-name-step3-a-step-3-create-a-battlestationslist-component"><a name="step3"></a>Step 3: Create a BattleStationsList component</h3>
+
+<h4 id="what-you-ll-do-2">What you&rsquo;ll do</h4>
+
+<p>You will create a new Lightning component which will show a list of current Battle Stations and lets you create new Battle Stations.</p>
+
+<ol>
+<li><p>In the developer console, click <em>File &gt; New &gt; Lightning Component</em>, give it a name <code>BattleStationsList</code>, select Component Configuration checkbox for <em>Lightning Page</em>, and click Submit to see the newly created skeletal component bundle.
+<img src="images/fileNewComp1.png" width="90%" height="90%"/>
+<img src="images/newComp1.png" width="90%" height="90%"/>
+<img src="images/newCompBundle1.png" width="90%" height="90%"/></p></li>
+
+<li><p>Clear the default markup code and replace with below code, and click <em>File &gt; Save</em>:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:component</span> <span style="color: #4070a0">implements=&quot;flexipage:availableForAllPageTypes&quot;</span> <span style="color: #4070a0">access=&quot;global&quot;</span> <span style="color: #4070a0">controller=&quot;BattleStationUtil&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;stations&quot;</span> <span style="color: #4070a0">type=&quot;Battle_Station__c[]&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        
+    <span style="color: #062873; font-weight: bold">&lt;aura:handler</span> <span style="color: #4070a0">name=&quot;init&quot;</span> <span style="color: #4070a0">value=&quot;{!this}&quot;</span> <span style="color: #4070a0">action=&quot;{!c.loadStations}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        
+    <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-align--absolute-center&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;p</span> <span style="color: #4070a0">class=&quot;slds-text-heading--label&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>Click any Battle Station to view or edit details<span style="color: #062873; font-weight: bold">&lt;/p&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-align--absolute-center&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;ui:button</span> <span style="color: #4070a0">aura:id=&quot;new&quot;</span> <span style="color: #4070a0">label=&quot;Create new Battle Station&quot;</span> <span style="color: #4070a0">press=&quot;{!c.loadNew}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;br/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;table</span> <span style="color: #4070a0">class=&quot;myClass slds-table slds-table--bordered slds-table--cell-buffer&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;thead&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;tr</span> <span style="color: #4070a0">class=&quot;slds-text-heading--label&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;th</span> <span style="color: #4070a0">scope=&quot;col&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                    <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span> <span style="color: #4070a0">title=&quot;Battle Station Name&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>Battle Station Name<span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;/th&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;th</span> <span style="color: #4070a0">scope=&quot;col&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                    <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span> <span style="color: #4070a0">title=&quot;Project Status&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>Project Status<span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;/th&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;th</span> <span style="color: #4070a0">scope=&quot;col&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                    <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span> <span style="color: #4070a0">title=&quot;Weapons Status&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>Weapons Status<span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;/th&gt;</span>         
+            <span style="color: #062873; font-weight: bold">&lt;/tr&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/thead&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;tbody&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;aura:iteration</span> <span style="color: #4070a0">items=&quot;{!v.stations}&quot;</span> <span style="color: #4070a0">var=&quot;station&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+
+            <span style="color: #062873; font-weight: bold">&lt;/aura:iteration&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/tbody&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/table&gt;</span>
+        
+<span style="color: #062873; font-weight: bold">&lt;/aura:component&gt;</span>
+</pre></div></li>
+
+<li><p>Click on <em>Controller</em> in the right panel to open the client-side javascript controller section of the bundle.
+<img src="images/controllerComp1.png" width="90%" height="90%"/>
+<img src="images/controller1.png" width="90%" height="90%"/></p></li>
+
+<li><p>Clear the default Javascript code and replace with below code, and Save:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">({
+    loadStations <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        <span style="color: #007020; font-weight: bold">var</span> action <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;c.getStations&quot;</span>);
+        action.setCallback(<span style="color: #007020; font-weight: bold">this</span>, <span style="color: #007020; font-weight: bold">function</span>(response){
+            <span style="color: #007020; font-weight: bold">if</span>(response.getState()<span style="color: #666666">===</span><span style="color: #4070a0">&quot;SUCCESS&quot;</span> <span style="color: #666666">&amp;&amp;</span> component.isValid()){
+                component.set(<span style="color: #4070a0">&quot;v.stations&quot;</span>,response.getReturnValue());
+            }
+        });
+        $A.enqueueAction(action);
+    },
+    loadNew <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        <span style="color: #007020; font-weight: bold">var</span> loadEvent <span style="color: #666666">=</span> $A.get(<span style="color: #4070a0">&quot;e.c:StationClickEvent&quot;</span>);
+        loadEvent.setParams({<span style="color: #4070a0">&quot;new&quot;</span><span style="color: #666666">:</span><span style="color: #007020; font-weight: bold">true</span>});
+        loadEvent.fire();
+    },
+})
+</pre></div>
+
+<p><img src="images/controller2.png" width="90%" height="90%"/></p></li>
+</ol>
+
+<h3 id="a-name-step4-a-step-4-create-a-battlestationitem-component"><a name="step4"></a>Step 4: Create a BattleStationItem component</h3>
+
+<h4 id="what-you-ll-do-3">What you&rsquo;ll do</h4>
+
+<p>You will create another Lightning component which shows a a single Battle Station&rsquo;s details as a row in the BattleStationsList component.</p>
+
+<ol>
+<li><p>In the developer console, click <em>File &gt; New &gt; Lightning Component</em>, give it a name <code>BattleStationItem</code>, select Component Configuration checkbox for <em>Lightning Page</em>, and click Submit to see the newly created skeletal component bundle. For navigation help, refer to screenshots from Step 3.</p></li>
+
+<li><p>Clear the default markup code and replace with below code, and click <em>File &gt; Save</em>:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:component</span> <span style="color: #4070a0">implements=&quot;flexipage:availableForAllPageTypes&quot;</span> <span style="color: #4070a0">access=&quot;GLOBAL&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;stationItem&quot;</span> <span style="color: #4070a0">type=&quot;Battle_Station__c&quot;</span> <span style="color: #4070a0">access=&quot;global&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        
+    <span style="color: #062873; font-weight: bold">&lt;tr</span> <span style="color: #062873; font-weight: bold">&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;th</span> <span style="color: #4070a0">scope=&quot;row&quot;</span> <span style="color: #4070a0">data-label=&quot;Battle Station Name&quot;</span> <span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;a</span> <span style="color: #4070a0">href=&quot;javascript:void(0);&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;p</span> <span style="color: #4070a0">onclick=&quot;{!c.loadDetail}&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>{!v.stationItem.Name}<span style="color: #062873; font-weight: bold">&lt;/p&gt;&lt;/a&gt;&lt;/div&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;/th&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;td</span> <span style="color: #4070a0">data-label=&quot;Project Status&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>{!v.stationItem.Project_Status__c}<span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;/td&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;td</span> <span style="color: #4070a0">data-label=&quot;Weapons Status&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>{!v.stationItem.Weapons_Status__c}<span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+      <span style="color: #062873; font-weight: bold">&lt;/td&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/tr&gt;</span>
+        
+<span style="color: #062873; font-weight: bold">&lt;/aura:component&gt;</span>
+</pre></div></li>
+
+<li><p>Click on Controller in the right panel to open the client-side javascript controller section of the bundle.</p></li>
+
+<li><p>Clear the default Javascript code and replace with below code, and Save:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">({
+    loadDetail <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        <span style="color: #007020; font-weight: bold">var</span> station <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;v.stationItem&quot;</span>);
+        <span style="color: #007020; font-weight: bold">var</span> loadEvent <span style="color: #666666">=</span> $A.get(<span style="color: #4070a0">&quot;e.c:StationClickEvent&quot;</span>);
+        loadEvent.setParams({<span style="color: #4070a0">&quot;station&quot;</span><span style="color: #666666">:</span>station,<span style="color: #4070a0">&quot;new&quot;</span><span style="color: #666666">:</span><span style="color: #007020; font-weight: bold">false</span>});
+        loadEvent.fire();
+    },
+})
+</pre></div></li>
+
+<li><p>Add this new component to the previous BattleStationsList component&rsquo;s markup. To do so, open the <code>BattleStationsList</code> component markup and add the following line of markup inside the <code>aura:iteration</code> component.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;c:BattleStationItem</span> <span style="color: #4070a0">stationItem=&quot;{!station}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+</pre></div>
+
+<p><img src="images/itemToList.png" width="90%" height="90%"/></p></li>
+</ol>
+
+<h3 id="a-name-step5-a-step-5-create-a-battlestationdetail-component"><a name="step5"></a>Step 5: Create a BattleStationDetail component</h3>
+
+<h4 id="what-you-ll-do-4">What you&rsquo;ll do</h4>
+
+<p>You will create a lightning component which displays the details of a Battle Station record and lets you edit and delete the record, or create a new record.</p>
+
+<ol>
+<li><p>In the developer console, click <em>File &gt; New &gt; Lightning Component</em>, give it a name <code>BattleStationDetail</code>, select Component Configuration checkbox for <em>Lightning Page</em>, and click Submit to see the newly created skeletal component bundle. For navigation help, refer to screenshots from Step 3.</p></li>
+
+<li><p>Clear the default markup code and replace with below code, and click <em>File &gt; Save</em>:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:component</span> <span style="color: #4070a0">implements=&quot;flexipage:availableForAllPageTypes&quot;</span> <span style="color: #4070a0">access=&quot;GLOBAL&quot;</span> <span style="color: #4070a0">controller=&quot;BattleStationUtil&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        
+    <span style="color: #062873; font-weight: bold">&lt;aura:handler</span> <span style="color: #4070a0">name=&quot;onSaveSuccess&quot;</span> <span style="color: #4070a0">event=&quot;force:recordSaveSuccess&quot;</span> <span style="color: #4070a0">action=&quot;{!c.saveSuccess}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">type=&quot;Battle_Station__c&quot;</span> <span style="color: #4070a0">name=&quot;station&quot;</span> <span style="color: #4070a0">access=&quot;global&quot;</span> <span style="color: #4070a0">default=&quot;{&#39;sobjectType&#39;:&#39;Battle_Station__c&#39;}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">type=&quot;Boolean&quot;</span> <span style="color: #4070a0">name=&quot;editView&quot;</span> <span style="color: #4070a0">default=&quot;false&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">type=&quot;Boolean&quot;</span> <span style="color: #4070a0">name=&quot;createView&quot;</span> <span style="color: #4070a0">default=&quot;false&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">type=&quot;Boolean&quot;</span> <span style="color: #4070a0">name=&quot;detailView&quot;</span> <span style="color: #4070a0">default=&quot;false&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        
+    <span style="color: #062873; font-weight: bold">&lt;aura:if</span> <span style="color: #4070a0">isTrue=&quot;{! v.createView }&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-align--absolute-center&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:button</span> <span style="color: #4070a0">aura:id=&quot;save&quot;</span> <span style="color: #4070a0">label=&quot;Save&quot;</span> <span style="color: #4070a0">press=&quot;{!c.insertStation}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:button</span> <span style="color: #4070a0">aura:id=&quot;cancel&quot;</span> <span style="color: #4070a0">label=&quot;Cancel&quot;</span> <span style="color: #4070a0">press=&quot;{!c.cancelCreate}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;ui:inputText</span> <span style="color: #4070a0">label=&quot;Battle Station name&quot;</span> <span style="color: #4070a0">value=&quot;{!v.station.Name}&quot;</span> <span style="color: #4070a0">required=&quot;true&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;ui:inputSelect</span> <span style="color: #4070a0">label=&quot;Project Status&quot;</span> <span style="color: #4070a0">value=&quot;{!v.station.Project_Status__c}&quot;</span> <span style="color: #4070a0">required=&quot;true&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:inputSelectOption</span> <span style="color: #4070a0">text=&quot;Green&quot;</span> <span style="color: #4070a0">label=&quot;Green&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:inputSelectOption</span> <span style="color: #4070a0">text=&quot;Yellow&quot;</span> <span style="color: #4070a0">label=&quot;Yellow&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:inputSelectOption</span> <span style="color: #4070a0">text=&quot;Red&quot;</span> <span style="color: #4070a0">label=&quot;Red&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:inputSelectOption</span> <span style="color: #4070a0">text=&quot;Complete&quot;</span> <span style="color: #4070a0">label=&quot;Complete&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/ui:inputSelect&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;ui:inputSelect</span> <span style="color: #4070a0">label=&quot;Weapons Status&quot;</span> <span style="color: #4070a0">value=&quot;{!v.station.Weapons_Status__c}&quot;</span> <span style="color: #4070a0">required=&quot;true&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:inputSelectOption</span> <span style="color: #4070a0">text=&quot;Not Yet Operational&quot;</span> <span style="color: #4070a0">label=&quot;Not Yet Operational&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:inputSelectOption</span> <span style="color: #4070a0">text=&quot;Fully Operational&quot;</span> <span style="color: #4070a0">label=&quot;Fully Operational&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/ui:inputSelect&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/aura:if&gt;</span>
+        
+    <span style="color: #062873; font-weight: bold">&lt;aura:if</span> <span style="color: #4070a0">isTrue=&quot;{! v.detailView }&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-align--absolute-center&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:button</span> <span style="color: #4070a0">aura:id=&quot;edit&quot;</span> <span style="color: #4070a0">label=&quot;Edit&quot;</span> <span style="color: #4070a0">press=&quot;{!c.makeEdit}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:button</span> <span style="color: #4070a0">aura:id=&quot;delete&quot;</span> <span style="color: #4070a0">label=&quot;Delete&quot;</span> <span style="color: #4070a0">press=&quot;{!c.removeStation}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;force:recordView</span> <span style="color: #4070a0">aura:id=&quot;record&quot;</span> <span style="color: #4070a0">recordId=&quot;{!v.station.Id}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/aura:if&gt;</span>
+        
+    <span style="color: #062873; font-weight: bold">&lt;aura:if</span> <span style="color: #4070a0">isTrue=&quot;{! v.editView }&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-align--absolute-center&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:button</span> <span style="color: #4070a0">aura:id=&quot;save&quot;</span> <span style="color: #4070a0">label=&quot;Save&quot;</span> <span style="color: #4070a0">press=&quot;{!c.saveStation}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;ui:button</span> <span style="color: #4070a0">aura:id=&quot;cancel&quot;</span> <span style="color: #4070a0">label=&quot;Cancel&quot;</span> <span style="color: #4070a0">press=&quot;{!c.cancelEdit}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;force:recordEdit</span> <span style="color: #4070a0">aura:id=&quot;recedit&quot;</span> <span style="color: #4070a0">recordId=&quot;{!v.station.Id}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/aura:if&gt;</span>
+        
+<span style="color: #062873; font-weight: bold">&lt;/aura:component&gt;</span>
+</pre></div></li>
+
+<li><p>Click on <em>Controller</em> in the right panel to open the client-side javascript controller section of the bundle. For navigation help, refer to screenshots from Step 3.</p></li>
+
+<li><p>Clear the default Javascript code and replace with below code, and Save:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">({
+    showStation <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        <span style="color: #007020; font-weight: bold">var</span> newView <span style="color: #666666">=</span> event.getParam(<span style="color: #4070a0">&quot;new&quot;</span>);
+        <span style="color: #007020; font-weight: bold">var</span> station <span style="color: #666666">=</span> event.getParam(<span style="color: #4070a0">&quot;station&quot;</span>);
+        component.set(<span style="color: #4070a0">&quot;v.station&quot;</span>,station);
+        <span style="color: #007020; font-weight: bold">if</span> (newView) {
+            helper.toggleView(component, <span style="color: #4070a0">&quot;create&quot;</span>);  
+        } <span style="color: #007020; font-weight: bold">else</span> {
+            helper.toggleView(component, <span style="color: #4070a0">&quot;detail&quot;</span>);
+        }
+    },
+    makeEdit <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        helper.toggleView(component, <span style="color: #4070a0">&quot;edit&quot;</span>);
+    },
+    saveStation <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {       
+        component.find(<span style="color: #4070a0">&quot;recedit&quot;</span>).get(<span style="color: #4070a0">&quot;e.recordSave&quot;</span>).fire();
+    },
+    saveSuccess <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        $A.get(<span style="color: #4070a0">&quot;e.c:updatedListEvent&quot;</span>).fire();
+        helper.toggleView(component, <span style="color: #4070a0">&quot;detail&quot;</span>);       
+    },
+    cancelEdit <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        helper.toggleView(component, <span style="color: #4070a0">&quot;detail&quot;</span>);
+    },
+    cancelCreate <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        helper.toggleView(component, <span style="color: #4070a0">&quot;none&quot;</span>);
+    },
+    makeNew <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        helper.toggleView(component, <span style="color: #4070a0">&quot;create&quot;</span>);
+    },
+    insertStation <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        <span style="color: #007020; font-weight: bold">var</span> action <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;c.createStation&quot;</span>);
+        <span style="color: #007020; font-weight: bold">var</span> station <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;v.station&quot;</span>);
+        action.setParams({
+            <span style="color: #4070a0">&quot;name&quot;</span> <span style="color: #666666">:</span> station.Name,
+            <span style="color: #4070a0">&quot;projectStatus&quot;</span> <span style="color: #666666">:</span> station.Project_Status__c,
+            <span style="color: #4070a0">&quot;weaponsStatus&quot;</span> <span style="color: #666666">:</span> station.Weapons_Status__c
+        });
+        action.setCallback(<span style="color: #007020; font-weight: bold">this</span>, <span style="color: #007020; font-weight: bold">function</span>(response){
+            $A.get(<span style="color: #4070a0">&quot;e.c:updatedListEvent&quot;</span>).fire();
+            $A.get(<span style="color: #4070a0">&quot;e.c:StationClickEvent&quot;</span>).setParams({<span style="color: #4070a0">&quot;new&quot;</span><span style="color: #666666">:</span><span style="color: #007020; font-weight: bold">false</span>,<span style="color: #4070a0">&quot;station&quot;</span><span style="color: #666666">:</span>response.getReturnValue()}).fire();
+            helper.toggleView(component, <span style="color: #4070a0">&quot;detail&quot;</span>);
+        });
+        $A.enqueueAction(action);
+    },
+    removeStation <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        <span style="color: #007020; font-weight: bold">var</span> action <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;c.deleteStation&quot;</span>);
+        action.setParams({<span style="color: #4070a0">&quot;Id&quot;</span><span style="color: #666666">:</span>component.get(<span style="color: #4070a0">&quot;v.station&quot;</span>).Id});
+        action.setCallback(<span style="color: #007020; font-weight: bold">this</span>, <span style="color: #007020; font-weight: bold">function</span>(response){
+            $A.get(<span style="color: #4070a0">&quot;e.force:showToast&quot;</span>).setParams({<span style="color: #4070a0">&quot;message&quot;</span><span style="color: #666666">:</span><span style="color: #4070a0">&quot;Battle Station Deleted&quot;</span>,<span style="color: #4070a0">&quot;duration&quot;</span><span style="color: #666666">:</span><span style="color: #4070a0">&quot;2500&quot;</span>}).fire();
+            helper.toggleView(component, <span style="color: #4070a0">&quot;none&quot;</span>);
+            $A.get(<span style="color: #4070a0">&quot;e.c:updatedListEvent&quot;</span>).fire();
+        })
+        $A.enqueueAction(action);
+    },
+})
+</pre></div></li>
+
+<li><p>Click on <em>Helper</em> in the right panel to open the client-side javascript controller section of the bundle.
+<img src="images/helper1.png" width="90%" height="90%"/></p></li>
+
+<li><p>Clear the default Javascript code and replace with below code, and Save:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">({
+    toggleView <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, view) {
+        component.set(<span style="color: #4070a0">&quot;v.createView&quot;</span>,<span style="color: #007020; font-weight: bold">false</span>);
+        component.set(<span style="color: #4070a0">&quot;v.detailView&quot;</span>,<span style="color: #007020; font-weight: bold">false</span>);
+        component.set(<span style="color: #4070a0">&quot;v.editView&quot;</span>,<span style="color: #007020; font-weight: bold">false</span>);
+            
+        <span style="color: #007020; font-weight: bold">if</span> ( view <span style="color: #666666">===</span> <span style="color: #4070a0">&quot;create&quot;</span> ) component.set(<span style="color: #4070a0">&quot;v.createView&quot;</span>,<span style="color: #007020; font-weight: bold">true</span>);
+        <span style="color: #007020; font-weight: bold">if</span> ( view <span style="color: #666666">===</span> <span style="color: #4070a0">&quot;edit&quot;</span> ) component.set(<span style="color: #4070a0">&quot;v.editView&quot;</span>,<span style="color: #007020; font-weight: bold">true</span>);
+        <span style="color: #007020; font-weight: bold">if</span> ( view <span style="color: #666666">===</span> <span style="color: #4070a0">&quot;detail&quot;</span> ) component.set(<span style="color: #4070a0">&quot;v.detailView&quot;</span>,<span style="color: #007020; font-weight: bold">true</span>);
+    }
+})
+</pre></div></li>
+</ol>
+
+<h3 id="a-name-step6-a-step-6-create-battlestationrelateditems-resourcelist-and-supplylist-components"><a name="step6"></a>Step 6: Create BattleStationRelatedItems, ResourceList and SupplyList components</h3>
+
+<h4 id="what-you-ll-do-5">What you&rsquo;ll do</h4>
+
+<p>You will create components to show related Related Resources and Supplies and another BattleStationRelatedItems component which contains the list components.</p>
+
+<ol>
+<li><p>In the developer console, click <em>File &gt; New &gt; Lightning Component</em>, give it a name <code>ResourceList</code>, select Component Configuration checkbox for <em>Lightning Page</em>, and click Submit to see the newly created skeletal component bundle. For navigation help, refer to screenshots from Step 3.</p></li>
+
+<li><p>Clear the default markup code and replace with below code, and click <em>File &gt; Save</em>:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:component</span> <span style="color: #4070a0">implements=&quot;flexipage:availableForAllPageTypes&quot;</span> <span style="color: #4070a0">access=&quot;global&quot;</span> <span style="color: #4070a0">controller=&quot;BattleStationUtil&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+  
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;station&quot;</span> <span style="color: #4070a0">type=&quot;Battle_Station__c&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;resources&quot;</span> <span style="color: #4070a0">type=&quot;Resource__c[]&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;newResource&quot;</span> <span style="color: #4070a0">type=&quot;Resource__c&quot;</span> <span style="color: #4070a0">default=&quot;{&#39;sobjectType&#39;:&#39;Resource__c&#39;}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;createView&quot;</span> <span style="color: #4070a0">type=&quot;Boolean&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        
+    <span style="color: #062873; font-weight: bold">&lt;aura:handler</span> <span style="color: #4070a0">name=&quot;init&quot;</span> <span style="color: #4070a0">value=&quot;{!this}&quot;</span> <span style="color: #4070a0">action=&quot;{!c.loadResources}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:handler</span> <span style="color: #4070a0">name=&quot;change&quot;</span> <span style="color: #4070a0">value=&quot;{!v.station}&quot;</span> <span style="color: #4070a0">action=&quot;{!c.loadResources}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        
+    <span style="color: #062873; font-weight: bold">&lt;ui:button</span> <span style="color: #4070a0">aura:id=&quot;new&quot;</span> <span style="color: #4070a0">label=&quot;Create New&quot;</span> <span style="color: #4070a0">press=&quot;{!c.createView}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:if</span> <span style="color: #4070a0">isTrue=&quot;{!v.createView}&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;ui:inputText</span> <span style="color: #4070a0">label=&quot;Resource name:&quot;</span> <span style="color: #4070a0">value=&quot;{!v.newResource.Name}&quot;</span> <span style="color: #4070a0">required=&quot;true&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;ui:inputText</span> <span style="color: #4070a0">label=&quot;Quantity:&quot;</span> <span style="color: #4070a0">value=&quot;{!v.newResource.Quantity__c}&quot;</span> <span style="color: #4070a0">required=&quot;true&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;ui:inputText</span> <span style="color: #4070a0">label=&quot;Utilization: %&quot;</span> <span style="color: #4070a0">value=&quot;{!v.newResource.Utilization__c}&quot;</span> <span style="color: #4070a0">required=&quot;true&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;ui:button</span> <span style="color: #4070a0">label=&quot;Save&quot;</span> <span style="color: #4070a0">press=&quot;{!c.createResource}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;ui:button</span> <span style="color: #4070a0">label=&quot;Cancel&quot;</span> <span style="color: #4070a0">press=&quot;{!c.cancelSave}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/aura:if&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;ul</span> <span style="color: #4070a0">class=&quot;slds-has-dividers--around-space&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;aura:iteration</span> <span style="color: #4070a0">items=&quot;{!v.resources}&quot;</span> <span style="color: #4070a0">var=&quot;resource&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;li</span> <span style="color: #4070a0">class=&quot;slds-item&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-tile slds-tile--board&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;h3</span> <span style="color: #4070a0">class=&quot;slds-truncate slds-text-heading--medium&quot;</span> <span style="color: #4070a0">title=&quot;Anypoint Connectors&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;a</span> <span style="color: #4070a0">href=&quot;javascript:void(0);&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>{!resource.Name}<span style="color: #062873; font-weight: bold">&lt;/a&gt;&lt;/h3&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-tile__detail slds-text-body--small&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                    <span style="color: #062873; font-weight: bold">&lt;p</span> <span style="color: #4070a0">class=&quot;slds-text-heading--medium&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>Quantity: {!resource.Quantity__c}<span style="color: #062873; font-weight: bold">&lt;/p&gt;</span>
+                    <span style="color: #062873; font-weight: bold">&lt;p</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>Utilization: {!resource.Utilization__c}%<span style="color: #062873; font-weight: bold">&lt;/p&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/li&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/aura:iteration&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/ul&gt;</span>
+
+<span style="color: #062873; font-weight: bold">&lt;/aura:component&gt;</span>
+</pre></div></li>
+
+<li><p>Click on <em>Controller</em> in the right panel to open the client-side javascript controller section of the bundle. For navigation help, refer to screenshots from Step 3.</p></li>
+
+<li><p>Clear the default Javascript code and replace with below code, and Save:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">({
+    loadResources <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        <span style="color: #007020; font-weight: bold">var</span> action <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;c.getResources&quot;</span>);
+        action.setParams({
+            <span style="color: #4070a0">&quot;stationId&quot;</span> <span style="color: #666666">:</span> component.get(<span style="color: #4070a0">&quot;v.station&quot;</span>).Id
+        });
+        action.setCallback(<span style="color: #007020; font-weight: bold">this</span>, <span style="color: #007020; font-weight: bold">function</span>(response){
+            <span style="color: #007020; font-weight: bold">if</span>(response.getState()<span style="color: #666666">===</span><span style="color: #4070a0">&quot;SUCCESS&quot;</span> <span style="color: #666666">&amp;&amp;</span> component.isValid()){
+                component.set(<span style="color: #4070a0">&quot;v.resources&quot;</span>,response.getReturnValue());
+            }
+        });
+        $A.enqueueAction(action);
+    },
+    createView <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        component.set(<span style="color: #4070a0">&quot;v.createView&quot;</span>,<span style="color: #007020; font-weight: bold">true</span>);
+    },
+    cancelSave <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        component.set(<span style="color: #4070a0">&quot;v.createView&quot;</span>,<span style="color: #007020; font-weight: bold">false</span>);
+    },
+    createResource <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        <span style="color: #007020; font-weight: bold">var</span> action <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;c.insertResource&quot;</span>);
+        <span style="color: #007020; font-weight: bold">var</span> supply <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;v.newResource&quot;</span>);
+        action.setParams({
+            <span style="color: #4070a0">&quot;name&quot;</span> <span style="color: #666666">:</span> supply.Name,
+            <span style="color: #4070a0">&quot;utilization&quot;</span> <span style="color: #666666">:</span> supply.Utilization__c,
+            <span style="color: #4070a0">&quot;quantity&quot;</span> <span style="color: #666666">:</span> supply.Quantity__c,
+            <span style="color: #4070a0">&quot;stationId&quot;</span> <span style="color: #666666">:</span> component.get(<span style="color: #4070a0">&quot;v.station&quot;</span>).Id
+        });
+        action.setCallback(<span style="color: #007020; font-weight: bold">this</span>, <span style="color: #007020; font-weight: bold">function</span>(response){
+            <span style="color: #007020; font-weight: bold">if</span>(response.getState()<span style="color: #666666">===</span><span style="color: #4070a0">&quot;SUCCESS&quot;</span> <span style="color: #666666">&amp;&amp;</span> component.isValid()) {
+                component.set(<span style="color: #4070a0">&quot;v.createView&quot;</span>,<span style="color: #007020; font-weight: bold">false</span>);
+                $A.get(<span style="color: #4070a0">&quot;e.c:StationClickEvent&quot;</span>).setParams({<span style="color: #4070a0">&quot;new&quot;</span><span style="color: #666666">:</span><span style="color: #007020; font-weight: bold">false</span>,<span style="color: #4070a0">&quot;station&quot;</span><span style="color: #666666">:</span>component.get(<span style="color: #4070a0">&quot;v.station&quot;</span>)}).fire();
+            }
+        });
+            
+        $A.enqueueAction(action);
+    }
+})
+</pre></div></li>
+
+<li><p>In the developer console, click <em>File &gt; New &gt; Lightning Component</em>, give it a name <code>SupplyList</code>, select Component Configuration checkbox for <em>Lightning Page</em>, and click Submit to see the newly created skeletal component bundle. For navigation help, refer to screenshots from Step 3.</p></li>
+
+<li><p>Clear the default markup code and replace with below code, and click <em>File &gt; Save</em>:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:component</span> <span style="color: #4070a0">implements=&quot;flexipage:availableForAllPageTypes&quot;</span> <span style="color: #4070a0">access=&quot;global&quot;</span> <span style="color: #4070a0">controller=&quot;BattleStationUtil&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+    
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;station&quot;</span> <span style="color: #4070a0">type=&quot;Battle_Station__c&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;supplies&quot;</span> <span style="color: #4070a0">type=&quot;Supply__c[]&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;newSupply&quot;</span> <span style="color: #4070a0">type=&quot;Supply__c&quot;</span> <span style="color: #4070a0">default=&quot;{&#39;sobjectType&#39;:&#39;Supply__c&#39;}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;createView&quot;</span> <span style="color: #4070a0">type=&quot;Boolean&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        
+    <span style="color: #062873; font-weight: bold">&lt;aura:handler</span> <span style="color: #4070a0">name=&quot;init&quot;</span> <span style="color: #4070a0">value=&quot;{!this}&quot;</span> <span style="color: #4070a0">action=&quot;{!c.loadSupplies}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:handler</span> <span style="color: #4070a0">name=&quot;change&quot;</span> <span style="color: #4070a0">value=&quot;{!v.station}&quot;</span> <span style="color: #4070a0">action=&quot;{!c.loadSupplies}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        
+    <span style="color: #062873; font-weight: bold">&lt;ui:button</span> <span style="color: #4070a0">aura:id=&quot;new&quot;</span> <span style="color: #4070a0">label=&quot;Create New&quot;</span> <span style="color: #4070a0">press=&quot;{!c.createView}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:if</span> <span style="color: #4070a0">isTrue=&quot;{!v.createView}&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;ui:inputText</span> <span style="color: #4070a0">label=&quot;Supply name:&quot;</span> <span style="color: #4070a0">value=&quot;{!v.newSupply.Name}&quot;</span> <span style="color: #4070a0">required=&quot;true&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;ui:inputText</span> <span style="color: #4070a0">label=&quot;Unit Cost: $&quot;</span> <span style="color: #4070a0">value=&quot;{!v.newSupply.Unit_Cost__c}&quot;</span> <span style="color: #4070a0">required=&quot;true&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;ui:inputText</span> <span style="color: #4070a0">label=&quot;Quantity:&quot;</span> <span style="color: #4070a0">value=&quot;{!v.newSupply.Quantity__c}&quot;</span> <span style="color: #4070a0">required=&quot;true&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;ui:button</span> <span style="color: #4070a0">label=&quot;Save&quot;</span> <span style="color: #4070a0">press=&quot;{!c.createSupply}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;ui:button</span> <span style="color: #4070a0">label=&quot;Cancel&quot;</span> <span style="color: #4070a0">press=&quot;{!c.cancelSave}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/aura:if&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;ul</span> <span style="color: #4070a0">class=&quot;slds-has-dividers--around-space&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;aura:iteration</span> <span style="color: #4070a0">items=&quot;{!v.supplies}&quot;</span> <span style="color: #4070a0">var=&quot;supply&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;li</span> <span style="color: #4070a0">class=&quot;slds-item&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-tile slds-tile--board&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;h3</span> <span style="color: #4070a0">class=&quot;slds-truncate slds-text-heading--medium&quot;</span> <span style="color: #4070a0">title=&quot;Anypoint Connectors&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;a</span> <span style="color: #4070a0">href=&quot;javascript:void(0);&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>{!supply.Name}<span style="color: #062873; font-weight: bold">&lt;/a&gt;&lt;/h3&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-tile__detail slds-text-body--small&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+                    <span style="color: #062873; font-weight: bold">&lt;p</span> <span style="color: #4070a0">class=&quot;slds-text-heading--medium&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>Quantity: {!supply.Quantity__c}<span style="color: #062873; font-weight: bold">&lt;/p&gt;</span>
+                    <span style="color: #062873; font-weight: bold">&lt;p</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>Unit Cost:  ${!supply.Unit_Cost__c}<span style="color: #062873; font-weight: bold">&lt;/p&gt;</span>
+                    <span style="color: #062873; font-weight: bold">&lt;p</span> <span style="color: #4070a0">class=&quot;slds-truncate&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>Total Cost: ${!supply.Total_Cost__c}<span style="color: #062873; font-weight: bold">&lt;/p&gt;</span>
+                <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/li&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/aura:iteration&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/ul&gt;</span>
+
+<span style="color: #062873; font-weight: bold">&lt;/aura:component&gt;</span>
+</pre></div></li>
+
+<li><p>Click on <em>Controller</em> in the right panel to open the client-side javascript controller section of the bundle. For navigation help, refer to screenshots from Step 3.</p></li>
+
+<li><p>Clear the default Javascript code and replace with below code, and Save:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">({
+    loadSupplies <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        <span style="color: #007020; font-weight: bold">var</span> action <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;c.getSupplies&quot;</span>);
+        action.setParams({
+            <span style="color: #4070a0">&quot;stationId&quot;</span> <span style="color: #666666">:</span> component.get(<span style="color: #4070a0">&quot;v.station&quot;</span>).Id
+        });
+        action.setCallback(<span style="color: #007020; font-weight: bold">this</span>, <span style="color: #007020; font-weight: bold">function</span>(response){
+            <span style="color: #007020; font-weight: bold">if</span>(response.getState()<span style="color: #666666">===</span><span style="color: #4070a0">&quot;SUCCESS&quot;</span> <span style="color: #666666">&amp;&amp;</span> component.isValid()){
+                component.set(<span style="color: #4070a0">&quot;v.supplies&quot;</span>,response.getReturnValue());
+            }
+        });
+        $A.enqueueAction(action);
+    },
+    createView <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        component.set(<span style="color: #4070a0">&quot;v.createView&quot;</span>,<span style="color: #007020; font-weight: bold">true</span>);
+    },
+    cancelSave <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        component.set(<span style="color: #4070a0">&quot;v.createView&quot;</span>,<span style="color: #007020; font-weight: bold">false</span>);
+    },
+    createSupply <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        <span style="color: #007020; font-weight: bold">var</span> action <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;c.insertSupply&quot;</span>);
+        <span style="color: #007020; font-weight: bold">var</span> supply <span style="color: #666666">=</span> component.get(<span style="color: #4070a0">&quot;v.newSupply&quot;</span>);
+        action.setParams({
+            <span style="color: #4070a0">&quot;name&quot;</span> <span style="color: #666666">:</span> supply.Name,
+            <span style="color: #4070a0">&quot;unitCost&quot;</span> <span style="color: #666666">:</span> supply.Unit_Cost__c,
+            <span style="color: #4070a0">&quot;quantity&quot;</span> <span style="color: #666666">:</span> supply.Quantity__c,
+            <span style="color: #4070a0">&quot;stationId&quot;</span> <span style="color: #666666">:</span> component.get(<span style="color: #4070a0">&quot;v.station&quot;</span>).Id
+        });
+        action.setCallback(<span style="color: #007020; font-weight: bold">this</span>, <span style="color: #007020; font-weight: bold">function</span>(response){
+            <span style="color: #007020; font-weight: bold">if</span>(response.getState()<span style="color: #666666">===</span><span style="color: #4070a0">&quot;SUCCESS&quot;</span> <span style="color: #666666">&amp;&amp;</span> component.isValid()) {
+                component.set(<span style="color: #4070a0">&quot;v.createView&quot;</span>,<span style="color: #007020; font-weight: bold">false</span>);
+                $A.get(<span style="color: #4070a0">&quot;e.c:StationClickEvent&quot;</span>).setParams({<span style="color: #4070a0">&quot;new&quot;</span><span style="color: #666666">:</span><span style="color: #007020; font-weight: bold">false</span>,<span style="color: #4070a0">&quot;station&quot;</span><span style="color: #666666">:</span>component.get(<span style="color: #4070a0">&quot;v.station&quot;</span>)}).fire();
+            }
+        });
+            
+        $A.enqueueAction(action);
+    }
+})
+</pre></div></li>
+
+<li><p>In the developer console, click <em>File &gt; New &gt; Lightning Component</em>, give it a name <code>StationRelatedLists</code>, select Component Configuration checkbox for <em>Lightning Page</em>, and click Submit to see the newly created skeletal component bundle. For navigation help, refer to screenshots from Step 3.</p></li>
+
+<li><p>Clear the default markup code and replace with below code, and click <em>File &gt; Save</em>:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:component</span> <span style="color: #4070a0">implements=&quot;flexipage:availableForAllPageTypes&quot;</span> <span style="color: #4070a0">access=&quot;global&quot;</span> <span style="color: #062873; font-weight: bold">&gt;</span>
+    
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;station&quot;</span> <span style="color: #4070a0">type=&quot;Battle_Station__c&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;show&quot;</span> <span style="color: #4070a0">type=&quot;Boolean&quot;</span> <span style="color: #062873; font-weight: bold">/&gt;</span>
+        
+    <span style="color: #062873; font-weight: bold">&lt;aura:if</span> <span style="color: #4070a0">isTrue=&quot;{!v.show}&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">class=&quot;slds-tabs--scoped&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+          <span style="color: #062873; font-weight: bold">&lt;ul</span> <span style="color: #4070a0">class=&quot;slds-tabs--scoped__nav&quot;</span> <span style="color: #4070a0">role=&quot;tablist&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;li</span> <span style="color: #4070a0">aura:id=&quot;tab1&quot;</span> <span style="color: #4070a0">onclick=&quot;{!c.switchTab}&quot;</span> <span style="color: #4070a0">class=&quot;slds-tabs--scoped__item slds-text-heading--label slds-active&quot;</span> <span style="color: #4070a0">title=&quot;Resources&quot;</span> <span style="color: #4070a0">role=&quot;presentation&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;a</span> <span style="color: #4070a0">class=&quot;slds-tabs--scoped__link&quot;</span> <span style="color: #4070a0">href=&quot;javascript:void(0);&quot;</span> <span style="color: #4070a0">role=&quot;tab&quot;</span> <span style="color: #4070a0">tabindex=&quot;0&quot;</span> <span style="color: #4070a0">aria-selected=&quot;true&quot;</span> <span style="color: #4070a0">aria-controls=&quot;tab-scoped-1&quot;</span> <span style="color: #4070a0">id=&quot;tab-scoped-1__item&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>Resources<span style="color: #062873; font-weight: bold">&lt;/a&gt;&lt;/li&gt;</span>
+            <span style="color: #062873; font-weight: bold">&lt;li</span> <span style="color: #4070a0">aura:id=&quot;tab2&quot;</span> <span style="color: #4070a0">onclick=&quot;{!c.switchTab}&quot;</span> <span style="color: #4070a0">class=&quot;slds-tabs--scoped__item slds-text-heading--label &quot;</span> <span style="color: #4070a0">title=&quot;Supplies&quot;</span> <span style="color: #4070a0">role=&quot;presentation&quot;</span><span style="color: #062873; font-weight: bold">&gt;&lt;a</span> <span style="color: #4070a0">class=&quot;slds-tabs--scoped__link&quot;</span> <span style="color: #4070a0">href=&quot;javascript:void(0);&quot;</span> <span style="color: #4070a0">role=&quot;tab&quot;</span> <span style="color: #4070a0">tabindex=&quot;-1&quot;</span> <span style="color: #4070a0">aria-selected=&quot;false&quot;</span> <span style="color: #4070a0">aria-controls=&quot;tab-scoped-2&quot;</span> <span style="color: #4070a0">id=&quot;tab-scoped-2__item&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>Supplies<span style="color: #062873; font-weight: bold">&lt;/a&gt;&lt;/li&gt;</span>
+          <span style="color: #062873; font-weight: bold">&lt;/ul&gt;</span>
+          <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">aura:id=&quot;content1&quot;</span> <span style="color: #4070a0">id=&quot;tab-scoped-1&quot;</span> <span style="color: #4070a0">class=&quot;slds-tabs--scoped__content slds-show&quot;</span> <span style="color: #4070a0">role=&quot;tabpanel&quot;</span> <span style="color: #4070a0">aria-labelledby=&quot;tab-scoped-1__item&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+              <span style="color: #062873; font-weight: bold">&lt;c:ResourceList</span> <span style="color: #4070a0">station=&quot;{!v.station}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+          <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+          <span style="color: #062873; font-weight: bold">&lt;div</span> <span style="color: #4070a0">aura:id=&quot;content2&quot;</span> <span style="color: #4070a0">id=&quot;tab-scoped-2&quot;</span> <span style="color: #4070a0">class=&quot;slds-tabs--scoped__content slds-hide&quot;</span> <span style="color: #4070a0">role=&quot;tabpanel&quot;</span> <span style="color: #4070a0">aria-labelledby=&quot;tab-scoped-2__item&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+              <span style="color: #062873; font-weight: bold">&lt;c:SupplyList</span> <span style="color: #4070a0">station=&quot;{!v.station}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+          <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+        <span style="color: #062873; font-weight: bold">&lt;/div&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;/aura:if&gt;</span> 
+        
+<span style="color: #062873; font-weight: bold">&lt;/aura:component&gt;</span>
+</pre></div></li>
+
+<li><p>Click on <em>Controller</em> in the right panel to open the client-side javascript controller section of the bundle. For navigation help, refer to screenshots from Step 3.</p></li>
+
+<li><p>Clear the default Javascript code and replace with below code, and Save:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">({
+    showRelated <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        <span style="color: #007020; font-weight: bold">var</span> newView <span style="color: #666666">=</span> event.getParam(<span style="color: #4070a0">&quot;new&quot;</span>);
+        <span style="color: #007020; font-weight: bold">if</span> (newView) {
+            component.set(<span style="color: #4070a0">&quot;v.show&quot;</span>,<span style="color: #007020; font-weight: bold">false</span>);
+        } <span style="color: #007020; font-weight: bold">else</span> {
+            <span style="color: #007020; font-weight: bold">var</span> station <span style="color: #666666">=</span> event.getParam(<span style="color: #4070a0">&quot;station&quot;</span>);
+            component.set(<span style="color: #4070a0">&quot;v.station&quot;</span>,station);
+            component.set(<span style="color: #4070a0">&quot;v.show&quot;</span>,<span style="color: #007020; font-weight: bold">true</span>);
+        }    
+    },
+    switchTab <span style="color: #666666">:</span> <span style="color: #007020; font-weight: bold">function</span>(component, event, helper) {
+        $A.util.toggleClass(component.find(<span style="color: #4070a0">&quot;tab1&quot;</span>),<span style="color: #4070a0">&quot;slds-active&quot;</span>);
+        $A.util.toggleClass(component.find(<span style="color: #4070a0">&quot;tab2&quot;</span>),<span style="color: #4070a0">&quot;slds-active&quot;</span>);
+        $A.util.toggleClass(component.find(<span style="color: #4070a0">&quot;content1&quot;</span>),<span style="color: #4070a0">&quot;slds-show&quot;</span>);
+        $A.util.toggleClass(component.find(<span style="color: #4070a0">&quot;content1&quot;</span>),<span style="color: #4070a0">&quot;slds-hide&quot;</span>);
+        $A.util.toggleClass(component.find(<span style="color: #4070a0">&quot;content2&quot;</span>),<span style="color: #4070a0">&quot;slds-show&quot;</span>);
+        $A.util.toggleClass(component.find(<span style="color: #4070a0">&quot;content2&quot;</span>),<span style="color: #4070a0">&quot;slds-hide&quot;</span>);
+    }
+})
+</pre></div></li>
+</ol>
+
+<h3 id="a-name-step7-a-step-7-create-the-lightning-page-and-tab-with-these-components"><a name="step7"></a>Step 7: Create the lightning page and tab with these components</h3>
+
+<h4 id="what-you-ll-do-6">What you&rsquo;ll do</h4>
+
+<p>You will use the Lightning App Builder to create a new lightning tab using the components we created plus an additional standard Report Chart component. You will then add it to the navigation menu of lightning experience.</p>
+
+<ol>
+<li><p>Go to <em>Setup</em> and type <code>App Builder</code> in the setup search, click on it and then click <em>New</em> on the App Builder page to open the App Builder.
+<img src="images/appNew.png" width="90%" height="90%"/></p></li>
+
+<li><p>Click on <em>App Page</em> and click <em>Next</em>.
+<img src="images/appPage.png" width="90%" height="90%"/></p></li>
+
+<li><p>Click <em>Two Columns</em> and click <em>Next</em>.
+<img src="images/twoCol.png" width="90%" height="90%"/></p></li>
+
+<li><p>Enter Label as <code>Battle Station Manager</code> and click <em>Finish</em>.
+<img src="images/battleStationManager.png" width="90%" height="90%"/></p></li>
+
+<li><p>Select <em>Desktop</em> from the device dropdown.
+<img src="images/desktop.png" width="90%" height="90%"/></p></li>
+
+<li><p>Drag the <em>BattleStationsList</em> component from the <em>Custom Components</em> section in the components Panel and drop it in the left column of the canvas.
+<img src="images/bslist.png" width="90%" height="90%"/></p></li>
+
+<li><p>Drag the <em>BattleStationDetail</em> component from the <em>Custom Components</em> section in the components Panel and drop it in the right column of the canvas.
+<img src="images/bsdetail.png" width="90%" height="90%"/></p></li>
+
+<li><p>Drag the <em>StationRelatedLists</em> component from the <em>Custom Components</em> section in the components Panel and drop it in the right column of the canvas, below the <em>BattleStationDetail</em> component.
+<img src="images/bsrelated.png" width="90%" height="90%"/></p></li>
+
+<li><p>Drag the <em>Report Chart</em> component from the <em>Standard Components</em> section in the components Panel and drop it in the left column of the canvas, below the <em>BattleStationsList</em> component. Once dropped, on the right panel, enter <em>Label</em> as <code>Battle Station Supplies Chart</code>, check the <em>Show Refresh Button</em> option, and click <em>Save</em> on the top right.
+<img src="images/reportchart.png" width="90%" height="90%"/></p></li>
+
+<li><p>On the <em>Page Saved</em> popup, click <em>Activate</em>.
+<img src="images/activate.png" width="90%" height="90%"/></p></li>
+
+<li><p>On the Activation page, click on the <em>Lightning Experience</em> tab.
+<img src="images/lightexp.png" width="90%" height="90%"/></p></li>
+
+<li><p>Click on <em>Go create one!</em>
+<img src="images/gocreateone.png" width="90%" height="90%"/></p></li>
+
+<li><p>This is will the <em>Navigation Menus</em> page in a new tab. Click <em>New</em> button in the right top corner.
+<img src="images/navmenunew.png" width="90%" height="90%"/></p></li>
+
+<li><p>Enter <em>Name</em> as <code>Battle Station</code> and click <em>Next</em>.
+<img src="images/namenext.png" width="90%" height="90%"/></p></li>
+
+<li><p>Add the <em>Home</em> and <em>Battle Stations</em> tabs under <em>Navigation Menu items</em> and click <em>Next</em>.
+<img src="images/homebattle.png" width="90%" height="90%"/></p></li>
+
+<li><p>Select &ldquo;System Administrator&rdquo; profile and add it to the <em>Selected Profiles</em> list, and click <em>Save &amp; Finish</em>.
+<img src="images/profiles.png" width="90%" height="90%"/></p></li>
+
+<li><p>Come back to the previous tab, click <em>Refresh</em>, and add page to the navogation menu. Do the same for the Salesforce1 tab as well, and click <em>Save</em>.
+<img src="images/addtomenu.png" width="90%" height="90%"/>
+<img src="images/savemenu.png" width="90%" height="90%"/></p></li>
+
+<li><p>Click on the <em>Back</em> button to return to the Setup. Notice that the navigation menu on the left has changed. Click on the icon for the <em>Battle Station Manager</em>.
+<img src="images/openApp.png" width="90%" height="90%"/>
+<img src="images/appFirstRun.png" width="90%" height="90%"/></p></li>
+</ol>
+
+<h3 id="a-name-step8-a-step-8-add-functionality-with-lightning-events"><a name="step8"></a>Step 8: Add functionality with Lightning Events</h3>
+
+<h4 id="what-you-ll-do-7">What you&rsquo;ll do</h4>
+
+<p>You will create Lightning Events which will be fired and handled by the components to communicate and perform actions.</p>
+
+<ol>
+<li><p>In the developer console, click <em>File &gt; New &gt; Lightning Event</em>, give it a name <code>StationClickEvent</code> and click Submit to see the newly created skeletal event markup.
+<img src="images/clickevent1.png" width="90%" height="90%"/>
+<img src="images/clickevent2.png" width="90%" height="90%"/></p></li>
+
+<li><p>Clear the default markup code and replace with below code, and click <em>File &gt; Save</em>:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:event</span> <span style="color: #4070a0">type=&quot;APPLICATION&quot;</span> <span style="color: #4070a0">access=&quot;GLOBAL&quot;</span><span style="color: #062873; font-weight: bold">&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;station&quot;</span> <span style="color: #4070a0">type=&quot;Battle_Station__c&quot;</span> <span style="color: #4070a0">access=&quot;GLOBAL&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+    <span style="color: #062873; font-weight: bold">&lt;aura:attribute</span> <span style="color: #4070a0">name=&quot;new&quot;</span> <span style="color: #4070a0">type=&quot;Boolean&quot;</span> <span style="color: #4070a0">access=&quot;GLOBAL&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+<span style="color: #062873; font-weight: bold">&lt;/aura:event&gt;</span>
+</pre></div>
+
+<p><img src="images/clickevent3.png" width="90%" height="90%"/></p></li>
+
+<li><p>In the developer console, click <em>File &gt; New &gt; Lightning Event</em>, give it a name <code>updatedListEvent</code> and click Submit to see the newly created skeletal event markup.</p></li>
+
+<li><p>Leave the default markup as is, and click <em>File &gt; Save</em>:
+<img src="images/updateevent.png" width="90%" height="90%"/></p></li>
+
+<li><p>Open the <em>BattleStationsList</em> component markup, and add the following code after the first <code>aura:component</code> line:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:registerEvent</span> <span style="color: #4070a0">name=&quot;showStation&quot;</span> <span style="color: #4070a0">type=&quot;c:StationClickEvent&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+<span style="color: #062873; font-weight: bold">&lt;aura:handler</span> <span style="color: #4070a0">event=&quot;c.updatedListEvent&quot;</span> <span style="color: #4070a0">action=&quot;{!c.loadStations}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+</pre></div>
+
+<p><img src="images/listevent.png" width="90%" height="90%"/></p></li>
+
+<li><p>Open the <em>BattleStationItem</em> component markup, and add the following code after the first <code>aura:component</code> line:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:registerEvent</span> <span style="color: #4070a0">name=&quot;showStation&quot;</span> <span style="color: #4070a0">type=&quot;c:StationClickEvent&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+</pre></div>
+
+<p><img src="images/itemevent.png" width="90%" height="90%"/></p></li>
+
+<li><p>Open the <em>BattleStationDetail</em> component markup, and add the following code after the first <code>aura:component</code> line:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:handler</span> <span style="color: #4070a0">event=&quot;c:StationClickEvent&quot;</span> <span style="color: #4070a0">action=&quot;{!c.showStation}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+</pre></div>
+
+<p><img src="images/detailevent.png" width="90%" height="90%"/></p></li>
+
+<li><p>Open the <em>ResourceList</em> component markup, and add the following code after the first <code>aura:component</code> line:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:registerEvent</span> <span style="color: #4070a0">name=&quot;showStation&quot;</span> <span style="color: #4070a0">type=&quot;c:StationClickEvent&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+</pre></div>
+
+<p><img src="images/resevent.png" width="90%" height="90%"/></p></li>
+
+<li><p>Open the <em>SupplyList</em> component markup, and add the following code after the first <code>aura:component</code> line:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:registerEvent</span> <span style="color: #4070a0">name=&quot;showStation&quot;</span> <span style="color: #4070a0">type=&quot;c:StationClickEvent&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+</pre></div>
+
+<p><img src="images/supevent.png" width="90%" height="90%"/></p></li>
+
+<li><p>Open the <em>StationRelatedLists</em> component markup, and add the following code after the first <code>aura:component</code> line:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #062873; font-weight: bold">&lt;aura:handler</span> <span style="color: #4070a0">event=&quot;c:StationClickEvent&quot;</span> <span style="color: #4070a0">action=&quot;{!c.showRelated}&quot;</span><span style="color: #062873; font-weight: bold">/&gt;</span>
+</pre></div>
+
+<p><img src="images/relatedevent.png" width="90%" height="90%"/></p></li>
+</ol>
+
+<h3 id="a-name-step9-a-step-9-open-the-app-and-try-it-out"><a name="step9"></a>Step 9: Open the App and try it out!</h3>
+
+<h4 id="what-you-ll-do-8">What you&rsquo;ll do</h4>
+
+<p>You can play with the app now. Try creating, editing, deleting, or just accessing Battle Stations or Related Resources or Supplies.
+<img src="images/appready1.png" width="90%" height="90%"/></p>
+
+<h4 id="final-app-after-creating-a-few-records">Final App after creating a few records</h4>
+
+<p><img src="images/BattleStationManagerApp.png" width="90%" height="90%"/></p>
+
+<h3 id="resources">Resources</h3>
+
+<h5 id="todo">TODO</h5>
+
+</div>
+
+</div>
+</div>
+<script src="http://www.sfdcworkshop.com/js/ui.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84811307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
+

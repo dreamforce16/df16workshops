@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.16" />
+
+  <title>Build a Recommendation Engine with PredictionIO : Local &middot; Salesforce Developers 2017</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+
+  <link rel="shortcut icon" href="http://www.sfdcworkshop.com/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/"><div><img src='/workshop/2015sf_Developers_logo_RGB_KO.png' height='70'></div></a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/minihacks/"><i class='fa fa-list fa-fw'></i>MINIHACKS</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small style="color: #ffffff">© Copyright 2000-2016 salesforce.com, inc. All rights reserved. Various trademarks held by their respective owners. </small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Build a Recommendation Engine with PredictionIO : Local</h1>
+  <h2></h2>
+</div>
+<div class="content">
+  
+
+<ol>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#pre-requisities">Pre-requisities</a></li>
+<li><a href="#source-code">Source Code</a>
+
+<ul>
+<li><a href="#clone-the-source-code">Clone the Source code</a></li>
+<li><a href="#start-the-postgresql-9-6-server">Start the PostgreSQL 9.6 server</a></li>
+<li><a href="#run-the-event-server">Run the Event Server</a></li>
+<li><a href="#create-an-event-application">Create an Event Application</a></li>
+<li><a href="#add-demo-data-using-curl">Add Demo Data using curl</a></li>
+<li><a href="#train-the-model">Train the Model</a></li>
+<li><a href="#predict-recommended-items">Predict Recommended Items</a></li>
+</ul></li>
+</ol>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>In this workshop you will learn how to use PredictionIO Machine Learning library to build a recommendation engine based on Alternative Least Square Algorithm. PredictionIO uses Spark MLlib&rsquo;s implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.</p>
+
+<p><img src="/workshop/prediction-io/recommendation_engine/images/recommendation_engine_local.png" width="80%" height="80%"></p>
+
+<h2 id="pre-requisities">Pre-requisities</h2>
+
+<ul>
+<li>git command line tool</li>
+<li>JDK 1.8.x or above</li>
+<li>PostgreSQL 9.6 or above</li>
+</ul>
+
+<h2 id="source-code">Source Code</h2>
+
+<p>Source code of this workshop resides in two repos listed below</p>
+
+<ul>
+<li><a href="https://github.com/rajdeepd/pio-eventserver-heroku">https://github.com/rajdeepd/pio-eventserver-heroku</a></li>
+<li><a href="https://github.com/rajdeepd/pio-engine-heroku">https://github.com/rajdeepd/pio-engine-heroku</a></li>
+</ul>
+
+<p><strong>pio-eventserver-heroku</strong> : Provdes storage for events being generated based on which we want to create our training model.</p>
+
+<p><strong>pio-engine-heroku</strong> : Engine wraps the ALS Algorithm implementation and provides APIs to create a model, train it and use it to make prediction.</p>
+
+<p>We will be using PostgreSQL database for this workshop.</p>
+
+<h2 id="step-1-clone-the-source-code">Step 1 : Clone the Source code</h2>
+
+<p>Clone the source code</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>git clone https://github.com/rajdeepd/pio-eventserver-heroku
+<span style="color: #bb60d5">$ </span>git clone https://github.com/rajdeepd/pio-engine-heroku
+</pre></div>
+
+<h2 id="step-2-start-the-postgresql-9-6-server">Step 2 : Start the PostgreSQL 9.6 server</h2>
+
+<p>Make sure PostgreSQL server is running locally</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>sudo service postgresql status
+9.3/main <span style="color: #666666">(</span>port 5432<span style="color: #666666">)</span>: online
+9.4/main <span style="color: #666666">(</span>port 5433<span style="color: #666666">)</span>: online
+9.5/main <span style="color: #666666">(</span>port 5434<span style="color: #666666">)</span>: online
+</pre></div>
+
+<p>Create a pio role with password pio in PostgreSQL</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>psql
+
+<span style="color: #bb60d5">ubuntu</span><span style="color: #666666">=</span><span style="color: #60a0b0; font-style: italic"># CREATE USER pio WITH PASSWORD &#39;pio&#39;;</span>
+</pre></div>
+
+<h2 id="step-3-run-the-event-server">Step 3 : Run the Event Server</h2>
+
+<p>Use the following command to run the Event Server.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020">source </span>bin/env.sh <span style="color: #666666">&amp;&amp;</span> ./sbt run
+</pre></div>
+
+<h2 id="step-4-create-an-event-application">Step 4 : Create an Event Application</h2>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020">source </span>bin/env.sh <span style="color: #666666">&amp;&amp;</span> ./sbt <span style="color: #4070a0">&quot;runMain io.prediction.tools.console.Console app new MyApp1&quot;</span>
+</pre></div>
+
+<p>Output of the command above will generate information about accesskey. We will be using this Access Key later.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #666666">[</span>INFO<span style="color: #666666">]</span> <span style="color: #666666">[</span>App<span style="color: #bb60d5">$]</span> Initialized Event Store <span style="color: #007020; font-weight: bold">for</span> this app ID: 4.
+<span style="color: #666666">[</span>INFO<span style="color: #666666">]</span> <span style="color: #666666">[</span>App<span style="color: #bb60d5">$]</span> Created new app:
+<span style="color: #666666">[</span>INFO<span style="color: #666666">]</span> <span style="color: #666666">[</span>App<span style="color: #bb60d5">$]</span>       Name: MyApp1
+<span style="color: #666666">[</span>INFO<span style="color: #666666">]</span> <span style="color: #666666">[</span>App<span style="color: #bb60d5">$]</span>         ID: 4
+<span style="color: #666666">[</span>INFO<span style="color: #666666">]</span> <span style="color: #666666">[</span>App<span style="color: #bb60d5">$]</span> Access Key: zFqcHJF...Tv-M61CjWcW6IA0IuqXEVRP_zKT3
+</pre></div>
+
+<p>You can see the pio app related data and meta data tables being created in PostgreSQL</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>psql -h 127.0.0.1 -U pio -W
+Password <span style="color: #007020; font-weight: bold">for</span> user pio: 
+psql <span style="color: #666666">(</span>9.5.3, server 9.3.9<span style="color: #666666">)</span>
+SSL connection <span style="color: #666666">(</span>protocol: TLSv1.2, cipher: ..., bits: 256, compression: off<span style="color: #666666">)</span>
+Type <span style="color: #4070a0">&quot;help&quot;</span> <span style="color: #007020; font-weight: bold">for</span> help.
+
+<span style="color: #bb60d5">pio</span><span style="color: #666666">=</span>&gt; <span style="color: #4070a0; font-weight: bold">\d</span>+
+                                  List of relations
+ Schema |             Name             |   Type   | Owner |    Size    | 
+--------+------------------------------+----------+-------+------------+-
+ public | pio_event_1                  | table    | pio   | <span style="color: #40a070">16</span> kB      | 
+ public | pio_meta_accesskeys          | table    | pio   | <span style="color: #40a070">16</span> kB      | 
+ public | pio_meta_apps                | table    | pio   | <span style="color: #40a070">16</span> kB      | 
+ public | pio_meta_apps_id_seq         | sequence | pio   | <span style="color: #40a070">8192</span> bytes | 
+ public | pio_meta_channels            | table    | pio   | <span style="color: #40a070">8192</span> bytes | 
+ public | pio_meta_channels_id_seq     | sequence | pio   | <span style="color: #40a070">8192</span> bytes | 
+ public | pio_meta_engineinstances     | table    | pio   | <span style="color: #40a070">64</span> kB      | 
+ public | pio_meta_enginemanifests     | table    | pio   | <span style="color: #40a070">16</span> kB      | 
+ public | pio_meta_evaluationinstances | table    | pio   | <span style="color: #40a070">8192</span> bytes | 
+ public | pio_model_models             | table    | pio   | <span style="color: #40a070">16</span> kB      | 
+<span style="color: #666666">(</span><span style="color: #40a070">11</span> rows<span style="color: #666666">)</span>
+
+<span style="color: #bb60d5">pio</span><span style="color: #666666">=</span>&gt; 
+</pre></div>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">pio</span><span style="color: #666666">=</span>&gt; <span style="color: #007020; font-weight: bold">select</span> * from pio_meta_apps;
+ id |  name  | description 
+----+--------+-------------
+  <span style="color: #40a070">1</span> | MyApp1 | 
+</pre></div>
+
+<h2 id="step-5-add-demo-data-using-curl">Step 5 : Add Demo Data using curl</h2>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020">export </span><span style="color: #bb60d5">ACCESS_KEY</span><span style="color: #666666">=</span>&lt;YOUR ACCESS KEY&gt;
+<span style="color: #007020; font-weight: bold">for</span> i in <span style="color: #666666">{</span>1..5<span style="color: #666666">}</span>; <span style="color: #007020; font-weight: bold">do</span> curl -i -X POST http://localhost:7070/events.json?accessKey<span style="color: #666666">=</span><span style="color: #bb60d5">$ACCESS_KEY</span> -H <span style="color: #4070a0">&quot;Content-Type: application/json&quot;</span> -d <span style="color: #4070a0">&quot;{ \&quot;event\&quot; : \&quot;\$set\&quot;, \&quot;entityType\&quot; : \&quot;user\&quot;, \&quot;entityId\&quot; : \&quot;u</span><span style="color: #bb60d5">$i</span><span style="color: #4070a0">\&quot; }&quot;</span>; <span style="color: #007020; font-weight: bold">done</span>
+
+<span style="color: #007020; font-weight: bold">for</span> i in <span style="color: #666666">{</span>1..50<span style="color: #666666">}</span>; <span style="color: #007020; font-weight: bold">do</span> curl -i -X POST http://localhost:7070/events.json?accessKey<span style="color: #666666">=</span><span style="color: #bb60d5">$ACCESS_KEY</span> -H <span style="color: #4070a0">&quot;Content-Type: application/json&quot;</span> -d <span style="color: #4070a0">&quot;{ \&quot;event\&quot; : \&quot;\$set\&quot;, \&quot;entityType\&quot; : \&quot;item\&quot;, \&quot;entityId\&quot; : \&quot;i</span><span style="color: #bb60d5">$i</span><span style="color: #4070a0">\&quot;, \&quot;properties\&quot; : { \&quot;categories\&quot; : [\&quot;c1\&quot;, \&quot;c2\&quot;] } }&quot;</span>; <span style="color: #007020; font-weight: bold">done</span>
+
+<span style="color: #007020; font-weight: bold">for</span> i in <span style="color: #666666">{</span>1..5<span style="color: #666666">}</span>; <span style="color: #007020; font-weight: bold">do</span> curl -i -X POST http://localhost:7070/events.json?accessKey<span style="color: #666666">=</span><span style="color: #bb60d5">$ACCESS_KEY</span> -H <span style="color: #4070a0">&quot;Content-Type: application/json&quot;</span> -d <span style="color: #4070a0">&quot;{ \&quot;event\&quot; : \&quot;view\&quot;, \&quot;entityType\&quot; : \&quot;user\&quot;, \&quot;entityId\&quot; : \&quot;u</span><span style="color: #bb60d5">$i</span><span style="color: #4070a0">\&quot;,  \&quot;targetEntityType\&quot; : \&quot;item\&quot;, \&quot;targetEntityId\&quot; : \&quot;i</span><span style="color: #007020; font-weight: bold">$((</span> <span style="color: #666666">(</span> RANDOM <span style="color: #666666">%</span> <span style="color: #40a070">50</span> <span style="color: #666666">)</span>  <span style="color: #666666">+</span> <span style="color: #40a070">1</span> <span style="color: #007020; font-weight: bold">))</span><span style="color: #4070a0">\&quot; }&quot;</span>; <span style="color: #007020; font-weight: bold">done</span>
+</pre></div>
+
+<p>Check the data generated using the following curl command</p>
+
+<pre><code>http://localhost:7070/events.json?accessKey=&amp;limit=-1
+</code></pre>
+
+<p><img src="/workshop/prediction-io/recommendation_engine/images/localhost_events.png" width="100%" height="100%"></p>
+
+<h2 id="step-6-train-the-model">Step 6 : Train the Model</h2>
+
+<ol>
+<li><p>Set your PredictionIO app&rsquo;s access key and app name in your env vars:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"> <span style="color: #007020">export </span><span style="color: #bb60d5">ACCESS_KEY</span><span style="color: #666666">=</span>&lt;YOUR ACCESS KEY&gt;
+ <span style="color: #007020">export </span><span style="color: #bb60d5">APP_NAME</span><span style="color: #666666">=</span>&lt;YOUR APP NAME&gt;
+</pre></div>
+
+<p>Note: These values come from the apps defined in your event server.</p></li>
+
+<li><p>Train the app:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"> <span style="color: #007020">source </span>bin/env.sh <span style="color: #666666">&amp;&amp;</span> ./sbt <span style="color: #4070a0">&quot;runMain TrainApp&quot;</span>
+</pre></div></li>
+
+<li><p>Start the server:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020">source </span>bin/env.sh <span style="color: #666666">&amp;&amp;</span> ./sbt <span style="color: #4070a0">&quot;runMain ServerApp&quot;</span>
+</pre></div></li>
+
+<li><p>Check the status of your engine at <code>http://localhost:8000</code></p>
+
+<p><img src="/workshop/prediction-io/recommendation_engine/images/pio-engine-recommendation-local.png" width="100%" height="100%"></p></li>
+</ol>
+
+<h2 id="step-7-predict-recommended-items">Step 7 : Predict Recommended Items</h2>
+
+<p>Let us look at recommendation for other items based on a  item already bought by the user. Make sure by looking at the events in the event server that this item was bought, else recommended items will be empty list.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>curl -H <span style="color: #4070a0">&quot;Content-Type: application/json&quot;</span> -d <span style="color: #4070a0">&#39;{ &quot;items&quot;: [&quot;i3&quot;], &quot;num&quot;: 4 }&#39;</span> <span style="color: #4070a0; font-weight: bold">\</span>
+    http://localhost:8000/queries.json
+</pre></div>
+
+<p>Response</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">{
+  <span style="color: #062873; font-weight: bold">&quot;itemScores&quot;</span>:
+  [
+    {
+      <span style="color: #062873; font-weight: bold">&quot;item&quot;</span>:<span style="color: #4070a0">&quot;i44&quot;</span>,<span style="color: #062873; font-weight: bold">&quot;score&quot;</span>:<span style="color: #40a070">0.2805472425881496</span>
+    },
+    
+    {
+      <span style="color: #062873; font-weight: bold">&quot;item&quot;</span>:<span style="color: #4070a0">&quot;i41&quot;</span>,<span style="color: #062873; font-weight: bold">&quot;score&quot;</span>:<span style="color: #40a070">0.14458527026450552</span>
+    }
+  ]
+}
+</pre></div>
+
+</div>
+
+</div>
+</div>
+<script src="http://www.sfdcworkshop.com/js/ui.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84811307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
+

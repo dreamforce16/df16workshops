@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.16" />
+
+  <title>Text Classification : Spam Detection Engine using Logistical Regression : Local &middot; Salesforce Developers 2017</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+
+  <link rel="shortcut icon" href="http://www.sfdcworkshop.com/img/favicon.ico" type="image/x-icon" />
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/"><div><img src='/workshop/2015sf_Developers_logo_RGB_KO.png' height='70'></div></a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/minihacks/"><i class='fa fa-list fa-fw'></i>MINIHACKS</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div>
+  <div class="small-print">
+    <small></small>
+  </div>
+  <div class="small-print">
+    <small style="color: #ffffff">© Copyright 2000-2016 salesforce.com, inc. All rights reserved. Various trademarks held by their respective owners. </small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Text Classification : Spam Detection Engine using Logistical Regression : Local</h1>
+  <h2></h2>
+</div>
+<div class="content">
+  
+
+<h2 id="introduction">Introduction</h2>
+
+<p>In this workshop you will learn how to use PredictionIO Machine Learning library to build a Spam Detection Engine using Classification Technique of Logisitical Regression. PredictionIO uses Spark MLlib&rsquo;s implementation and provide convenient APIs and REST endpoints to get the infrastructure up and running fast.</p>
+
+<h2 id="pre-requisities">Pre-requisities</h2>
+
+<ul>
+<li>git command line</li>
+<li>JDK 1.8.x or above</li>
+</ul>
+
+<h2 id="source-code">Source Code</h2>
+
+<p>Source code of this workshop resides in two repos listed below</p>
+
+<ul>
+<li><a href="https://github.com/rajdeepd/pio-eventserver-heroku">https://github.com/rajdeepd/pio-eventserver-heroku</a></li>
+<li><a href="https://github.com/rajdeepd/pio-engine-textclassfication-heroku">https://github.com/rajdeepd/pio-engine-textclassfication-heroku</a></li>
+<li><a href="https://github.com/rajdeepd/pio-upload-data">https://github.com/rajdeepd/pio-upload-data</a></li>
+</ul>
+
+<p><strong>pio-eventserver-heroku</strong> : Provides storage for events being generated based on which we want to create our training model.</p>
+
+<p><strong>pio-textclassfication-engine-heroku</strong> : Engine which wraps the Logistical Regression Algorithm implementation and provides APIs to create a model, train it and use it to make prediction.</p>
+
+<p>We will be using PostgreSQL database for this workshop.</p>
+
+<h2 id="step-1-clone-the-source-code">Step 1 : Clone the Source code</h2>
+
+<p>Clone the source code</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>git clone https://github.com/rajdeepd/pio-eventserver-heroku
+
+<span style="color: #bb60d5">$ </span>git clone https://github.com/rajdeepd/pio-engine-textclassfication-heroku
+
+<span style="color: #bb60d5">$ </span>git clone https://github.com/rajdeepd/pio-upload-data
+</pre></div>
+
+<h2 id="step-2-start-the-postgresql-server">step 2 : Start the PostgreSQL server</h2>
+
+<p>Make sure PostgreSQL server is running locally</p>
+
+<p><strong>Linux</strong></p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>sudo service postgresql status
+</pre></div>
+
+<p><strong>Mac OS X</strong></p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>/Library/PostgreSQL/9.6/bin/pg_ctl restart -D /Library/PostgreSQL/9.6/data/
+</pre></div>
+
+<p>Create a pio role with password pio in PostgreSQL</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">CREATE USER pio WITH PASSWORD <span style="color: #4070a0">&#39;pio&#39;</span>;
+</pre></div>
+
+<h2 id="step-3-run-the-event-server">Step 3 : Run the Event Server</h2>
+
+<p>Use the following command to run the Event Server.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020">source </span>bin/env.sh <span style="color: #666666">&amp;&amp;</span> ./sbt run
+</pre></div>
+
+<h2 id="step-4-create-an-event-application">Step 4 : Create an Event Application</h2>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020">cd </span>pio-eventserver-heroku
+<span style="color: #007020">source </span>bin/env.sh <span style="color: #666666">&amp;&amp;</span> ./sbt <span style="color: #4070a0; font-weight: bold">\</span>
+  <span style="color: #4070a0">&quot;runMain io.prediction.tools.console.Console app new MyAppText&quot;</span>
+</pre></div>
+
+<p>Output of the command above will generate information about accesskey. We will be using this Access Key later.</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #666666">[</span>INFO<span style="color: #666666">]</span> <span style="color: #666666">[</span>App<span style="color: #bb60d5">$]</span> Initialized Event Store <span style="color: #007020; font-weight: bold">for</span> this app ID: 4.
+<span style="color: #666666">[</span>INFO<span style="color: #666666">]</span> <span style="color: #666666">[</span>App<span style="color: #bb60d5">$]</span> Created new app:
+<span style="color: #666666">[</span>INFO<span style="color: #666666">]</span> <span style="color: #666666">[</span>App<span style="color: #bb60d5">$]</span>       Name: MyAppText
+<span style="color: #666666">[</span>INFO<span style="color: #666666">]</span> <span style="color: #666666">[</span>App<span style="color: #bb60d5">$]</span>         ID: 4
+<span style="color: #666666">[</span>INFO<span style="color: #666666">]</span> <span style="color: #666666">[</span>App<span style="color: #bb60d5">$]</span> Access Key: SOME_ACCESS_KEY
+</pre></div>
+
+<p>You can see the pio app related data and meta data tables being created in PostgreSQL</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>psql -h 127.0.0.1 -U pio -W
+Password <span style="color: #007020; font-weight: bold">for</span> user pio: 
+psql <span style="color: #666666">(</span>9.5.3, server 9.3.9<span style="color: #666666">)</span>
+SSL connection <span style="color: #666666">(</span>protocol: TLSv1.2, cipher: ..., bits: 256, compression: off<span style="color: #666666">)</span>
+Type <span style="color: #4070a0">&quot;help&quot;</span> <span style="color: #007020; font-weight: bold">for</span> help.
+
+<span style="color: #bb60d5">pio</span><span style="color: #666666">=</span>&gt; <span style="color: #4070a0; font-weight: bold">\d</span>+
+                                  List of relations
+ Schema |             Name             |   Type   | Owner |    Size    | 
+--------+------------------------------+----------+-------+------------+-
+ public | pio_event_1                  | table    | pio   | <span style="color: #40a070">16</span> kB      | 
+ public | pio_meta_accesskeys          | table    | pio   | <span style="color: #40a070">16</span> kB      | 
+ public | pio_meta_apps                | table    | pio   | <span style="color: #40a070">16</span> kB      | 
+ public | pio_meta_apps_id_seq         | sequence | pio   | <span style="color: #40a070">8192</span> bytes | 
+ public | pio_meta_channels            | table    | pio   | <span style="color: #40a070">8192</span> bytes | 
+ public | pio_meta_channels_id_seq     | sequence | pio   | <span style="color: #40a070">8192</span> bytes | 
+ public | pio_meta_engineinstances     | table    | pio   | <span style="color: #40a070">64</span> kB      | 
+ public | pio_meta_enginemanifests     | table    | pio   | <span style="color: #40a070">16</span> kB      | 
+ public | pio_meta_evaluationinstances | table    | pio   | <span style="color: #40a070">8192</span> bytes | 
+ public | pio_model_models             | table    | pio   | <span style="color: #40a070">16</span> kB      | 
+<span style="color: #666666">(</span><span style="color: #40a070">11</span> rows<span style="color: #666666">)</span>
+
+<span style="color: #bb60d5">pio</span><span style="color: #666666">=</span>&gt; 
+</pre></div>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">pio</span><span style="color: #666666">=</span>&gt; <span style="color: #007020; font-weight: bold">select</span> * from pio_meta_apps;
+ id |  name  | description 
+----+--------+-------------
+  <span style="color: #40a070">1</span> | MyAppText | 
+</pre></div>
+
+<h2 id="step-4-add-demo-data-from-pio-upload-data">Step 4 : Add Demo Data from pio-upload-data</h2>
+
+<p>We are going to upload emails and stopwords stored in json files.</p>
+
+<p>We will use a Scala Application cloned from <a href="https://github.com/rajdeepd/pio-upload-data">https://github.com/rajdeepd/pio-upload-data</a> to upload data. It will make a Http Post request and upload email and stop word data.</p>
+
+<p>Sample email event</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">{
+  <span style="color: #062873; font-weight: bold">&quot;eventTime&quot;</span>: <span style="color: #4070a0">&quot;2015-06-08T16:45:00.595+0000&quot;</span>,
+  <span style="color: #062873; font-weight: bold">&quot;entityId&quot;</span>: <span style="color: #40a070">2</span>,
+  <span style="color: #062873; font-weight: bold">&quot;properties&quot;</span>: {
+    <span style="color: #062873; font-weight: bold">&quot;text&quot;</span>: <span style="color: #4070a0">&quot; some spam text&quot;</span>,
+    <span style="color: #062873; font-weight: bold">&quot;label&quot;</span>: <span style="color: #4070a0">&quot;spam&quot;</span>
+  },
+  <span style="color: #062873; font-weight: bold">&quot;event&quot;</span>: <span style="color: #4070a0">&quot;e-mail&quot;</span>,
+  <span style="color: #062873; font-weight: bold">&quot;entityType&quot;</span>: <span style="color: #4070a0">&quot;content&quot;</span>
+}
+</pre></div>
+
+<ol>
+<li><p>Copy application.conf.sample to application.conf as shown below</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span><span style="color: #007020">cd </span>pio-upload-data
+<span style="color: #bb60d5">$ </span>cp pio-upload-data/src/main/resources/application.conf.sample <span style="color: #4070a0; font-weight: bold">\</span>
+   pio-upload-data/src/main/resources/application.conf
+      
+</pre></div></li>
+
+<li><p>Open <code>application.conf</code> file</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">pio <span style="color: #666666">{</span>
+  <span style="color: #bb60d5">access_token</span> <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;TODO&quot;</span>
+  <span style="color: #bb60d5">app_name</span> <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;TODO&quot;</span>
+  <span style="color: #bb60d5">host</span> <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;localhost:7070&quot;</span>
+<span style="color: #666666">}</span>
+</pre></div>
+
+<p>Update with appropriate values as shown below</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">      
+pio <span style="color: #666666">{</span>
+  <span style="color: #bb60d5">access_token</span> <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;2eNMw5lydFtFl4uT..Jz9sIEUuigshZJHttReO5lpiNDeZwELVV3_7&quot;</span>
+  <span style="color: #bb60d5">app_name</span> <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;MyTextLR&quot;</span>
+  <span style="color: #bb60d5">host</span> <span style="color: #666666">=</span> <span style="color: #4070a0">&quot;rd-pio-eventserver-1.herokuapp.com&quot;</span>
+<span style="color: #666666">}</span>
+</pre></div></li>
+
+<li><p>Execute the following commands on <code>UploadEmails</code> and <code>UploadStopWords</code></p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span><span style="color: #007020">cd</span> ~/pio-upload-data
+<span style="color: #bb60d5">$ </span>./sbt <span style="color: #4070a0">&quot;runMain UploadEmails&quot;</span>
+<span style="color: #bb60d5">$ </span>./sbt <span style="color: #4070a0">&quot;runMain UploadStopWords&quot;</span>
+</pre></div></li>
+</ol>
+
+<p>Check the data generated using the following curl command</p>
+
+<pre><code>
+http://localhost:7070/events.json?accessKey=SOME_ACCESS_KEY&amp;limit=-1
+
+</code></pre>
+
+<p><img src="/workshop/prediction-io/text_classification/images/pio-events-text-classification-local.png" width="100%" height="100%"></p>
+
+<h2 id="step-5-train-the-model">Step 5 : Train the Model</h2>
+
+<ol>
+<li><p>Set your PredictionIO app&rsquo;s access key and app name in your env vars:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"> <span style="color: #007020">export </span><span style="color: #bb60d5">ACCESS_KEY</span><span style="color: #666666">=</span>&lt;YOUR ACCESS KEY&gt;
+ <span style="color: #007020">export </span><span style="color: #bb60d5">APP_NAME</span><span style="color: #666666">=</span>&lt;YOUR APP NAME&gt;
+</pre></div>
+
+<p>Note: These values come from the apps defined in your event server.</p></li>
+
+<li><p>Train the app:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"> <span style="color: #007020">source </span>bin/env.sh <span style="color: #666666">&amp;&amp;</span> ./sbt <span style="color: #4070a0">&quot;runMain TrainApp&quot;</span>
+</pre></div></li>
+
+<li><p>Start the server:</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #007020">source </span>bin/env.sh <span style="color: #666666">&amp;&amp;</span> ./sbt <span style="color: #4070a0">&quot;runMain ServerApp&quot;</span>
+</pre></div></li>
+
+<li><p>Check the status of your engine at <code>http://localhost:8000</code></p>
+
+<p><img src="/workshop/prediction-io/text_classification/images/pio-engine-text-classification-local.png" width="100%" height="100%"></p></li>
+</ol>
+
+<h2 id="step-6-predict-spam-vs-non-spam">Step 6 : Predict Spam vs Non Spam</h2>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%"><span style="color: #bb60d5">$ </span>curl -H <span style="color: #4070a0">&quot;Content-Type: application/json&quot;</span> -d <span style="color: #4070a0">&#39;{ &quot;text&quot;:&quot;Earn extra cash!&quot; }&#39;</span> <span style="color: #4070a0; font-weight: bold">\</span>
+    http://localhost:8000/queries.json
+</pre></div>
+
+<p>Response</p>
+<div class="highlight" style="background: #f0f0f0"><pre style="line-height: 125%">{<span style="color: #062873; font-weight: bold">&quot;category&quot;</span>:<span style="color: #4070a0">&quot;not spam&quot;</span>,<span style="color: #062873; font-weight: bold">&quot;confidence&quot;</span>:<span style="color: #40a070">0.7219493232910391</span>}
+</pre></div>
+
+<p><strong>Note:</strong> If the confidence level is showing as Nan, it means the data used to train is not sufficient for calculating the confidence level.</p>
+
+</div>
+
+</div>
+</div>
+<script src="http://www.sfdcworkshop.com/js/ui.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84811307-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
+

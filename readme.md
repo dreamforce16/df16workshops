@@ -19,3 +19,8 @@
 
 4. Open <http://localhost:1313/>
 
+Building the site
+
+hugo -t blackburn -D
+
+
